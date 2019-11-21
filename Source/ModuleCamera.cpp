@@ -17,7 +17,8 @@ bool ModuleCamera::Init() {
 	int width, height;
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	aspectRatio = width / height;
-
+	lastX = 0;
+	lastY = 0;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
 	frustum.pos = float3::unitX;
@@ -134,20 +135,76 @@ void ModuleCamera::MoveLeft()
 void ModuleCamera::MoveRight()
 {
 	const float distance = App->time->realTimeDT * cameraSpeed;
-	frustum.pos = frustum.pos - frustum.WorldRight().ScaledToLength(distance);
+	frustum.pos -= frustum.WorldRight().ScaledToLength(distance);
 
 	CalculateMatrixes();
 }
 
+void ModuleCamera::Rotate(float xpos, float ypos) {
 
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+	lastX = xpos;
+	lastY = ypos;
+
+	float sensitivity = 0.1f; // change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	/*float3x3 rotationMatrix = float3x3::RotateY(pitch);
+	frustum.up = frustum.up * rotationMatrix;
+	frustum.front = frustum.front * rotationMatrix;
+	CalculateMatrixes();
+	rotationMatrix = float3x3::RotateX(yaw);
+	frustum.up = frustum.up * rotationMatrix;
+	frustum.front = frustum.front* rotationMatrix;
+	CalculateMatrixes();*/
+	/*frustum.front = float3x3::RotateY(yaw).Transform(frustum.front).Normalized();
+	frustum.up = float3x3::RotateY(yaw).Transform(frustum.up).Normalized();
+	view = LookAt(frustum.pos, frustum.pos + frustum.front, frustum.up);
+
+	frustum.front = float3x3::RotateAxisAngle(frustum.WorldRight(), pitch).Transform(frustum.front).Normalized();
+	frustum.up = float3x3::RotateAxisAngle(frustum.WorldRight(), pitch).Transform(frustum.up).Normalized();
+	view = LookAt(frustum.pos, frustum.pos + frustum.front, frustum.up);*/
+
+/*	float3 front;
+	front.x = cos(((double)yaw*3.14) / 180) *cos(((double)pitch*3.14) / 180);
+	front.y = sin(((double)pitch*3.14) / 180);
+	front.z = sin(((double)yaw*3.14) / 180) *cos(((double)pitch*3.14) / 180);
+
+    front.Normalize();
+
+	frustum.front.x = front.x;
+	frustum.front.y = front.y;
+	frustum.front.z = front.z;
+	
+	CalculateMatrixes();*/
+	
+}
 void ModuleCamera::OrbitX(const float angle)
 {
-
+	const float distance = App->time->realTimeDT * cameraSpeed * angle;
+	float3x3 rotateMatrix = float3x3::RotateY(distance);
+	frustum.pos = frustum.pos * rotateMatrix;
+	float3 target = (float3::zero - frustum.pos).Normalized();
+	rotateMatrix = float3x3::LookAt(frustum.front, target, frustum.up, float3::unitY);
+	frustum.front = frustum.front * rotateMatrix;
+	frustum.up = frustum.up * rotateMatrix;
 
 	CalculateMatrixes();
 }
 void ModuleCamera::OrbitY(const float angle)
 {
-
+	const float distance = App->time->realTimeDT * cameraSpeed * angle;
+	
 	CalculateMatrixes();
 }

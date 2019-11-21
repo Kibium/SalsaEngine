@@ -27,13 +27,17 @@ public:
 	 void MoveBackward();
 	 void MoveLeft();
 	 void MoveRight();
+	 void Rotate(float yaw, float pitch);
 	 void OrbitX(const float angle);
 	 void OrbitY(const float angle);
 
 	 float aspectRatio;
 	 float cameraSpeed = 0.005f;
 	 Frustum frustum;
-
+	 float lastX;
+	 float lastY;
+	 float pitch;
+	 float yaw;
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;

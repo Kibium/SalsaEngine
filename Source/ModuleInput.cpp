@@ -41,6 +41,7 @@ update_status ModuleInput::Update()
 	{
 		// Esc button is pressed
 		App->gui->EventManager(sdlEvent);
+		keyboard = SDL_GetKeyboardState(NULL);
 		switch (sdlEvent.type)
 		{
 		case SDL_QUIT:
@@ -64,15 +65,37 @@ update_status ModuleInput::Update()
 
 			}
 			break;
+		case SDL_MOUSEMOTION:
+			if (sdlEvent.motion.state && SDL_BUTTON_RMASK) {
+				if (math::Abs(sdlEvent.motion.xrel) > 0 || math::Abs(sdlEvent.motion.yrel) > 0 && SDL_BUTTON_RMASK) {
+					if (keyboard[SDL_SCANCODE_J]) {
+						App->camera->Rotate(sdlEvent.motion.xrel, sdlEvent.motion.yrel);
+					}
+					/*else {
+						if (sdlEvent.motion.x > 0)
+							App->camera->MoveRight();
+						else if (sdlEvent.motion.x < 0)
+							App->camera->MoveLeft();
+						else if (sdlEvent.motion.y > 0)
+							App->camera->MoveUp();
+						else if (sdlEvent.motion.y < 0)
+							App->camera->MoveDown();
+					}*/
+				}
+			}
+
+			break;
+					
 		case SDL_DROPFILE:
 			char* newFile = sdlEvent.drop.file;
 			assert(newFile != NULL);
 			App->model->SwitchModel(newFile);
 			SDL_free(newFile);
 			break;
+		
 		}
 	}
-	keyboard = SDL_GetKeyboardState(NULL);
+	
 	if (keyboard[SDL_SCANCODE_Q])
 	{
 		App->camera->MoveUp();
@@ -102,7 +125,10 @@ update_status ModuleInput::Update()
 	{
 		App->camera->MoveRight();
 	}
-
+	/*if (keyboard[SDL_SCANCODE_J])
+	{
+		App->camera->OrbitX(-2);
+	}*/
 	return UPDATE_CONTINUE;
 }
 
