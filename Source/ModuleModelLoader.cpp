@@ -4,11 +4,9 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 
-#include <cimport.h>
-#include <postprocess.h>
-#include <scene.h>
-#include <material.h>
-#include <mesh.h>
+#include <assimp/cimport.h>
+#include <assimp/material.h>
+#include <assimp/mesh.h>
 
 ModuleModelLoader::ModuleModelLoader() {
 }

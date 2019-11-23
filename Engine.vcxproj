@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include/assimp;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/glm;./Libraries</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/glm;./Libraries</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,8 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\anim.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\BaseImporter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Bitmap.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\BlobIOSystem.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ByteSwapper.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\camera.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\cexport.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\cfileio.h" />
@@ -87,32 +92,67 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pstdint.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pushpack1.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\config.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOSystem.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Defines.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\defs.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Exceptional.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\Exporter.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\fast_atof.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Hash.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\Importer.hpp" />
     <ClInclude Include="Libraries\Assimp\include\assimp\importerdesc.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\IOStream.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\IOStreamBuffer.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\irrXMLWrapper.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\light.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\LineSplitter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\LogAux.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\Logger.hpp" />
     <ClInclude Include="Libraries\Assimp\include\assimp\LogStream.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Macros.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\material.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\MathFunctions.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\matrix3x3.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\matrix4x4.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\MemoryIOWrapper.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ParsingUtils.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\pbrmaterial.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\postprocess.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Profiler.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\qnan.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\quaternion.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\RemoveComments.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\scene.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SceneCombiner.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SGSpatialSort.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SmoothingGroups.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SpatialSort.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StandardShapes.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StreamReader.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StreamWriter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StringComparison.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StringUtils.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Subdivision.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\texture.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\TinyFormatter.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\types.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\vector2.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\vector3.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\version.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Vertex.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\XMLTools.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\devil_cpp_wrapper.hpp" />
     <ClInclude Include="Libraries\DevIL\include\IL\devil_internal_exports.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\il.h" />
@@ -264,6 +304,7 @@
     <None Include="Libraries\Assimp\include\assimp\matrix3x3.inl" />
     <None Include="Libraries\Assimp\include\assimp\matrix4x4.inl" />
     <None Include="Libraries\Assimp\include\assimp\quaternion.inl" />
+    <None Include="Libraries\Assimp\include\assimp\SmoothingGroups.inl" />
     <None Include="Libraries\Assimp\include\assimp\vector2.inl" />
     <None Include="Libraries\Assimp\include\assimp\vector3.inl" />
     <None Include="Libraries\DevIL\include\IL\config.h.win" />
