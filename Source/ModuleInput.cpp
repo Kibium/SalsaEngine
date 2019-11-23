@@ -137,7 +137,7 @@ void ModuleInput::DroppedFile(char* file)
 		return;
 	}
 	char* extension = PathFindExtensionA(file);
-	if (extension == ".obj" || extension == ".fbx") {
+	if (strcmp(".obj", extension) == 0) {
 		App->model->SwitchModel(file);
 	}
 	else if (strcmp(".fbx", extension) == 0) {
@@ -150,6 +150,9 @@ void ModuleInput::DroppedFile(char* file)
 		App->model->SwitchTexture(file);
 	}
 	else if (strcmp(".dds", extension) == 0) {
+		App->model->SwitchTexture(file);
+	}
+	else if (strcmp(".tga", extension) == 0) {
 		App->model->SwitchTexture(file);
 	}
 	else {
