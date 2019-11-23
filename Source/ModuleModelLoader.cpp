@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
+#include "ModuleCamera.h"
 
 #include <cimport.h>
 #include <postprocess.h>
@@ -45,6 +46,7 @@ void ModuleModelLoader::SwitchModel(const char *file)
 
 void ModuleModelLoader::Load(const char* path)
 {
+	
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -54,6 +56,7 @@ void ModuleModelLoader::Load(const char* path)
 		LOG( "ERROR::ASSIMP:: %s \n",importer.GetErrorString());
 		return;
 	}
+	modelBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
@@ -89,12 +92,14 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
 	}
-
+	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+	
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{

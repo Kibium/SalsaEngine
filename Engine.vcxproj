@@ -193,7 +193,6 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
-    <ClInclude Include="Source\MicroTimer.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
     <ClInclude Include="Source\ModuleGUI.h" />
@@ -202,10 +201,8 @@
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
-    <ClInclude Include="Source\ModuleTime.h" />
     <ClInclude Include="Source\ModuleTriangle.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
-    <ClInclude Include="Source\MSTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
@@ -250,7 +247,6 @@
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
-    <ClCompile Include="Source\MicroTimer.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleGUI.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
@@ -258,10 +254,8 @@
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleShader.cpp" />
     <ClCompile Include="Source\ModuleTexture.cpp" />
-    <ClCompile Include="Source\ModuleTime.cpp" />
     <ClCompile Include="Source\ModuleTriangle.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
-    <ClCompile Include="Source\MSTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />

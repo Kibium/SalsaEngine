@@ -37,7 +37,7 @@ bool ModuleRender::Init()
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 
 	glEnable(GL_BLEND);

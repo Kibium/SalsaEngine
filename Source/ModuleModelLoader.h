@@ -1,9 +1,6 @@
 #include "Module.h"
 #include "Mesh.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Importer.hpp"
 #include "scene.h"
 #include "postprocess.h"
@@ -14,13 +11,10 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "MathGeoLib.h"
+#include "Geometry/AABB.h"
 
 using namespace std;
-
-#define BAKERHOUSEFBX "BakerHouse.fbx"
-#define BAKERHOUSEPNG "Baker_house.png"
-
-
 
 class ModuleModelLoader : public Module {
 public:
@@ -37,6 +31,8 @@ public:
 	bool CleanUp();
 	void SwitchModel(const char*);
 	bool model;
+	AABB modelBox;
+
 private:
 	void Load(const char*);
 	void processNode(aiNode*, const aiScene*);

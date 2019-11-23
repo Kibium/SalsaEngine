@@ -19,9 +19,6 @@
     <ClCompile Include="Source\ModuleInput.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MicroTimer.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleCamera.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
@@ -38,9 +35,6 @@
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleTriangle.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MSTimer.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
@@ -160,9 +154,6 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleTime.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -183,9 +174,6 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MicroTimer.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ModuleCamera.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
@@ -202,9 +190,6 @@
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleTriangle.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MSTimer.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h">
@@ -551,9 +536,6 @@
     </ClInclude>
     <ClInclude Include="Libraries\stb_image.h">
       <Filter>Addons</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTime.h">
-      <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

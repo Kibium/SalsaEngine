@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleCamera.h"
 
 #include "ModuleShader.h"
 #include <glew.h>
@@ -87,4 +88,5 @@ void Mesh::setupMesh()
 
 
 	glBindVertexArray(0);
+
 }
