@@ -11,11 +11,9 @@
 ModuleInput::ModuleInput()
 {}
 
-// Destructor
 ModuleInput::~ModuleInput()
 {}
 
-// Called before render is available
 bool ModuleInput::Init()
 {
 	LOG("Init SDL input event system\n");
@@ -31,7 +29,6 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called every draw update
 update_status ModuleInput::Update()
 {
 	SDL_PumpEvents();
@@ -39,7 +36,6 @@ update_status ModuleInput::Update()
 
 	while (SDL_PollEvent(&sdlEvent) != 0)
 	{
-		// Esc button is pressed
 		App->gui->EventManager(sdlEvent);
 		keyboard = SDL_GetKeyboardState(NULL);
 		switch (sdlEvent.type)
@@ -53,37 +49,29 @@ update_status ModuleInput::Update()
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			break;
 		case SDL_MOUSEWHEEL:
-			if (sdlEvent.wheel.y > 0) // scroll up
-			{
-				// Put code for handling "scroll up" here!
+			if (sdlEvent.wheel.y > 0)
 				App->camera->MoveFoward();
-			}
-			else if (sdlEvent.wheel.y < 0) // scroll down
-			{
-				// Put code for handling "scroll down" here!
+			
+			else if (sdlEvent.wheel.y < 0)
 				App->camera->MoveBackward();
 
+			break;
+		case SDL_KEYDOWN:
+
+			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
+				App->camera->orbit = true;
 			}
 			break;
-		case SDL_MOUSEMOTION:
-			if (sdlEvent.motion.state && SDL_BUTTON_RMASK) {
-				if (math::Abs(sdlEvent.motion.xrel) > 0 || math::Abs(sdlEvent.motion.yrel) > 0 && SDL_BUTTON_RMASK) {
-					if (keyboard[SDL_SCANCODE_J]) {
-						App->camera->Rotate(sdlEvent.motion.xrel, sdlEvent.motion.yrel);
-					}
-					/*else {
-						if (sdlEvent.motion.x > 0)
-							App->camera->MoveRight();
-						else if (sdlEvent.motion.x < 0)
-							App->camera->MoveLeft();
-						else if (sdlEvent.motion.y > 0)
-							App->camera->MoveUp();
-						else if (sdlEvent.motion.y < 0)
-							App->camera->MoveDown();
-					}*/
-				}
-			}
+		case SDL_KEYUP:
 
+			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
+				App->camera->orbit = false;
+			}
+			break;
+
+		case SDL_MOUSEMOTION:
+			if (sdlEvent.motion.state && SDL_BUTTON_RMASK && App->gui->isScene)
+				App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 			break;
 					
 		case SDL_DROPFILE:
@@ -95,44 +83,43 @@ update_status ModuleInput::Update()
 		
 		}
 	}
-	
+
+	if (keyboard[SDL_SCANCODE_LEFT])
+		App->camera->Rotate(0.01, 0);
+
+	if (keyboard[SDL_SCANCODE_RIGHT])
+		App->camera->Rotate(-0.01, 0);
+
+	if (keyboard[SDL_SCANCODE_UP])
+		App->camera->Rotate(0, 0.01);
+
+	if (keyboard[SDL_SCANCODE_DOWN])
+		App->camera->Rotate(0, -0.01);
+
 	if (keyboard[SDL_SCANCODE_Q])
-	{
 		App->camera->MoveUp();
-	}
 
 	if (keyboard[SDL_SCANCODE_E])
-	{
 		App->camera->MoveDown();
-	}
 
 	if (keyboard[SDL_SCANCODE_W])
-	{
 		App->camera->MoveFoward();
-	}
 
 	if (keyboard[SDL_SCANCODE_S])
-	{
 		App->camera->MoveBackward();
-	}
 
 	if (keyboard[SDL_SCANCODE_A])
-	{
 		App->camera->MoveLeft();
-	}
 
 	if (keyboard[SDL_SCANCODE_D])
-	{
 		App->camera->MoveRight();
-	}
-	/*if (keyboard[SDL_SCANCODE_J])
-	{
-		App->camera->OrbitX(-2);
-	}*/
+
+	if (keyboard[SDL_SCANCODE_F])
+		App->camera->Focus();
+
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleInput::CleanUp()
 {
 	LOG("Quitting SDL input event subsystem\n");

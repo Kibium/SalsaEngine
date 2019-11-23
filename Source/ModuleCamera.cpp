@@ -1,7 +1,8 @@
 #include "ModuleCamera.h"
 #include "Application.h"
 #include "ModuleWindow.h"
-#include "ModuleTime.h"
+#include "ModuleModelLoader.h"
+#include "Geometry/AABB.h"
 
 #include <glew.h>
 #include "SDL.h"
@@ -17,10 +18,8 @@ bool ModuleCamera::Init() {
 	int width, height;
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	aspectRatio = width / height;
-	lastX = 0;
-	lastY = 0;
+	orbit = false;
 	frustum.type = FrustumType::PerspectiveFrustum;
-
 	frustum.pos = float3::unitX;
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
@@ -28,7 +27,7 @@ bool ModuleCamera::Init() {
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
-	
+	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	CalculateMatrixes();
 
 	return true;
@@ -50,33 +49,27 @@ bool ModuleCamera::CleanUp() {
 	return true;
 }
 
-
 void ModuleCamera::SetFOV(float verticalFOV) {
 	frustum.verticalFov = verticalFOV;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	CalculateMatrixes();
 }
+void ModuleCamera::SetSpeed(float Speed) {
+	cameraSpeed = Speed;
 
+}
 void ModuleCamera::SetAspectRatio(float aspectRatio) {
 	this->aspectRatio = aspectRatio;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * this->aspectRatio);
 	CalculateMatrixes();
 }
 
-
-void ModuleCamera::SetPos(math::float3 pos) {
-	frustum.Translate(pos);
-	CalculateMatrixes();
-}
-
-
 void ModuleCamera::CalculateMatrixes() {
-	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
-	view = LookAt(math::float3(0.0f, 1.f, 4.0f), math::float3(0.0f, 0.0f, 0.0f), math::float3(0.0f, 1.0f, 0.0f));
 	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
 }
 
-math::float4x4 ModuleCamera::LookAt(math::float3 eye, math::float3 target, math::float3 up) {
+math::float4x4 ModuleCamera::LookAt(math::float3 eye, math::float3 target, math::float3 up) const {
 	math::float4x4 matrix;
 	math::float3 f(target - eye); f.Normalize();
 	math::float3 s(f.Cross(up)); s.Normalize();
@@ -92,119 +85,106 @@ math::float4x4 ModuleCamera::LookAt(math::float3 eye, math::float3 target, math:
 	return matrix;
 }
 
+void ModuleCamera::LookAt(const float3 target)
+{
+	float3 direction = (target - frustum.pos).Normalized();
+	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
+	frustum.front = rotationMatrix.Transform(frustum.front).Normalized();
+	frustum.up = rotationMatrix.Transform(frustum.up).Normalized();
+}
+
 void ModuleCamera::MoveUp()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	float3 new_pos = frustum.pos;
-	new_pos.y = new_pos.y + distance;
-	frustum.pos = new_pos;
+	frustum.pos.y += cameraSpeed;
 	CalculateMatrixes();
 }
+
 void ModuleCamera::MoveDown()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	float3 new_pos = frustum.pos;
-	new_pos.y = new_pos.y - distance;
-	frustum.pos = new_pos;
+	frustum.pos.y -= cameraSpeed;
 	CalculateMatrixes();
 }
+
 void ModuleCamera::MoveFoward()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	frustum.pos -= frustum.front.ScaledToLength(distance);
-
+	frustum.pos += frustum.front.ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
 void ModuleCamera::MoveBackward()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	frustum.pos += frustum.front.ScaledToLength(distance);
-
+	frustum.pos -= frustum.front.ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
 void ModuleCamera::MoveLeft()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	frustum.pos += frustum.WorldRight().ScaledToLength(distance);
-
+	frustum.pos -= frustum.WorldRight().ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
 void ModuleCamera::MoveRight()
 {
-	const float distance = App->time->realTimeDT * cameraSpeed;
-	frustum.pos -= frustum.WorldRight().ScaledToLength(distance);
-
+	frustum.pos += frustum.WorldRight().ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::Rotate(float xpos, float ypos) {
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-	lastX = xpos;
-	lastY = ypos;
-
-	float sensitivity = 0.1f; // change this value to your liking
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	// make sure that when pitch is out of bounds, screen doesn't get flipped
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	/*float3x3 rotationMatrix = float3x3::RotateY(pitch);
-	frustum.up = frustum.up * rotationMatrix;
-	frustum.front = frustum.front * rotationMatrix;
-	CalculateMatrixes();
-	rotationMatrix = float3x3::RotateX(yaw);
-	frustum.up = frustum.up * rotationMatrix;
-	frustum.front = frustum.front* rotationMatrix;
-	CalculateMatrixes();*/
-	/*frustum.front = float3x3::RotateY(yaw).Transform(frustum.front).Normalized();
-	frustum.up = float3x3::RotateY(yaw).Transform(frustum.up).Normalized();
-	view = LookAt(frustum.pos, frustum.pos + frustum.front, frustum.up);
-
-	frustum.front = float3x3::RotateAxisAngle(frustum.WorldRight(), pitch).Transform(frustum.front).Normalized();
-	frustum.up = float3x3::RotateAxisAngle(frustum.WorldRight(), pitch).Transform(frustum.up).Normalized();
-	view = LookAt(frustum.pos, frustum.pos + frustum.front, frustum.up);*/
-
-/*	float3 front;
-	front.x = cos(((double)yaw*3.14) / 180) *cos(((double)pitch*3.14) / 180);
-	front.y = sin(((double)pitch*3.14) / 180);
-	front.z = sin(((double)yaw*3.14) / 180) *cos(((double)pitch*3.14) / 180);
-
-    front.Normalize();
-
-	frustum.front.x = front.x;
-	frustum.front.y = front.y;
-	frustum.front.z = front.z;
-	
-	CalculateMatrixes();*/
-	
-}
-void ModuleCamera::OrbitX(const float angle)
+void ModuleCamera::Rotate(const float xpos, const float ypos)
 {
-	const float distance = App->time->realTimeDT * cameraSpeed * angle;
-	float3x3 rotateMatrix = float3x3::RotateY(distance);
-	frustum.pos = frustum.pos * rotateMatrix;
-	float3 target = (float3::zero - frustum.pos).Normalized();
-	rotateMatrix = float3x3::LookAt(frustum.front, target, frustum.up, float3::unitY);
-	frustum.front = frustum.front * rotateMatrix;
-	frustum.up = frustum.up * rotateMatrix;
 
+	if (xpos != 0.0f)
+	{
+		float3x3 rotationY = float3x3::RotateY(xpos);
+		frustum.front = rotationY.Transform(frustum.front).Normalized();
+		frustum.up = rotationY.Transform(frustum.up).Normalized();
+	}
+
+	if (ypos != 0.0f)
+	{
+		float3x3 rotationX = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos);
+		frustum.up = rotationX.Transform(frustum.up).Normalized();
+		frustum.front = rotationX.Transform(frustum.front).Normalized();
+	}
 	CalculateMatrixes();
 }
-void ModuleCamera::OrbitY(const float angle)
+
+void ModuleCamera::Orbit(const float xpos, const float ypos)
 {
-	const float distance = App->time->realTimeDT * cameraSpeed * angle;
+
+	if (orbit) {
+		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+		
+		if (xpos != 0.0f)
+		{
+			float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
+			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+		}
+
+		if (ypos != 0.0f)
+		{
+			float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
+			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+		}
+
+		LookAt(center);
+		CalculateMatrixes();
+	}
+
 	
+}
+
+void ModuleCamera::Focus()
+{
+	float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
+	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+
+	float3 direction = (center - frustum.pos).Normalized();
+	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
+	frustum.front = rotationMatrix * frustum.front;
+	frustum.up = rotationMatrix * frustum.up;
+
+	frustum.farPlaneDistance = 500 * (size.Length() / 2);
+	frustum.pos = center - frustum.front * 3 * (size.Length() / 2);
+	frustum.pos.y = 0.5 * (size.Length() / 2);
 	CalculateMatrixes();
 }

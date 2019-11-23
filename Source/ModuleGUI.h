@@ -32,5 +32,6 @@ public:
 	bool showHelpWindow;
 	bool showAppWindow;
 	bool showScene;
+	bool isScene;
 
 };

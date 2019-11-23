@@ -3,7 +3,6 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
-#include "ModuleTime.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 
@@ -274,16 +273,8 @@ void ModuleGUI::Menu()
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
 		ImGui::Separator();
 
-		ImGui::Checkbox("", &App->time->fpsLimit);
 
 		ImGui::SameLine();
-
-		ImGui::SliderInt("Max FPS", &App->time->maxFPS, 10, 120);
-
-		ImGui::Text("Real Time since Start : %.0f Real Time dt : %.0f", App->time->startingTime, App->time->realTimeDT);
-
-
-		ImGui::Text("Game Time since Start: %.0f Game Time dt: %.0f", App->time->time, App->time->deltaTime);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 		int fps = ImGui::GetIO().Framerate;
@@ -399,6 +390,7 @@ void ModuleGUI::Menu()
 void ModuleGUI::Scene() {
 	if (ImGui::Begin("Scene"))
 	{
+		isScene= ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
 		App->camera->SetAspectRatio(width / height);
@@ -472,16 +464,6 @@ void ModuleGUI::ShowDefWindow() {
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
 			ImGui::Separator();
 
-			ImGui::Checkbox("", &App->time->fpsLimit);
-
-			ImGui::SameLine();
-
-			ImGui::SliderInt("Max FPS", &App->time->maxFPS, 10, 120);
-
-			ImGui::Text("Real Time since Start : %.0f Real Time dt : %.0f", App->time->startingTime, App->time->realTimeDT);
-
-
-			ImGui::Text("Game Time since Start: %.0f Game Time dt: %.0f", App->time->time, App->time->deltaTime);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 			int fps = ImGui::GetIO().Framerate;

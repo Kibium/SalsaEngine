@@ -15,11 +15,12 @@ public:
 	 bool CleanUp();
 
 	 void SetFOV(float);
+	 void SetSpeed(float Speed);
 	 void SetAspectRatio(float);
-	 void SetPos(math::float3);
-	 void CalculateMatrixes();
 
-	 math::float4x4 LookAt(math::float3 eye, math::float3 target, math::float3 up);
+	 void CalculateMatrixes();
+	 math::float4x4 LookAt(math::float3, math::float3, math::float3) const;
+	 void LookAt(float3);
 
 	 void MoveUp();
 	 void MoveDown();
@@ -27,20 +28,22 @@ public:
 	 void MoveBackward();
 	 void MoveLeft();
 	 void MoveRight();
-	 void Rotate(float yaw, float pitch);
-	 void OrbitX(const float angle);
-	 void OrbitY(const float angle);
+	 void Rotate(const float, const float );
+	 void Orbit(const float, const float);
+	 void Focus();
 
-	 float aspectRatio;
-	 float cameraSpeed = 0.005f;
 	 Frustum frustum;
-	 float lastX;
-	 float lastY;
-	 float pitch;
-	 float yaw;
+	 float aspectRatio;
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;
+	 bool orbit;
+
+private:
+
+	float cameraSpeed = 0.1f;
+	float rotationSpeed = 0.02f;
+
 
 };
 
