@@ -44,6 +44,25 @@ void ModuleModelLoader::SwitchModel(const char *file)
 	Load(file);
 }
 
+void ModuleModelLoader::SwitchTexture(const char *file)
+{
+	vector<Texture> textures;
+	if (model) {
+		textures_loaded.clear();
+	}
+	LOG("\nNew Texture added. Loading Texture %s \n", file);
+	Texture texture;
+	texture.id = App->texture->Load((char*)file);
+	texture.type = "texture_diffuse";
+	texture.path = file;
+	textures.push_back(texture);
+	textures_loaded.push_back(texture);
+
+	for (unsigned int i = 0; i < meshes.size(); i++)
+		meshes[i].textures = textures;
+
+}
+
 void ModuleModelLoader::Load(const char* path)
 {
 	
@@ -155,8 +174,6 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 		if (!skip)
 		{   // if texture hasn't been loaded already, load it
 			Texture texture;
-			//std::string newPath = std::string("dragon2/") + std::string(str.C_Str());
-			//const char* pathing = newPath.c_str();
 			std::string newPath = directory.c_str() + string(str.C_Str());
 			const char* pathing = newPath.c_str();
 			texture.id = App->texture->Load((char*)pathing);

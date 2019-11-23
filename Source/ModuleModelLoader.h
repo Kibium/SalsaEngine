@@ -30,6 +30,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	void SwitchModel(const char*);
+	void SwitchTexture(const char * file);
 	bool model;
 	AABB modelBox;
 

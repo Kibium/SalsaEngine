@@ -22,6 +22,7 @@ public:
 public:
 	void Menu();
 	void Scene();
+	void GameObjecInfo();
 	void ShowHelp();
 	void ShowDefWindow();
 	int max_h;

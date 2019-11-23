@@ -403,8 +403,18 @@ void ModuleGUI::Scene() {
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-		//ImGui::Image((void*)(intptr_t)App->renderer->frameTex, ImVec2(512, 512));
 		
+	}
+	ImGui::End();
+}
+
+void ModuleGUI::GameObjecInfo() {
+	if (ImGui::Begin("GameObject Info"))
+	{
+		isScene = ImGui::IsWindowHovered();
+		float width = ImGui::GetWindowWidth();
+		float height = ImGui::GetWindowHeight();
+
 	}
 	ImGui::End();
 }

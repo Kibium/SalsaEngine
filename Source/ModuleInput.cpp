@@ -4,9 +4,13 @@
 #include "ModuleGUI.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleTexture.h"
 #include "ModuleModelLoader.h"
 #include "SDL.h"
 #include <assert.h>
+#include <shlwapi.h>
+#include <iostream>
+#pragma comment(lib,"shlwapi.lib")
 
 ModuleInput::ModuleInput()
 {}
@@ -76,8 +80,7 @@ update_status ModuleInput::Update()
 					
 		case SDL_DROPFILE:
 			char* newFile = sdlEvent.drop.file;
-			assert(newFile != NULL);
-			App->model->SwitchModel(newFile);
+			DroppedFile(newFile);
 			SDL_free(newFile);
 			break;
 		
@@ -125,4 +128,32 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem\n");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void ModuleInput::DroppedFile(char* file)
+{
+	if (file == NULL) {
+		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING");
+		return;
+	}
+	char* extension = PathFindExtensionA(file);
+	if (extension == ".obj" || extension == ".fbx") {
+		App->model->SwitchModel(file);
+	}
+	else if (strcmp(".fbx", extension) == 0) {
+		App->model->SwitchModel(file);
+	}
+	else if (extension == ".png" || extension == ".dds") {
+		App->texture->Load(file);
+	}
+	else if (strcmp(".png", extension) == 0) {
+		App->model->SwitchTexture(file);
+	}
+	else if (strcmp(".dds", extension) == 0) {
+		App->model->SwitchTexture(file);
+	}
+	else {
+		LOG("ERROR:: FILE FORMAT '%s'NOT ACCEPTED ", extension);
+	}
+	
 }
