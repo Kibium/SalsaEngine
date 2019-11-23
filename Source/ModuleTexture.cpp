@@ -34,7 +34,7 @@ GLuint ModuleTexture::Load(char *filename) {
 	{
 		LOG("Error loading texture. File not found \n");
 	}
-
+	ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 	ILinfo ImageInfo;
 	iluGetImageInfo(&ImageInfo);
 	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
