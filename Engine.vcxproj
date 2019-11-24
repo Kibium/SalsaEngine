@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/glm;./Libraries</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;./Libraries</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -161,6 +161,8 @@
     <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\ilu_region.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h" />
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h" />
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h" />
     <ClInclude Include="Libraries\Imgui\imconfig.h" />
     <ClInclude Include="Libraries\Imgui\imgui.h" />
     <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h" />
@@ -229,7 +231,6 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
-    <ClInclude Include="Libraries\stb_image.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />

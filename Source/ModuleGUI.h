@@ -23,12 +23,14 @@ public:
 	void Scene();
 	void GameObjecInfo();
 	void ShowHelp();
+	void ShowAbout();
 	void ShowDefWindow();
 	int max_h;
 	int min_h;
 	int max_w;
 	int min_w;
 	std::vector<float> frames;
+	bool showAboutWindow;
 	bool showHelpWindow;
 	bool showAppWindow;
 	bool showScene;

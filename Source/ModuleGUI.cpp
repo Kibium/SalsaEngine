@@ -7,6 +7,8 @@
 #include "ModuleModelLoader.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include "IconsMaterialDesignIcons.h"
+#include "IconsFontAwesome5.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -45,10 +47,18 @@ bool ModuleGUI::Init()
 	SDL_GetWindowMaximumSize(App->window->window, &max_w, &max_h);
 	SDL_GetWindowMinimumSize(App->window->window, &min_w, &min_h);
 
+	io.Fonts->AddFontDefault();
+
+	// merge in icons
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
+	io.Fonts->AddFontFromFileTTF("Fonts/" FONT_ICON_FILE_NAME_FAS, 14.0f, &icons_config, icons_ranges);
+
 	showScene = true;
 	showAppWindow = true;
 	showHelpWindow = false;
 	showInspector = true;
+	showAboutWindow = false;
 
 	return true;
 }
@@ -74,8 +84,10 @@ update_status ModuleGUI::Update()
 		Scene();
 	if (showInspector)
 		GameObjecInfo();
+	if (showAboutWindow)
+		ShowAbout();
 
-	ShowConsole("Console");
+	ShowConsole(ICON_FA_TERMINAL " Console");
 
 	return UPDATE_CONTINUE;
 }
@@ -224,12 +236,17 @@ void ModuleGUI::MainMenu() {
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Help"))
+		if (ImGui::BeginMenu("About"))
 		{
 			ImGui::MenuItem(("Help"), (const char*)0, &showHelpWindow);
-
+			ImGui::MenuItem(("About Salsa"), (const char*)0, &showAboutWindow);
+			if (ImGui::MenuItem(ICON_FA_JEDI" Repository"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/JorxSS/SalsaEngine", NULL, NULL, SW_SHOWNORMAL);
+			}
 			ImGui::EndMenu();
 		}
+
 
 	}
 	ImGui::EndMainMenuBar();
@@ -237,7 +254,7 @@ void ModuleGUI::MainMenu() {
 }
 
 void ModuleGUI::Scene() {
-	if (ImGui::Begin("Scene"))
+	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
 		isScene= ImGui::IsWindowFocused();
 		float width = ImGui::GetWindowWidth();
@@ -258,12 +275,12 @@ void ModuleGUI::Scene() {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin("Inspector"))
+	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector"))
 	{
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
-		if (ImGui::CollapsingHeader("Transform")) {
+		if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
 			float3 position = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
 			float3 rotation = float3::zero;
 			float3 scale = float3::one;
@@ -272,7 +289,7 @@ void ModuleGUI::GameObjecInfo() {
 			ImGui::InputFloat3("Scale", &scale[0], 3, ImGuiInputTextFlags_ReadOnly);
 
 		}
-		if (ImGui::CollapsingHeader("Geometry")) {
+		if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
 			ImGui::InputInt("Mesh", &App->model->nmeshes , 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
@@ -281,7 +298,7 @@ void ModuleGUI::GameObjecInfo() {
 			App->renderer->SetWireframe(wireframe);
 
 		}
-		if (ImGui::CollapsingHeader("Texture")) {
+		if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
 
 			if (ImGui::TreeNode("Texture's list"))
 			{
@@ -339,31 +356,34 @@ void ModuleGUI::GameObjecInfo() {
 }
 void ModuleGUI::ShowHelp() {
 	bool* p_open = NULL;
-	if (ImGui::Begin("HELP", p_open))
+	if (ImGui::Begin("Help", p_open))
 	{
-		if (ImGui::CollapsingHeader("Help"))
-		{
-			ImGui::Text("PROGRAMMER GUIDE:");
-			ImGui::BulletText("Please see the comments in imgui.cpp.");
-			ImGui::BulletText("Please see the examples/ application.");
-			ImGui::Separator();
 
-			ImGui::Text("USER GUIDE:");
-			ImGui::ShowUserGuide();
-		}
+		ImGui::Text("PROGRAMMER GUIDE:");
+		ImGui::BulletText("Please see the comments in imgui.cpp.");
+		ImGui::BulletText("Please see the examples/ application.");
+		ImGui::Separator();
 
-		if (ImGui::CollapsingHeader("About..")) {
+		ImGui::Text("USER GUIDE:");
+		ImGui::ShowUserGuide();
+		
 
-			ImGui::Text("SALSA ENGINE 0.1");
-			ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona");
-			ImGui::Text("Authors:  "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Jordi Sauras Salas");
-			ImGui::Text("Libraries Used: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI");
-			ImGui::Text("License: "); ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "TO DO");
+	}
+	ImGui::End();
+}
+void ModuleGUI::ShowAbout() {
+	bool* p_open = NULL;
+	if (ImGui::Begin("About", p_open))
+	{
 
-		}
+		ImGui::Text("SALSA ENGINE 0.1");
+		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona");
+		ImGui::Text("Authors:  "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Jordi Sauras Salas");
+		ImGui::Text("Libraries Used: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI, DeViL, Assimp, IconsFontCppHeaders, FontsAwesome");
+		ImGui::Text("License: "); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "MIT");
 
 	}
 	ImGui::End();
@@ -381,13 +401,13 @@ void ModuleGUI::ShowDefWindow() {
 	static int screen_h = 0;
 	SDL_GetWindowSize(App->window->window, &screen_w, &screen_h);
 	bool* p_open = NULL;
-	if (ImGui::Begin("Info Window", p_open))
+	if (ImGui::Begin(ICON_FA_COG " Configuration", p_open))
 	{
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
 		ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 		ImGui::Spacing();
-		if (ImGui::CollapsingHeader("Application"))
+		if (ImGui::CollapsingHeader(ICON_FA_TABLET_ALT " Application"))
 		{
 			ImGui::Text("Engine Version: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
@@ -413,7 +433,7 @@ void ModuleGUI::ShowDefWindow() {
 			sprintf_s(title, 25, "Framerate: %d", fps);
 			ImGui::PlotHistogram("##framerate", &frames[0], frames.size(), 0, title, 0.0f, 1000.0f, ImVec2(310, 100));
 		}
-		if (ImGui::CollapsingHeader("Window")) {
+		if (ImGui::CollapsingHeader(ICON_FA_WINDOW_RESTORE " Window")) {
 
 			if (ImGui::SliderFloat("Brightness", &display_brightness, 0, 1.00f))
 				App->window->SetWindowBrightness(display_brightness);
@@ -433,7 +453,7 @@ void ModuleGUI::ShowDefWindow() {
 				App->window->SetFullDesktop(fsdesktop);
 
 		}
-		if (ImGui::CollapsingHeader("Hardware")) {
+		if (ImGui::CollapsingHeader(ICON_FA_MICROCHIP" Hardware")) {
 			SDL_version compiled;
 			SDL_GetVersion(&compiled);
 			ImGui::Text("SDL VERSION: "); ImGui::SameLine();
@@ -470,7 +490,7 @@ void ModuleGUI::ShowDefWindow() {
 
 
 		}
-		if (ImGui::CollapsingHeader("Camera"))
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera"))
 		{
 			ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);

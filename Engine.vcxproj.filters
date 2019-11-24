@@ -423,9 +423,6 @@
     <ClInclude Include="Source\Mesh.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\stb_image.h">
-      <Filter>Addons</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
       <Filter>Addons\Assimp</Filter>
     </ClInclude>
@@ -657,6 +654,12 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pushpack1.h">
       <Filter>Addons\Assimp</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h">
+      <Filter>Addons\IconFontsCppHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h">
+      <Filter>Addons\IconFontsCppHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -682,6 +685,9 @@
     </Filter>
     <Filter Include="Addons\ImGUI">
       <UniqueIdentifier>{c2ca4474-0194-4b38-8b03-8ba3f30956ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Addons\IconFontsCppHeaders">
+      <UniqueIdentifier>{022e0de6-85b6-49b6-943c-8126d2ff24b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
