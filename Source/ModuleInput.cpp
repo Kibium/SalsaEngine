@@ -133,7 +133,7 @@ bool ModuleInput::CleanUp()
 void ModuleInput::DroppedFile(char* file)
 {
 	if (file == NULL) {
-		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING");
+		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");
 		return;
 	}
 	char* extension = PathFindExtensionA(file);
@@ -156,7 +156,7 @@ void ModuleInput::DroppedFile(char* file)
 		App->model->SwitchTexture(file);
 	}
 	else {
-		LOG("ERROR:: FILE FORMAT '%s'NOT ACCEPTED ", extension);
+		LOG("ERROR:: FILE FORMAT '%s' NOT ACCEPTED\n ", extension);
 	}
 	
 }

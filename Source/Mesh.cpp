@@ -2,12 +2,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleCamera.h"
-
 #include "ModuleShader.h"
+
 #include <glew.h>
-#include <Importer.hpp>
-#include <postprocess.h>
-#include <scene.h>
+
 
 
 

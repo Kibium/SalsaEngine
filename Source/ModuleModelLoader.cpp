@@ -21,7 +21,7 @@ void ModuleModelLoader::Draw()
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
-	Load("baker/BakerHouse.fbx");
+	Load("Models/baker/BakerHouse.fbx");
 	return true;
 }
 
@@ -66,7 +66,7 @@ void ModuleModelLoader::Load(const char* path)
 	
 	// read file via ASSIMP
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcessPreset_TargetRealtime_MaxQuality );
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality );
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
@@ -91,11 +91,13 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(processMesh(mesh, scene));
 	}
+	
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
 		processNode(node->mChildren[i], scene);
 	}
+	App->camera->Focus();
 }
 
 Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
@@ -146,7 +148,6 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 4. height maps
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
 	// return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures);
 }

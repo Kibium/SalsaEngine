@@ -18,57 +18,7 @@ ModuleShader::~ModuleShader()
 
 bool ModuleShader::Init()
 {
-	/*const char *vertexShader = readShader("default.vs");
-	const char *fragmentShader = readShader("default.fs");
-	int comp;
-	char  info[512];
-	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-	if (vertex == 0) {
-		LOG("ERROR CREATING VERTEX \n");
-	}
-	glShaderSource(vertex, 1, &vertexShader, NULL);
-	glCompileShader(vertex);
-	glGetShaderiv(vertex, GL_COMPILE_STATUS, &comp);
-	if (!comp) {
-		glGetShaderInfoLog(vertex, 512, NULL, info);
-		LOG("Error compiling vertex shader\n");
-		LOG(info);
-	}
-	else {
-		LOG("Vector Shader created succesfully \n");
-	}
-	GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	if (fragment == 0) {
-		LOG("ERROR CREATING FRAGMENT\n");
-	}
-	glShaderSource(fragment, 1, &fragmentShader, NULL);
-	glCompileShader(fragment);
 
-	glGetShaderiv(fragment, GL_COMPILE_STATUS, &comp);
-	if (!comp) {
-		glGetShaderInfoLog(fragment, 512, NULL, info);
-		LOG("Error compiling fragment shader\n");
-		LOG(info);
-	}
-	else {
-		LOG("Fragment Shader created succesfully \n");
-	}
-	def_program = glCreateProgram();
-	glAttachShader(def_program, vertex);
-	glAttachShader(def_program, fragment);
-	glLinkProgram(def_program);
-	glGetProgramiv(def_program, GL_LINK_STATUS, &comp);
-	if (!comp) {
-		glGetProgramInfoLog(def_program, 512, NULL, info);
-		LOG("Error linking shader program");
-		LOG(info);
-	}
-	else {
-		LOG("Program Shader created succesfully \n");
-	}
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);*/
-	// 1. retrieve the vertex/fragment source code from filePath
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
@@ -79,8 +29,8 @@ bool ModuleShader::Init()
 	try
 	{
 		// open files
-		vShaderFile.open("./shaders/default.vs");
-		fShaderFile.open("./shaders/default.fs");
+		vShaderFile.open("./Shaders/default.vs");
+		fShaderFile.open("./Shaders/default.fs");
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();

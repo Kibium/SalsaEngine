@@ -32,7 +32,7 @@ GLuint ModuleTexture::Load(char *filename) {
 	error = ilGetError();
 	if (error == IL_COULD_NOT_OPEN_FILE)
 	{
-		LOG("Error loading texture. File not found \n");
+		LOG("ERROR:: Loading texture. File not found \n");
 	}
 	ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 	ILinfo ImageInfo;
