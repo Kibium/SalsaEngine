@@ -186,10 +186,26 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 			std::string newPath = directory.c_str() + string(str.C_Str());
 			const char* pathing = newPath.c_str();
 			texture.id = App->texture->Load((char*)pathing);
+			if (!App->texture->loaded) {
+				LOG("Loading Texture from model's directory\n");
+				std::string filename = directory.c_str() + GetFilename(str.C_Str()) ;
+				const char* file = filename.c_str();
+				texture.id = App->texture->Load((char*)file);
+				texture.path = file;
+				if (!App->texture->loaded) {
+					LOG("Loading Texture from Textures directory\n");
+					string fromFolder = "./Textures/" + GetFilename(str.C_Str());
+					const char* folder = filename.c_str();
+					texture.id = App->texture->Load((char*)folder);
+					texture.path = folder;
+				}
+			}
+			else {
+				texture.path = str.C_Str();
+			}
 			texture.type = typeName;
-			texture.path = str.C_Str();
 			textures.push_back(texture);
-			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesary load duplicate textures.
 		}
 	}//
 	return textures;
@@ -202,4 +218,17 @@ string ModuleModelLoader::GetModelDirectory(const char *path)
 	std::string modelDir = dir.substr(0, currentDir + 1);
 
 	return modelDir;
+}
+string ModuleModelLoader::GetFilename(const char *path)
+{
+	std::string dir = std::string(path);
+
+	std::size_t currentDir = dir.find_last_of("/\\");
+	std::string filename = dir.substr(currentDir+1);
+
+	return filename;
+}
+void ModuleModelLoader::RenderAABB()
+{
+
 }

@@ -14,7 +14,7 @@ bool ModuleTexture::Init() {
 	ilInit();
 	iluInit();
 	ilutInit();
-
+	loaded = false;
 	return true;
 }
 
@@ -35,6 +35,12 @@ GLuint ModuleTexture::Load(char *filename) {
 	if (error == IL_COULD_NOT_OPEN_FILE)
 	{
 		LOG("ERROR:: Loading texture. File not found \n");
+		loaded = false;
+		//texture = Load(filename);
+		//return texture;
+	}
+	else {
+		loaded = true;
 	}
 	ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 	ILinfo ImageInfo;

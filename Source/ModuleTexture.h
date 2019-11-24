@@ -17,6 +17,7 @@ public:
 
 public:
 	GLuint Load(char *filename);
+	bool loaded;
 
 };
 

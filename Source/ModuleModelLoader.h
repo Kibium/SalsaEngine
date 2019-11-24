@@ -32,6 +32,8 @@ public:
 	bool CleanUp();
 	void SwitchModel(const char*);
 	void SwitchTexture(const char * file);
+	void RenderAABB();
+
 	bool model;
 	AABB modelBox;
 	int npolys;
@@ -45,6 +47,10 @@ private:
 	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
 
 	string GetModelDirectory(const char * path);
+
+	string GetFilename(const char * path);
+
+
 
 
 };
