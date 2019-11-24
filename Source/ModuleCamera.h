@@ -3,6 +3,9 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 
+#define CAMERA_SPEED 0.1f
+#define ROTATION_SPEED 0.02f
+
 class ModuleCamera : public Module
 {
 public:
@@ -15,7 +18,9 @@ public:
 	 bool CleanUp();
 
 	 void SetFOV(float);
-	 void SetSpeed(float Speed);
+	 void SetSpeeding();
+	 void SetSpeed(float);
+	 void SetRotationSpeed(float);
 	 void SetAspectRatio(float);
 
 	 void CalculateMatrixes();
@@ -38,11 +43,10 @@ public:
 	 math::float4x4 view;
 	 math::float4x4 proj;
 	 bool orbit;
+	 bool speeding;
+	 float cameraSpeed;
+	 float rotationSpeed;
 
-private:
-
-	float cameraSpeed = 0.1f;
-	float rotationSpeed = 0.02f;
 
 
 };

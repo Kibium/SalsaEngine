@@ -107,7 +107,7 @@ bool ModuleInput::Init()
 	devilMap[".sgi"] = 69;
 	devilMap[".tga"] = 70;
 	devilMap[".tif"] = 71;
-
+	
 	return ret;
 }
 
@@ -143,11 +143,23 @@ update_status ModuleInput::Update()
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
 				App->camera->orbit = true;
 			}
+			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				if (!App->camera->speeding) {
+					App->camera->SetSpeeding();
+					App->camera->SetSpeed(App->camera->cameraSpeed + App->camera->cameraSpeed);
+					App->camera->SetRotationSpeed(App->camera->rotationSpeed + App->camera->rotationSpeed);	
+				}
+			}
 			break;
 		case SDL_KEYUP:
 
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
 				App->camera->orbit = false;
+			}
+			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				App->camera->SetSpeed(CAMERA_SPEED);
+				App->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->camera->SetSpeeding();
 			}
 			break;
 
@@ -170,16 +182,16 @@ update_status ModuleInput::Update()
 	}
 
 	if (keyboard[SDL_SCANCODE_LEFT] && App->gui->isScene)
-		App->camera->Rotate(0.01, 0);
+		App->camera->Rotate(0.5, 0);
 
 	if (keyboard[SDL_SCANCODE_RIGHT] && App->gui->isScene)
-		App->camera->Rotate(-0.01, 0);
+		App->camera->Rotate(-0.5, 0);
 
 	if (keyboard[SDL_SCANCODE_UP] && App->gui->isScene)
-		App->camera->Rotate(0, 0.01);
+		App->camera->Rotate(0, 0.5);
 
 	if (keyboard[SDL_SCANCODE_DOWN] && App->gui->isScene)
-		App->camera->Rotate(0, -0.01);
+		App->camera->Rotate(0, -0.5);
 
 	if (keyboard[SDL_SCANCODE_Q] && App->gui->isScene)
 		App->camera->MoveUp();

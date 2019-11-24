@@ -37,6 +37,7 @@ bool ModuleGUI::Init()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigWindowsMoveFromTitleBarOnly = TRUE;
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
@@ -487,12 +488,27 @@ void ModuleGUI::ShowDefWindow() {
 			{
 				App->camera->SetFOV(App->camera->frustum.horizontalFov);
 			}
-
 			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
 			{
 				App->camera->SetAspectRatio(App->camera->aspectRatio);
 			}
-
+			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
+			{
+				App->camera->SetSpeed(App->camera->cameraSpeed);
+			}
+			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
+			{
+				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
+			}
+			static int clicked = 0;
+			if (ImGui::Button("Reset Camera"))
+				clicked++;
+			if (clicked & 1)
+			{
+				App->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->camera->SetSpeed(CAMERA_SPEED);
+				clicked = 0;
+			}
 		}
 
 	}

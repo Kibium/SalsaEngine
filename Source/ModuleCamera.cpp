@@ -19,6 +19,9 @@ bool ModuleCamera::Init() {
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	aspectRatio = width / height;
 	orbit = false;
+	speeding = false;
+	cameraSpeed = CAMERA_SPEED;
+	rotationSpeed = ROTATION_SPEED;
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::unitX;
 	frustum.front = -float3::unitZ;
@@ -54,8 +57,15 @@ void ModuleCamera::SetFOV(float verticalFOV) {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	CalculateMatrixes();
 }
+void ModuleCamera::SetSpeeding() {
+	speeding != speeding;
+}
+
 void ModuleCamera::SetSpeed(float Speed) {
 	cameraSpeed = Speed;
+}
+void ModuleCamera::SetRotationSpeed(float Speed) {
+	rotationSpeed = Speed;
 
 }
 void ModuleCamera::SetAspectRatio(float aspectRatio) {
