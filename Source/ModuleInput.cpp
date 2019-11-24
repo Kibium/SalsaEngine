@@ -29,6 +29,84 @@ bool ModuleInput::Init()
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	//ASSIMP SUPPORTED FORMATS
+	//COMMON INTERCHANGE FORMATS
+	assimpMap[".fbx"] = 1;
+	assimpMap[".obj"] = 2;
+	assimpMap[".dae"] = 3;
+	assimpMap[".gtlf"] = 4;
+	assimpMap[".glb"] = 5;
+	assimpMap[".blend"] = 6;
+	assimpMap[".3ds"] = 7;
+	assimpMap[".ase"] = 8;
+	assimpMap[".ifc"] = 9;
+	assimpMap[".xgl"] = 10;
+	assimpMap[".zgl"] = 11;
+	assimpMap[".ply"] = 12;
+	assimpMap[".dxf"] = 13;
+	assimpMap[".lwo"] = 14;
+	assimpMap[".lws"] = 15;
+	assimpMap[".lxo"] = 16;
+	assimpMap[".stl"] = 17;
+	assimpMap[".x"] = 18;
+	assimpMap[".ac"] = 19;
+	assimpMap[".ms3d"] = 20;
+	assimpMap[".cob"] = 21;
+	assimpMap[".scn"] = 22;
+	//ASSIMP MOTION CAPTURE FORMATS
+	assimpMap[".bvh"] = 23;
+	assimpMap[".csm"] = 24;
+	//GRAPHICS ENGINE FORMATS
+	assimpMap[".xml"] = 25;
+	assimpMap[".irrmesh"] = 26;
+	assimpMap[".irr"] = 27;
+	//GAME FILE FORMATS
+	assimpMap[".mdl"] = 28;
+	assimpMap[".mdl2"] = 29;
+	assimpMap[".md3"] = 30;
+	assimpMap[".pk3"] = 31;
+	assimpMap[".mdc"] = 32;
+	assimpMap[".md5"] = 33;
+	assimpMap[".smd"] = 34;
+	assimpMap[".vta"] = 35;
+	assimpMap[".ogex"] = 36;
+	assimpMap[".3d"] = 37;
+	//OTHER FILE FORMATS
+	assimpMap[".b3d"] = 38;
+	assimpMap[".q3d"] = 39;
+	assimpMap[".q3s"] = 40;
+	assimpMap[".nff"] = 41;
+	assimpMap[".off"] = 42;
+	assimpMap[".raw"] = 43;
+	assimpMap[".ter"] = 44;
+	assimpMap[".hmp"] = 45;
+	assimpMap[".ndo"] = 46;
+	//DEVIL SUPPORTED FORMATS
+	devilMap[".bmp"] = 47;
+	devilMap[".cut"] = 48;
+	devilMap[".dds"] = 49;
+	devilMap[".doom"] = 50;
+	devilMap[".exr"] = 51;
+	devilMap[".hdr"] = 52;
+	devilMap[".gif"] = 53;
+	devilMap[".ico"] = 54;
+	devilMap[".jp2"] = 55;
+	devilMap[".jpg"] = 56;
+	devilMap[".lbm"] = 57;
+	devilMap[".mng"] = 58;
+	devilMap[".pal"] = 59;
+	devilMap[".pbm"] = 60;
+	devilMap[".pcd"] = 61;
+	devilMap[".pcx"] = 62;
+	devilMap[".pgm"] = 63;
+	devilMap[".pic"] = 64;
+	devilMap[".png"] = 65;
+	devilMap[".ppm"] = 66;
+	devilMap[".psd"] = 67;
+	devilMap[".psp"] = 68;
+	devilMap[".sgi"] = 69;
+	devilMap[".tga"] = 70;
+	devilMap[".tif"] = 71;
 
 	return ret;
 }
@@ -53,10 +131,10 @@ update_status ModuleInput::Update()
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			break;
 		case SDL_MOUSEWHEEL:
-			if (sdlEvent.wheel.y > 0)
+			if (sdlEvent.wheel.y > 0 && App->gui->isScene)
 				App->camera->MoveFoward();
 			
-			else if (sdlEvent.wheel.y < 0)
+			else if (sdlEvent.wheel.y < 0 && App->gui->isScene)
 				App->camera->MoveBackward();
 
 			break;
@@ -91,37 +169,37 @@ update_status ModuleInput::Update()
 		}
 	}
 
-	if (keyboard[SDL_SCANCODE_LEFT])
+	if (keyboard[SDL_SCANCODE_LEFT] && App->gui->isScene)
 		App->camera->Rotate(0.01, 0);
 
-	if (keyboard[SDL_SCANCODE_RIGHT])
+	if (keyboard[SDL_SCANCODE_RIGHT] && App->gui->isScene)
 		App->camera->Rotate(-0.01, 0);
 
-	if (keyboard[SDL_SCANCODE_UP])
+	if (keyboard[SDL_SCANCODE_UP] && App->gui->isScene)
 		App->camera->Rotate(0, 0.01);
 
-	if (keyboard[SDL_SCANCODE_DOWN])
+	if (keyboard[SDL_SCANCODE_DOWN] && App->gui->isScene)
 		App->camera->Rotate(0, -0.01);
 
-	if (keyboard[SDL_SCANCODE_Q])
+	if (keyboard[SDL_SCANCODE_Q] && App->gui->isScene)
 		App->camera->MoveUp();
 
-	if (keyboard[SDL_SCANCODE_E])
+	if (keyboard[SDL_SCANCODE_E] && App->gui->isScene)
 		App->camera->MoveDown();
 
-	if (keyboard[SDL_SCANCODE_W])
+	if (keyboard[SDL_SCANCODE_W] && App->gui->isScene)
 		App->camera->MoveFoward();
 
-	if (keyboard[SDL_SCANCODE_S])
+	if (keyboard[SDL_SCANCODE_S] && App->gui->isScene)
 		App->camera->MoveBackward();
 
-	if (keyboard[SDL_SCANCODE_A])
+	if (keyboard[SDL_SCANCODE_A] && App->gui->isScene)
 		App->camera->MoveLeft();
 
-	if (keyboard[SDL_SCANCODE_D])
+	if (keyboard[SDL_SCANCODE_D] && App->gui->isScene)
 		App->camera->MoveRight();
 
-	if (keyboard[SDL_SCANCODE_F])
+	if (keyboard[SDL_SCANCODE_F] && App->gui->isScene)
 		App->camera->Focus();
 
 	return UPDATE_CONTINUE;
@@ -141,22 +219,13 @@ void ModuleInput::DroppedFile(char* file)
 		return;
 	}
 	char* extension = PathFindExtensionA(file);
-	if (strcmp(".obj", extension) == 0) {
+	if (assimpMap.find(extension) != assimpMap.end()) {
+
+		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
 		App->model->SwitchModel(file);
 	}
-	else if (strcmp(".fbx", extension) == 0) {
-		App->model->SwitchModel(file);
-	}
-	else if (extension == ".png" || extension == ".dds") {
-		App->texture->Load(file);
-	}
-	else if (strcmp(".png", extension) == 0) {
-		App->model->SwitchTexture(file);
-	}
-	else if (strcmp(".dds", extension) == 0) {
-		App->model->SwitchTexture(file);
-	}
-	else if (strcmp(".tga", extension) == 0) {
+	else if (devilMap.find(extension) != devilMap.end()) {
+		LOG("TEXTURE FILE FORMAT '%s' ACCEPTED\n ", extension);
 		App->model->SwitchTexture(file);
 	}
 	else {

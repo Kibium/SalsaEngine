@@ -1,6 +1,11 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include <iostream>
+#include <map>
+#include <string>
+#include <iterator>
+
 
 typedef unsigned __int8 Uint8;
 
@@ -17,5 +22,7 @@ public:
 	void DroppedFile(char *);
 
 private:
+	std::map<std::string, int> assimpMap;
+	std::map<std::string, int> devilMap;
 	const Uint8 *keyboard = NULL;
 };
