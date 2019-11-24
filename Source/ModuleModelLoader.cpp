@@ -3,10 +3,11 @@
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
-
+#include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
+using namespace Assimp;
 
 ModuleModelLoader::ModuleModelLoader() {
 }
@@ -21,6 +22,9 @@ void ModuleModelLoader::Draw()
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
+	DefaultLogger::create("", Logger::VERBOSE);
+	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
+	DefaultLogger::get()->attachStream(new myStream(), severity);
 	nmeshes = 0;
 	npolys = 0;
 	nvertex = 0;
@@ -69,7 +73,7 @@ void ModuleModelLoader::SwitchTexture(const char *file)
 
 void ModuleModelLoader::Load(const char* path)
 {
-	
+
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality );
@@ -85,6 +89,8 @@ void ModuleModelLoader::Load(const char* path)
 	processNode(scene->mRootNode, scene);
 	
 	model = true;
+	DefaultLogger::kill();
+
 }
 
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
@@ -194,8 +200,8 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 				texture.path = file;
 				if (!App->texture->loaded) {
 					LOG("Loading Texture from Textures directory\n");
-					string fromFolder = "./Textures/" + GetFilename(str.C_Str());
-					const char* folder = filename.c_str();
+					string fromFolder = "Models/Textures/" + GetFilename(str.C_Str());
+					const char* folder = fromFolder.c_str();
 					texture.id = App->texture->Load((char*)folder);
 					texture.path = folder;
 				}

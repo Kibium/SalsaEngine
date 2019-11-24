@@ -4,18 +4,22 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <map>
-#include <vector>
+#include "assimp/Logger.hpp"
+#include "assimp/LogStream.hpp"
 #include "MathGeoLib.h"
 #include "Geometry/AABB.h"
 
 using namespace std;
-
+class myStream : public Assimp::LogStream
+{
+public:
+	myStream(){}
+	~myStream(){}
+	void write(const char* message)
+	{
+		LOG("ASSIMP:: %s\n", message);
+	}
+};
 class ModuleModelLoader : public Module {
 public:
 

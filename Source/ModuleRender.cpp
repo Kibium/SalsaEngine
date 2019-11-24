@@ -91,7 +91,7 @@ void ModuleRender::DrawScene(float width, float height) {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameTex, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		LOG("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+		LOG("OPENGL::ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -106,7 +106,7 @@ void ModuleRender::DrawScene(float width, float height) {
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 	App->model->Draw();
-	// Unbind frame buffer
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

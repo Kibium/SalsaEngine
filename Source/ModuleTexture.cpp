@@ -34,10 +34,8 @@ GLuint ModuleTexture::Load(char *filename) {
 	error = ilGetError();
 	if (error == IL_COULD_NOT_OPEN_FILE)
 	{
-		LOG("ERROR:: Loading texture. File not found \n");
+		LOG("DEVIL::ERROR  Loading texture. File not found \n");
 		loaded = false;
-		//texture = Load(filename);
-		//return texture;
 	}
 	else {
 		loaded = true;
