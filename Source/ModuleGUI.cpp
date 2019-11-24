@@ -38,7 +38,7 @@ bool ModuleGUI::Init()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigWindowsMoveFromTitleBarOnly = TRUE;
-	ImGui::StyleColorsDark();
+	ImGui::JordiStyle();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -106,14 +106,9 @@ void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
 	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 	ImGui::Begin(title, p_opened);
 	if (ImGui::Button("Clear")) Clear();
-	ImGui::SameLine();
-	bool copy = ImGui::Button("Copy");
-	ImGui::SameLine();
-	Filter.Draw("Filter", -100.0f);
 	ImGui::Separator();
 	ImGui::BeginChild("scrolling");
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
-	if (copy) ImGui::LogToClipboard();
 
 	if (Filter.IsActive())
 	{
