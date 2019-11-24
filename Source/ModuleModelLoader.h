@@ -22,7 +22,8 @@ public:
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory;
-
+	vector<int> textureWidth;
+	vector<int> textureHeight;
 	ModuleModelLoader();
 	~ModuleModelLoader();
 
@@ -33,6 +34,9 @@ public:
 	void SwitchTexture(const char * file);
 	bool model;
 	AABB modelBox;
+	int npolys;
+	int nvertex;
+	int nmeshes;
 
 private:
 	void Load(const char*);

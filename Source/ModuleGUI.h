@@ -33,6 +33,8 @@ public:
 	bool showHelpWindow;
 	bool showAppWindow;
 	bool showScene;
+	bool showInspector;
 	bool isScene;
+	bool isInspector;
 
 };

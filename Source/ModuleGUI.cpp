@@ -3,9 +3,15 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleModelLoader.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
-
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <map>
+#include <vector>
 
 
 
@@ -37,9 +43,10 @@ bool ModuleGUI::Init()
 	SDL_GetWindowMaximumSize(App->window->window, &max_w, &max_h);
 	SDL_GetWindowMinimumSize(App->window->window, &min_w, &min_h);
 
-	showScene = false;
-	showAppWindow = false;
+	showScene = true;
+	showAppWindow = true;
 	showHelpWindow = false;
+	showInspector = true;
 
 	return true;
 }
@@ -64,6 +71,8 @@ update_status ModuleGUI::Update()
 		ShowHelp();
 	if (showScene)
 		Scene();
+	if (showInspector)
+		GameObjecInfo();
 
 	ShowConsole("Console");
 
@@ -216,6 +225,7 @@ void ModuleGUI::MainMenu() {
 		{
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
+			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
@@ -409,12 +419,79 @@ void ModuleGUI::Scene() {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin("GameObject Info"))
+	if (ImGui::Begin("Inspector"))
 	{
-		isScene = ImGui::IsWindowHovered();
+		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
+		if (ImGui::CollapsingHeader("Transform")) {
+			float3 position = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+			float3 rotation = float3::zero;
+			float3 scale = float3::one;
+			ImGui::InputFloat3("Position", &position[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Rotation", &rotation[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Scale", &scale[0], 3, ImGuiInputTextFlags_ReadOnly);
 
+		}
+		if (ImGui::CollapsingHeader("Geometry")) {
+			ImGui::InputInt("Mesh", &App->model->nmeshes , 0, 0, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
+
+		}
+		if (ImGui::CollapsingHeader("Texture")) {
+
+			if (ImGui::TreeNode("Texture's list"))
+			{
+				static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+
+				static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
+				int node_clicked = -1;                // Temporary storage of what node we have clicked to process selection at the end of the loop. May be a pointer to your own node type, etc.
+				for (unsigned int i = 0; i < App->model->textures_loaded.size(); i++)
+				{
+					// Disable the default open on single-click behavior and pass in Selected flag according to our selection state.
+					ImGuiTreeNodeFlags node_flags = base_flags;
+					std::string str = App->model->textures_loaded[i].path;
+					const char *path = str.c_str();
+					const bool is_selected = (selection_mask & (1 << i)) != 0;
+					if (is_selected)
+						node_flags |= ImGuiTreeNodeFlags_Selected;
+					if (i < App->model->textures_loaded.size())
+					{
+						bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Texture %d", i);
+						if (ImGui::IsItemClicked())
+							node_clicked = i;
+						if (node_open)
+						{
+							ImGui::Text("Path:");
+							ImGui::SameLine();
+							ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), path);
+
+							ImGui::Text("Texture %d size:", i);
+
+							ImGui::SameLine();
+							ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d x %d", App->model->textureWidth[i], App->model->textureHeight[i]);
+
+
+							ImGui::Spacing();
+
+							ImGui::Image((void*)(intptr_t)App->model->textures_loaded[i].id, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+							ImGui::TreePop();
+						}
+					}
+				}
+				if (node_clicked != -1)
+				{
+					// Update selection state. Process outside of tree loop to avoid visual inconsistencies during the clicking-frame.
+					if (ImGui::GetIO().KeyCtrl)
+						selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
+					else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, this commented bit preserve selection when clicking on item that is part of the selection
+						selection_mask = (1 << node_clicked);           // Click to single-select
+				}
+
+				ImGui::TreePop();
+			}
+		}
 	}
 	ImGui::End();
 }

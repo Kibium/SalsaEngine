@@ -75,8 +75,12 @@ update_status ModuleInput::Update()
 
 		case SDL_MOUSEMOTION:
 			if (sdlEvent.motion.state && SDL_BUTTON_RMASK && App->gui->isScene)
-				App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+				if(App->camera->orbit)
+					App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+				else
+					App->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 			break;
+
 					
 		case SDL_DROPFILE:
 			char* newFile = sdlEvent.drop.file;

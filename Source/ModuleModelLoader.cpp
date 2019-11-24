@@ -21,6 +21,9 @@ void ModuleModelLoader::Draw()
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
+	nmeshes = 0;
+	npolys = 0;
+	nvertex = 0;
 	Load("Models/baker/BakerHouse.fbx");
 	return true;
 }
@@ -36,6 +39,9 @@ void ModuleModelLoader::SwitchModel(const char *file)
 		textures_loaded.clear();
 		meshes.clear();
 		directory.clear();
+		nmeshes = 0;
+		npolys = 0;
+		nvertex = 0;
 		model = false;
 	}
 	LOG("\nNew model added. Loading Model %s \n", file);
@@ -90,6 +96,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(processMesh(mesh, scene));
+		nmeshes += 1;
 	}
 	
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
@@ -127,6 +134,9 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
+	npolys += mesh->mNumFaces;
+	nvertex += indices.size();
+
 	// process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named

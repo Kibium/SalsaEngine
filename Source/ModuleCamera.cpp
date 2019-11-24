@@ -134,14 +134,14 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 
 	if (xpos != 0.0f)
 	{
-		float3x3 rotationY = float3x3::RotateY(xpos);
+		float3x3 rotationY = float3x3::RotateY(xpos * rotationSpeed);
 		frustum.front = rotationY.Transform(frustum.front).Normalized();
 		frustum.up = rotationY.Transform(frustum.up).Normalized();
 	}
 
 	if (ypos != 0.0f)
 	{
-		float3x3 rotationX = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos);
+		float3x3 rotationX = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
 		frustum.up = rotationX.Transform(frustum.up).Normalized();
 		frustum.front = rotationX.Transform(frustum.front).Normalized();
 	}
