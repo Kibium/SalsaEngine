@@ -1,4 +1,5 @@
 #include "ModuleGUI.h"
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
@@ -62,8 +63,7 @@ update_status ModuleGUI::PreUpdate()
 
 update_status ModuleGUI::Update()
 {
-	//ImGui::ShowDemoWindow();
-	//Menu();
+
 	MainMenu();
 	if (showAppWindow)
 		ShowDefWindow();
@@ -239,168 +239,11 @@ void ModuleGUI::MainMenu() {
 	ImGui::EndMainMenuBar();
 
 }
-void ModuleGUI::Menu()
-{
-	bool* p_open = NULL;
-	static bool fullscreen = false;
-	static bool borderless = false;
-	static bool resizable = false;
-	static bool fsdesktop = false;
 
-	static float display_brightness = SDL_GetWindowBrightness(App->window->window);
-	static int screen_w = 0;
-	static int screen_h = 0;
-	SDL_GetWindowSize(App->window->window, &screen_w, &screen_h);
-
-	if (!ImGui::Begin("SALSA Engine 0.1", p_open))
-	{
-		// Early out if the window is collapsed, as an optimization.
-		ImGui::End();
-		return;
-	}
-
-	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
-	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
-	ImGui::Text("SALSA Engine with IMGUI. (%s)", IMGUI_VERSION);
-	ImGui::Spacing();
-
-
-
-	if (ImGui::CollapsingHeader("Help"))
-	{
-		ImGui::Text("PROGRAMMER GUIDE:");
-		ImGui::BulletText("Please see the comments in imgui.cpp.");
-		ImGui::BulletText("Please see the examples/ application.");
-		ImGui::Separator();
-
-		ImGui::Text("USER GUIDE:");
-		ImGui::ShowUserGuide();
-	}
-	if (ImGui::CollapsingHeader("Application"))
-	{
-		ImGui::Text("Engine Version: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
-		ImGui::Separator();
-
-
-		ImGui::SameLine();
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-		int fps = ImGui::GetIO().Framerate;
-		//Get frames
-		if (frames.size() > 120) //Max seconds to show
-		{
-			for (size_t i = 1; i < frames.size(); i++)
-			{
-				frames[i - 1] = frames[i];
-			}
-			frames[frames.size() - 1] = fps;
-		}
-		else
-		{
-			frames.push_back(fps);
-		}
-		char title[25];
-		sprintf_s(title, 25, "Framerate: %d", fps);
-		ImGui::PlotHistogram("##framerate", &frames[0], frames.size(), 0, title, 0.0f, 1000.0f, ImVec2(310, 100));
-	}
-	if (ImGui::CollapsingHeader("Window")) {
-
-		if (ImGui::SliderFloat("Brightness", &display_brightness, 0, 1.00f))
-			App->window->SetWindowBrightness(display_brightness);
-		if (ImGui::SliderInt("Width", &screen_w, 640, 1024))
-			App->window->SetWindowSize(screen_w, screen_h);
-		if (ImGui::SliderInt("Height", &screen_h, 480, 720))
-			App->window->SetWindowSize(screen_w, screen_h);
-		if (ImGui::Checkbox("Fullscreen", &fullscreen))
-			App->window->SetFullscreen(fullscreen);
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Resizable", &resizable))
-			App->window->SetResizable(resizable);
-		if (ImGui::Checkbox("Borderless", &borderless))
-			App->window->SetBorderless(borderless);
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Full Desktop", &fsdesktop))
-			App->window->SetFullDesktop(fsdesktop);
-
-	}
-	if (ImGui::CollapsingHeader("Hardware")) {
-		SDL_version compiled;
-		SDL_GetVersion(&compiled);
-		ImGui::Text("SDL VERSION: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d. %d. %d ", compiled.major, compiled.minor, compiled.patch);
-		ImGui::Text("CPU: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d (Cache: %d kb) ", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
-		ImGui::Text("System RAM: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d GB", SDL_GetSystemRAM() / 1000);
-		ImGui::Separator();
-		char* vendor = (char*)glGetString(GL_VENDOR);
-		char* card = (char*)glGetString(GL_RENDERER);
-		char* ver = (char*)glGetString(GL_VERSION);
-		ImGui::Text("GPU: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), card);
-		ImGui::Text("Brand: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), vendor);
-		ImGui::Text("Version: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), ver);
-		GLint dedicatedMB = 0;
-		GLint totalMB = 0;
-		GLint currentMB = 0;
-		//TODO STRING COMPARE IF NVIDIA OR AMD
-		glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicatedMB);
-		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &totalMB);
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &currentMB);
-		ImGui::Text("VRAM:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f MB", (float)dedicatedMB / 1000);
-		ImGui::Text("VRAM Budget:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f MB", (float)totalMB / 1000);
-		ImGui::Text("VRAM Usage:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f MB", ((float)totalMB / 1000) - ((float)currentMB / 1000));
-		ImGui::Text("VRAM Available:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f MB", (float)currentMB / 1000);
-
-
-	}
-	if (ImGui::CollapsingHeader("Camera"))
-	{
-		ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
-		ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
-		ImGui::InputFloat3("Position", &App->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
-
-		ImGui::Separator();
-
-
-		if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
-		{
-			App->camera->SetFOV(App->camera->frustum.horizontalFov);
-		}
-
-		if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
-		{
-			App->camera->SetAspectRatio(App->camera->aspectRatio);
-		}
-
-	}
-	if (ImGui::CollapsingHeader("About..")) {
-
-		ImGui::Text("JS ENGINE 0.1");
-		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona");
-		ImGui::Text("Authors:  "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Jordi Sauras Salas");
-		ImGui::Text("Libraries Used: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI");
-		ImGui::Text("Liscense: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "TO DO");
-
-	}
-	//AFTER BLIND PUT VECTOR TO 0... EVERY GL CREATE, WILL NEED TO END AS A GL DELETE IN THE CLEANUP
-	ImGui::End();
-}
 void ModuleGUI::Scene() {
 	if (ImGui::Begin("Scene"))
 	{
-		isScene= ImGui::IsWindowHovered();
+		isScene= ImGui::IsWindowFocused();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
 		App->camera->SetAspectRatio(width / height);
@@ -437,6 +280,9 @@ void ModuleGUI::GameObjecInfo() {
 			ImGui::InputInt("Mesh", &App->model->nmeshes , 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
+			static bool wireframe = false;
+			ImGui::Checkbox("Wireframe", &wireframe);
+			App->renderer->SetWireframe(wireframe);
 
 		}
 		if (ImGui::CollapsingHeader("Texture")) {

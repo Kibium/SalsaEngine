@@ -16,12 +16,11 @@ public:
 	update_status PreUpdate();
 	update_status Update();
 	void DrawScene(float width, float height);
-	//void DrawScene();
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
-
 	void DrawGrid();
+	void SetWireframe(const bool wireframe);
 
 public:
 	void* context;

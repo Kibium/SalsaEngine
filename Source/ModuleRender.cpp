@@ -186,3 +186,12 @@ void ModuleRender::DrawGrid() {
 	glLineWidth(1.0F);
 }
 
+void ModuleRender::SetWireframe(const bool wireframe) {
+	if (wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	
+}

@@ -20,7 +20,6 @@ public:
 	void MainMenu();
 	void Clear() { logBuffer.clear(); LineOffsets.clear(); }
 public:
-	void Menu();
 	void Scene();
 	void GameObjecInfo();
 	void ShowHelp();
