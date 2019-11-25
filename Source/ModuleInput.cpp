@@ -164,7 +164,7 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEMOTION:
-			if (sdlEvent.motion.state && SDL_BUTTON_RMASK && App->gui->isScene)
+			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
 				if(App->camera->GetOrbit())
 					App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else

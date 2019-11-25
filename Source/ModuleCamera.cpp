@@ -14,20 +14,17 @@ ModuleCamera::~ModuleCamera() {
 }
 
 bool ModuleCamera::Init() {
-	LOG("Initializing Camera\n");
+	LOG("Init Camera\n");
 	int width, height;
 	SDL_GetWindowSize(App->window->window, &width, &height);
 	aspectRatio = width / height;
-	orbit = false;
-	speeding = false;
-	cameraSpeed = CAMERA_SPEED;
-	rotationSpeed = ROTATION_SPEED;
+
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.pos = float3::unitX;
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
+	frustum.farPlaneDistance = 1000.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
@@ -156,6 +153,7 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 
 	if (ypos != 0.0f)
 	{
+		
 		float3x3 rotationX = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
 		frustum.up = rotationX.Transform(frustum.up).Normalized();
 		frustum.front = rotationX.Transform(frustum.front).Normalized();
@@ -163,7 +161,7 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 	CalculateMatrixes();
 }
 
-void ModuleCamera::Orbit(const float xpos, const float ypos)
+void ModuleCamera::Orbit(const float xpos, float ypos)
 {
 
 	if (orbit) {
@@ -174,9 +172,18 @@ void ModuleCamera::Orbit(const float xpos, const float ypos)
 			float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
 			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
 		}
+		if (lastY + ypos < MINIMUM_PITCH) {
+			ypos = 0.0f;
+			lastY = -89;
+		}
 
+		if (lastY + ypos > MAXIMUM_PITCH) {
+			ypos = 0.0f;
+			lastY = 89;
+		}
 		if (ypos != 0.0f)
 		{
+			lastY += ypos;
 			float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
 			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
 		}
@@ -198,8 +205,8 @@ void ModuleCamera::Focus()
 	frustum.front = rotationMatrix * frustum.front;
 	frustum.up = rotationMatrix * frustum.up;
 
-	frustum.farPlaneDistance = 500 * (size.Length() / 2);
+	frustum.farPlaneDistance = 1000 * (size.Length() / 2);
 	frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
-	frustum.pos.y = 0.5 * (size.Length() / 2);
+	frustum.pos.y =  (size.Length() / 4);
 	CalculateMatrixes();
 }

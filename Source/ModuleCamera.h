@@ -8,6 +8,9 @@
 #define SIZE_FACTOR 3
 #define CAMERA_SPEED 0.1f
 #define ROTATION_SPEED 0.02f
+#define MAXIMUM_PITCH 89.f
+#define MINIMUM_PITCH -89.f
+
 
 class ModuleCamera : public Module
 {
@@ -51,11 +54,13 @@ public:
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;
-	 float cameraSpeed;
-	 float rotationSpeed;
+	 float cameraSpeed = CAMERA_SPEED;
+	 float rotationSpeed = ROTATION_SPEED;
 private:
-	 bool orbit;
-	 bool speeding;
+	float lastX = 0;
+	float lastY = 0;
+	bool orbit = false;
+	bool speeding = false;
 
 
 };
