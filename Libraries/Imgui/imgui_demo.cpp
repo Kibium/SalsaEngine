@@ -155,27 +155,27 @@ static void HelpMarker(const char* desc)
 void ImGui::ShowUserGuide()
 {
     ImGuiIO& io = ImGui::GetIO();
-    ImGui::BulletText("Double-click on title bar to collapse window.");
-    ImGui::BulletText("Click and drag on lower corner to resize window\n(double-click to auto fit window to its contents).");
-    if (io.ConfigWindowsMoveFromTitleBarOnly)
-        ImGui::BulletText("Click and drag on title bar to move window.");
-    else
-        ImGui::BulletText("Click and drag on any empty space to move window.");
-    ImGui::BulletText("TAB/SHIFT+TAB to cycle through keyboard editable fields.");
-    ImGui::BulletText("CTRL+Click on a slider or drag box to input value as text.");
-    if (io.FontAllowUserScaling)
-        ImGui::BulletText("CTRL+Mouse Wheel to zoom window contents.");
-    ImGui::BulletText("Mouse Wheel to scroll.");
-    ImGui::BulletText("While editing text:\n");
-    ImGui::Indent();
-    ImGui::BulletText("Hold SHIFT or use mouse to select text.");
-    ImGui::BulletText("CTRL+Left/Right to word jump.");
-    ImGui::BulletText("CTRL+A or double-click to select all.");
-    ImGui::BulletText("CTRL+X,CTRL+C,CTRL+V to use clipboard.");
-    ImGui::BulletText("CTRL+Z,CTRL+Y to undo/redo.");
-    ImGui::BulletText("ESCAPE to revert.");
-    ImGui::BulletText("You can apply arithmetic operators +,*,/ on numerical values.\nUse +- to subtract.");
-    ImGui::Unindent();
+	ImGui::Text("WINDOW CONTROLS");
+	ImGui::BulletText("Double-click on title bar to collapse window.");
+	ImGui::BulletText("Click and drag on lower corner to resize window\n(double-click to auto fit window to its contents).");
+	ImGui::BulletText("Click and drag on title bar to move window.");
+
+	ImGui::Text("CAMERA CONTROLS");
+	ImGui::Text("To be available to move around the Scene, the window must be selected.");
+	ImGui::Text("Click anywhere in the Scene window to select it.");
+	ImGui::BulletText("Move the view around using the mouse.");
+	ImGui::BulletText("The WASD keys to move left/right/forward/backward, and the Q and E keys to move up and down.");
+	ImGui::BulletText("The Arrow keys to rotate left/right/forward/backward.");
+	ImGui::BulletText("Hold down Shift to move faster.");
+	ImGui::BulletText("Mouse Wheel to zoom Scene contents.");
+	ImGui::BulletText("Alt+Right Click Mouse to orbit around the object in the Scene.");
+
+	ImGui::Text("LOAD DOCUMENTS");
+	ImGui::BulletText("Drag and Drop files inside the Engine.");
+	ImGui::Indent();
+	ImGui::BulletText("For Model objects, only the ASSIMP supported formats can be loaded.");
+	ImGui::BulletText("For Textures, only the DevIL supported formats can be loaded.");
+	ImGui::Unindent();
 }
 
 //-----------------------------------------------------------------------------
