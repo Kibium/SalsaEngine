@@ -40,7 +40,9 @@ public:
 	void SwitchModel(const char*);
 	void SwitchTexture(const char*);
 	void RenderAABB();
-
+	aiVector3D modelPosition;
+	aiVector3D modelScale;
+	aiVector3D modelRotation;
 	bool model = false;
 	AABB modelBox;
 	int npolys = 0;

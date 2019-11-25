@@ -100,10 +100,12 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		meshes.push_back(processMesh(mesh, scene));
 		nmeshes += 1;
 	}
-	
+
+	node->mTransformation.Decompose(modelScale,modelRotation,modelPosition);
+
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
-	{
+	{ 
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
