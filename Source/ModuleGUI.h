@@ -27,22 +27,22 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
-	bool isScene;
-	bool isInspector;
+	bool isScene = false;
+	bool isInspector = false;
 private:
-	bool showAboutWindow;
-	bool showHelpWindow;
-	bool showAppWindow;
-	bool showScene;
-	bool showInspector;
+	bool showAboutWindow = false;
+	bool showHelpWindow = false;
+	bool showAppWindow = true;
+	bool showScene = true;
+	bool showInspector = true;
 	std::vector<float> frames;
-	int max_h;
-	int min_h;
-	int max_w;
-	int min_w;
-	float sceneWidth;
-	float sceneHeight;
-	bool aspectFixed;
+	int max_h = 0;
+	int min_h = 0;
+	int max_w = 0;
+	int min_w = 0;
+	float sceneWidth = 0;
+	float sceneHeight = 0;
+	bool aspectFixed = false;
 
 };
 #endif // __MODULEMODELLOADER_H__

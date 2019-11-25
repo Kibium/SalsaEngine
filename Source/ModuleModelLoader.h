@@ -41,11 +41,11 @@ public:
 	void SwitchTexture(const char*);
 	void RenderAABB();
 
-	bool model;
+	bool model = false;
 	AABB modelBox;
-	int npolys;
-	int nvertex;
-	int nmeshes;
+	int npolys = 0;
+	int nvertex = 0;
+	int nmeshes= 0;
 
 private:
 	void Load(const char*);

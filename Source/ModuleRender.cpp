@@ -21,6 +21,7 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
+	LOG("Init Render\n");
 	LOG("Creating Renderer context\n");
 	context = SDL_GL_CreateContext(App->window->window);
 	GLenum err = glewInit();

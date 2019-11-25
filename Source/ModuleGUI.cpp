@@ -54,14 +54,6 @@ bool ModuleGUI::Init()
 	ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 	io.Fonts->AddFontFromFileTTF("Fonts/" FONT_ICON_FILE_NAME_FAS, 14.0f, &icons_config, icons_ranges);
 
-	showScene = true;
-	showAppWindow = true;
-	showHelpWindow = false;
-	showInspector = true;
-	showAboutWindow = false;
-	sceneHeight = 0;
-	sceneWidth = 0;
-	aspectFixed = false;
 	return true;
 }
 
@@ -261,7 +253,6 @@ void ModuleGUI::Scene() {
 		isScene= ImGui::IsWindowFocused();
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
-		//App->camera->SetAspectRatio(width / height);
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
 
 		ImGui::GetWindowDrawList()->AddImage(
@@ -413,9 +404,6 @@ void ModuleGUI::ShowAbout() {
 				selection[6] = !selection[6];
 				ShellExecuteA(NULL, "open", "https://fontawesome.com/", NULL, NULL, SW_SHOWNORMAL);
 			}
-		//ImGui::Text("Libraries Used: "); ImGui::SameLine();
-		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI, DeViL, Assimp, IconsFontCppHeaders, FontsAwesome");
-		//ShellExecuteA(NULL, "open", "https://github.com/JorxSS/SalsaEngine", NULL, NULL, SW_SHOWNORMAL);
 		ImGui::Text("License: "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 1, 1),"MIT");
 

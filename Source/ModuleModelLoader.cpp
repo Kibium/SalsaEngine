@@ -22,10 +22,7 @@ void ModuleModelLoader::Draw()
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
-	model = false;
-	nmeshes = 0;
-	npolys = 0;
-	nvertex = 0;
+
 	return true;
 }
 
@@ -45,7 +42,7 @@ void ModuleModelLoader::SwitchModel(const char *file)
 		nvertex = 0;
 		model = false;
 	}
-	LOG("\nNew model added. Loading Model %s \n", file);
+	LOG("\nNew model added. \n Loading Model %s \n", file);
 	Load(file);
 }
 
@@ -55,7 +52,7 @@ void ModuleModelLoader::SwitchTexture(const char *file)
 	if (model) {
 		textures_loaded.clear();
 	}
-	LOG("\nNew Texture added. Loading Texture %s \n", file);
+	LOG("\nNew Texture added. \n Loading Texture %s \n", file);
 	Texture texture;
 	texture.id = App->texture->Load((char*)file);
 	texture.type = "texture_diffuse";

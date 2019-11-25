@@ -24,7 +24,7 @@ public:
 	void SetWireframe(const bool wireframe);
 
 public:
-	void* context;
+	void* context = nullptr;
 	GLuint frameTex;
 private:
 	GLuint FBO;

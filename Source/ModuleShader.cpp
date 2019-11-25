@@ -18,7 +18,7 @@ ModuleShader::~ModuleShader()
 
 bool ModuleShader::Init()
 {
-
+	LOG("Init Shaders\n");
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
