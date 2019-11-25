@@ -1,3 +1,6 @@
+#ifndef __MODULEMODELLOADER_H__
+#define __MODULEMODELLOADER_H__
+
 #include "Module.h"
 #include "Mesh.h"
 
@@ -56,5 +59,6 @@ private:
 
 
 };
+#endif // __MODULEMODELLOADER_H__
 
 

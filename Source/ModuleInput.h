@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MODULEINPUT_H__
+#define __MODULEINPUT_H__
 #include "Module.h"
 #include "Globals.h"
 #include <iostream>
@@ -26,3 +27,4 @@ private:
 	std::map<std::string, int> devilMap;
 	const Uint8 *keyboard = NULL;
 };
+#endif // __MODULEINPUT_H__

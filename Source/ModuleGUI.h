@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULEGUI_H__
+#define __MODULEGUI_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "SDL.h"
@@ -43,3 +45,4 @@ private:
 	bool aspectFixed;
 
 };
+#endif // __MODULEMODELLOADER_H__

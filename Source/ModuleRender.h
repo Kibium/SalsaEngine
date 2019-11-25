@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MODULERENDER_H__
+#define __MODULERENDER_H__
 #include "Module.h"
 #include "Globals.h"
 
@@ -29,3 +30,4 @@ private:
 	GLuint FBO;
 	GLuint RBO;
 };
+#endif // __MODULERENDER_H__

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULESHADER_H__
+#define __MODULESHADER_H__
+
 #include "Module.h"
 #include <string>
 
@@ -16,5 +18,6 @@ public:
 	void checkCompileErrors(unsigned int shader, std::string type);
 	GLuint def_program;
 };
+#endif // __MODULESHADER_H__
 
 

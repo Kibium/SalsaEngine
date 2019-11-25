@@ -34,4 +34,4 @@ private:
 	unsigned int VBO, EBO;
 	void setupMesh();
 };
-#endif
+#endif // __MESH_H__
