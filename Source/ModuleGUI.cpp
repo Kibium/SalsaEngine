@@ -275,10 +275,7 @@ void ModuleGUI::GameObjecInfo() {
 		float height = ImGui::GetWindowHeight();
 		if (App->model->model) {
 			if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
-
-				/*float3 position = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
-				float3 rotation = float3::zero;
-				float3 scale = float3::one;*/
+				
 				ImGui::InputFloat3("Position", &App->model->modelPosition[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Rotation", &App->model->modelRotation[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Scale", &App->model->modelScale[0], 3, ImGuiInputTextFlags_ReadOnly);
