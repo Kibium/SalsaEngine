@@ -384,6 +384,11 @@ void ModuleGUI::ShowAbout() {
 				selection[2] = !selection[2];
 				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
 			}
+		if (ImGui::Selectable("MathGeoLib", selection[2], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[2] = !selection[2];
+				ShellExecuteA(NULL, "open", "https://github.com/juj/MathGeoLib", NULL, NULL, SW_SHOWNORMAL);
+			}
 		if (ImGui::Selectable("DevIL", selection[3], ImGuiSelectableFlags_AllowDoubleClick))
 			if (ImGui::IsMouseDoubleClicked(0)) {
 				selection[3] = !selection[3];
