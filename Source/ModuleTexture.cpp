@@ -22,7 +22,7 @@ bool ModuleTexture::CleanUp() {
 	return true;
 }
 
-GLuint ModuleTexture::Load(char *filename) {
+GLuint ModuleTexture::Load(const char *filename) {
 	GLuint texture;
 	ILuint image;
 	ilGenImages(1, &image);
@@ -34,7 +34,6 @@ GLuint ModuleTexture::Load(char *filename) {
 	error = ilGetError();
 	if (error == IL_COULD_NOT_OPEN_FILE)
 	{
-		LOG("DEVIL::ERROR  Loading texture. File not found \n");
 		loaded = false;
 	}
 	else {

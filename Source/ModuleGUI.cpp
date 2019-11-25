@@ -59,7 +59,9 @@ bool ModuleGUI::Init()
 	showHelpWindow = false;
 	showInspector = true;
 	showAboutWindow = false;
-
+	sceneHeight = 0;
+	sceneWidth = 0;
+	aspectFixed = false;
 	return true;
 }
 
@@ -257,15 +259,15 @@ void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
 		isScene= ImGui::IsWindowFocused();
-		float width = ImGui::GetWindowWidth();
-		float height = ImGui::GetWindowHeight();
-		App->camera->SetAspectRatio(width / height);
-		App->renderer->DrawScene(width, height);
+		sceneWidth = ImGui::GetWindowWidth();
+		sceneHeight = ImGui::GetWindowHeight();
+		//App->camera->SetAspectRatio(width / height);
+		App->renderer->DrawScene(sceneWidth, sceneHeight);
 
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + width,ImGui::GetCursorScreenPos().y + height),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,ImGui::GetCursorScreenPos().y + sceneHeight),
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
@@ -280,28 +282,28 @@ void ModuleGUI::GameObjecInfo() {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
-		if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
-			float3 position = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
-			float3 rotation = float3::zero;
-			float3 scale = float3::one;
-			ImGui::InputFloat3("Position", &position[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Rotation", &rotation[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Scale", &scale[0], 3, ImGuiInputTextFlags_ReadOnly);
+		if (App->model->model) {
+			if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
 
-		}
-		if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
-			ImGui::InputInt("Mesh", &App->model->nmeshes , 0, 0, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
-			static bool wireframe = false;
-			ImGui::Checkbox("Wireframe", &wireframe);
-			App->renderer->SetWireframe(wireframe);
+				float3 position = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+				float3 rotation = float3::zero;
+				float3 scale = float3::one;
+				ImGui::InputFloat3("Position", &position[0], 3, ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputFloat3("Rotation", &rotation[0], 3, ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputFloat3("Scale", &scale[0], 3, ImGuiInputTextFlags_ReadOnly);
 
-		}
-		if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
+			}
+			if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
+				ImGui::InputInt("Mesh", &App->model->nmeshes, 0, 0, ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
+				ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
+				static bool wireframe = false;
+				ImGui::Checkbox("Wireframe", &wireframe);
+				App->renderer->SetWireframe(wireframe);
 
-			if (ImGui::TreeNode("Texture's list"))
-			{
+			}
+			if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
+
 				static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
 				static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
@@ -348,9 +350,9 @@ void ModuleGUI::GameObjecInfo() {
 						selection_mask = (1 << node_clicked);           // Click to single-select
 				}
 
-				ImGui::TreePop();
 			}
 		}
+
 	}
 	ImGui::End();
 }
@@ -359,15 +361,9 @@ void ModuleGUI::ShowHelp() {
 	if (ImGui::Begin("Help", p_open))
 	{
 
-		ImGui::Text("PROGRAMMER GUIDE:");
-		ImGui::BulletText("Please see the comments in imgui.cpp.");
-		ImGui::BulletText("Please see the examples/ application.");
-		ImGui::Separator();
-
 		ImGui::Text("USER GUIDE:");
 		ImGui::ShowUserGuide();
 		
-
 	}
 	ImGui::End();
 }
@@ -377,13 +373,51 @@ void ModuleGUI::ShowAbout() {
 	{
 
 		ImGui::Text("SALSA ENGINE 0.1");
-		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona");
+		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona.");
 		ImGui::Text("Authors:  "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Jordi Sauras Salas");
-		ImGui::Text("Libraries Used: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI, DeViL, Assimp, IconsFontCppHeaders, FontsAwesome");
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Jordi Sauras Salas");
+		ImGui::Text("Libraries Used: "); 
+		static bool selection[7] = { false, false, false, false, false, false, false };
+		if (ImGui::Selectable("SLD2 2.0.4", selection[0], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[0] = !selection[0];
+				ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
+			}	
+		if (ImGui::Selectable("GLEW 2.1", selection[1], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[1] = !selection[1];
+				ShellExecuteA(NULL, "open", "http://glew.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		if (ImGui::Selectable("ImGui", selection[2], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[2] = !selection[2];
+				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
+			}
+		if (ImGui::Selectable("DevIL", selection[3], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[3] = !selection[3];
+				ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		if (ImGui::Selectable("Assimp 3.3.1", selection[4], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[4] = !selection[4];
+				ShellExecuteA(NULL, "open", "https://github.com/assimp/assimp", NULL, NULL, SW_SHOWNORMAL);
+			}
+		if (ImGui::Selectable("IconsFontCppHeaders", selection[5], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[5] = !selection[5];
+				ShellExecuteA(NULL, "open", "https://github.com/juliettef/IconFontCppHeaders", NULL, NULL, SW_SHOWNORMAL);
+			}
+		if (ImGui::Selectable("FontAwesome", selection[6], ImGuiSelectableFlags_AllowDoubleClick))
+			if (ImGui::IsMouseDoubleClicked(0)) {
+				selection[6] = !selection[6];
+				ShellExecuteA(NULL, "open", "https://fontawesome.com/", NULL, NULL, SW_SHOWNORMAL);
+			}
+		//ImGui::Text("Libraries Used: "); ImGui::SameLine();
+		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "SLD2, GLEW, IMGUI, DeViL, Assimp, IconsFontCppHeaders, FontsAwesome");
+		//ShellExecuteA(NULL, "open", "https://github.com/JorxSS/SalsaEngine", NULL, NULL, SW_SHOWNORMAL);
 		ImGui::Text("License: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "MIT");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1),"MIT");
 
 	}
 	ImGui::End();
@@ -393,8 +427,9 @@ void ModuleGUI::ShowDefWindow() {
 
 	static bool fullscreen = false;
 	static bool borderless = false;
-	static bool resizable = false;
+	static bool resizable = true;
 	static bool fsdesktop = false;
+	static bool aspect = false;
 
 	static float display_brightness = SDL_GetWindowBrightness(App->window->window);
 	static int screen_w = 0;
@@ -413,7 +448,7 @@ void ModuleGUI::ShowDefWindow() {
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
 			ImGui::Separator();
 
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 100.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 			int fps = ImGui::GetIO().Framerate;
 			//Get frames
@@ -431,7 +466,7 @@ void ModuleGUI::ShowDefWindow() {
 			}
 			char title[25];
 			sprintf_s(title, 25, "Framerate: %d", fps);
-			ImGui::PlotHistogram("##framerate", &frames[0], frames.size(), 0, title, 0.0f, 1000.0f, ImVec2(310, 100));
+			ImGui::PlotHistogram("##framerate", &frames[0], frames.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 		}
 		if (ImGui::CollapsingHeader(ICON_FA_WINDOW_RESTORE " Window")) {
 
@@ -500,21 +535,19 @@ void ModuleGUI::ShowDefWindow() {
 
 
 			if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
-			{
 				App->camera->SetFOV(App->camera->frustum.horizontalFov);
-			}
+
 			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
 			{
-				App->camera->SetAspectRatio(App->camera->aspectRatio);
+				if(!aspectFixed)
+					App->camera->SetAspectRatio(App->camera->aspectRatio);
 			}
 			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
-			{
 				App->camera->SetSpeed(App->camera->cameraSpeed);
-			}
+			
 			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
-			{
 				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
-			}
+
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
@@ -523,6 +556,21 @@ void ModuleGUI::ShowDefWindow() {
 				App->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->camera->SetSpeed(CAMERA_SPEED);
 				clicked = 0;
+			}
+			ImGui::SameLine();
+
+			if (ImGui::Checkbox("Default Aspect Ratio", &aspect)) {
+				if (showScene) {
+					if (aspectFixed)
+						aspectFixed = false;
+					else {
+						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
+						aspectFixed = true;
+					}
+						
+					
+				}
+					
 			}
 		}
 

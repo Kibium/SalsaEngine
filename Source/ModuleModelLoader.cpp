@@ -22,13 +22,10 @@ void ModuleModelLoader::Draw()
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
-	DefaultLogger::create("", Logger::VERBOSE);
-	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
-	DefaultLogger::get()->attachStream(new myStream(), severity);
+	model = false;
 	nmeshes = 0;
 	npolys = 0;
 	nvertex = 0;
-	Load("Models/baker/BakerHouse.fbx");
 	return true;
 }
 
@@ -73,7 +70,9 @@ void ModuleModelLoader::SwitchTexture(const char *file)
 
 void ModuleModelLoader::Load(const char* path)
 {
-
+	DefaultLogger::create("", Logger::VERBOSE);
+	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
+	DefaultLogger::get()->attachStream(new myStream(), severity);
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality );
@@ -208,6 +207,12 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 			}
 			else {
 				texture.path = str.C_Str();
+			}
+			if (App->texture->loaded) {
+				LOG("DEVIL:: Texture Loaded Succesfully\n");
+			}	
+			else {
+				LOG("DEVIL::ERROR  Loading texture. File not found \n");
 			}
 			texture.type = typeName;
 			textures.push_back(texture);

@@ -35,7 +35,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	void SwitchModel(const char*);
-	void SwitchTexture(const char * file);
+	void SwitchTexture(const char*);
 	void RenderAABB();
 
 	bool model;
@@ -49,10 +49,8 @@ private:
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);
 	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
-
-	string GetModelDirectory(const char * path);
-
-	string GetFilename(const char * path);
+	string GetModelDirectory(const char*);
+	string GetFilename(const char*);
 
 
 

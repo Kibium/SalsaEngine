@@ -141,11 +141,11 @@ update_status ModuleInput::Update()
 		case SDL_KEYDOWN:
 
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
-				App->camera->orbit = true;
+				App->camera->SetOrbit(true);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
-				if (!App->camera->speeding) {
-					App->camera->SetSpeeding();
+				if (!App->camera->GetSpeeding()) {
+					App->camera->SetSpeeding(true);
 					App->camera->SetSpeed(App->camera->cameraSpeed + App->camera->cameraSpeed);
 					App->camera->SetRotationSpeed(App->camera->rotationSpeed + App->camera->rotationSpeed);	
 				}
@@ -154,18 +154,18 @@ update_status ModuleInput::Update()
 		case SDL_KEYUP:
 
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
-				App->camera->orbit = false;
+				App->camera->SetOrbit(false);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
 				App->camera->SetSpeed(CAMERA_SPEED);
 				App->camera->SetRotationSpeed(ROTATION_SPEED);
-				App->camera->SetSpeeding();
+				App->camera->SetSpeeding(false);
 			}
 			break;
 
 		case SDL_MOUSEMOTION:
 			if (sdlEvent.motion.state && SDL_BUTTON_RMASK && App->gui->isScene)
-				if(App->camera->orbit)
+				if(App->camera->GetOrbit())
 					App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else
 					App->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
@@ -224,7 +224,7 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-void ModuleInput::DroppedFile(char* file)
+void ModuleInput::DroppedFile(const char* file) const
 {
 	if (file == NULL) {
 		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");

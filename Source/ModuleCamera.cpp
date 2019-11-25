@@ -57,8 +57,8 @@ void ModuleCamera::SetFOV(float verticalFOV) {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	CalculateMatrixes();
 }
-void ModuleCamera::SetSpeeding() {
-	speeding != speeding;
+void ModuleCamera::SetSpeeding(const bool speed) {
+	speeding = speed;
 }
 
 void ModuleCamera::SetSpeed(float Speed) {
@@ -72,6 +72,11 @@ void ModuleCamera::SetAspectRatio(float aspectRatio) {
 	this->aspectRatio = aspectRatio;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * this->aspectRatio);
 	CalculateMatrixes();
+}
+
+void ModuleCamera::SetOrbit(const bool isOrbit)
+{
+	orbit = isOrbit;
 }
 
 void ModuleCamera::CalculateMatrixes() {
@@ -194,7 +199,7 @@ void ModuleCamera::Focus()
 	frustum.up = rotationMatrix * frustum.up;
 
 	frustum.farPlaneDistance = 500 * (size.Length() / 2);
-	frustum.pos = center - frustum.front * 3 * (size.Length() / 2);
+	frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
 	frustum.pos.y = 0.5 * (size.Length() / 2);
 	CalculateMatrixes();
 }

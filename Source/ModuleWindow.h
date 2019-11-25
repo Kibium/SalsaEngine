@@ -20,12 +20,12 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
-	void SetFullscreen(bool);
-	void SetResizable(bool);
-	void SetBorderless(bool);
-	void SetFullDesktop(bool);
-	void SetWindowBrightness(float);
-	void SetWindowSize(int, int);
+	void SetFullscreen(const bool);
+	void SetResizable(const bool);
+	void SetBorderless(const bool);
+	void SetFullDesktop(const bool);
+	void SetWindowBrightness(const float);
+	void SetWindowSize(const int, const int);
 
 public:
 	//The window we'll be rendering to

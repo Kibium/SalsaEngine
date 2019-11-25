@@ -63,7 +63,7 @@ update_status ModuleRender::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleRender::DrawScene(float width, float height) {
+void ModuleRender::DrawScene(const float width, const float height) {
 	if (frameTex != 0)
 	{
 		glDeleteTextures(1, &frameTex);

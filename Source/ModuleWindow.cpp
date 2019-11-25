@@ -83,27 +83,27 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::SetFullscreen(bool fullscreen) {
+void ModuleWindow::SetFullscreen(const bool fullscreen) {
 	fullscreen ? SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) : SDL_SetWindowFullscreen(window, 0);
 }
 
-void ModuleWindow::SetResizable(bool resizable) {
+void ModuleWindow::SetResizable(const bool resizable) {
 
 }
 
-void ModuleWindow::SetBorderless(bool borderless) {
+void ModuleWindow::SetBorderless(const bool borderless) {
 	borderless ? SDL_SetWindowBordered(window, SDL_FALSE) : SDL_SetWindowBordered(window, SDL_TRUE);
 }
 
-void ModuleWindow::SetFullDesktop(bool fulldesktop) {
+void ModuleWindow::SetFullDesktop(const bool fulldesktop) {
 	fulldesktop ? SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) : SDL_SetWindowFullscreen(window, 0);
 }
 
-void ModuleWindow::SetWindowBrightness(float brightness) {
+void ModuleWindow::SetWindowBrightness(const float brightness) {
 	SDL_SetWindowBrightness(window, brightness);
 }
 
-void ModuleWindow::SetWindowSize(int width, int height) {
+void ModuleWindow::SetWindowSize(const int width, const int height) {
 	SDL_SetWindowSize(window, width, height);
 }
 

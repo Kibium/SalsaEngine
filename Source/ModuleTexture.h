@@ -11,12 +11,11 @@ class ModuleTexture : public Module {
 public:
 	ModuleTexture() {}
 	~ModuleTexture() {}
-
 	bool Init();
 	bool CleanUp();
 
 public:
-	GLuint Load(char *filename);
+	GLuint Load(const char*);
 	bool loaded;
 
 };

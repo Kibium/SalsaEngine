@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 
+#define SIZE_FACTOR 3
 #define CAMERA_SPEED 0.1f
 #define ROTATION_SPEED 0.02f
 
@@ -18,10 +19,16 @@ public:
 	 bool CleanUp();
 
 	 void SetFOV(float);
-	 void SetSpeeding();
+	 void SetSpeeding(bool);
 	 void SetSpeed(float);
 	 void SetRotationSpeed(float);
 	 void SetAspectRatio(float);
+	 void SetOrbit(bool);
+
+	 bool GetSpeeding() { return speeding; };
+	 bool GetOrbit() { return orbit; };
+	 float GetSpeed() { return cameraSpeed; };
+	 float GetRotationSpeed() { return rotationSpeed; };
 
 	 void CalculateMatrixes();
 	 math::float4x4 LookAt(math::float3, math::float3, math::float3) const;
@@ -42,11 +49,11 @@ public:
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;
-	 bool orbit;
-	 bool speeding;
 	 float cameraSpeed;
 	 float rotationSpeed;
-
+private:
+	 bool orbit;
+	 bool speeding;
 
 
 };

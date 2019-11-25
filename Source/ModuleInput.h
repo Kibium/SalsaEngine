@@ -19,7 +19,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-	void DroppedFile(char *);
+	void DroppedFile(const char *)const;
 
 private:
 	std::map<std::string, int> assimpMap;

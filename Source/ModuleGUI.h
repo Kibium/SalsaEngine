@@ -25,17 +25,21 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
-	int max_h;
-	int min_h;
-	int max_w;
-	int min_w;
-	std::vector<float> frames;
+	bool isScene;
+	bool isInspector;
+private:
 	bool showAboutWindow;
 	bool showHelpWindow;
 	bool showAppWindow;
 	bool showScene;
 	bool showInspector;
-	bool isScene;
-	bool isInspector;
+	std::vector<float> frames;
+	int max_h;
+	int min_h;
+	int max_w;
+	int min_w;
+	float sceneWidth;
+	float sceneHeight;
+	bool aspectFixed;
 
 };
