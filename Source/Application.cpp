@@ -9,6 +9,7 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
 #include <windows.h>
 
 using namespace std;
@@ -25,6 +26,7 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	//modules.push_back(triangle = new ModuleTriangle());
 	modules.push_back(model = new ModuleModelLoader());
+	modules.push_back(debugdraw = new ModuleDebugDraw());
 }
 
 Application::~Application()

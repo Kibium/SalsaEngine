@@ -154,6 +154,9 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -660,6 +663,18 @@
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h">
       <Filter>Addons\IconFontsCppHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\debug_draw.hpp">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\par_shapes.h">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DebugDraw.h">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -688,6 +703,9 @@
     </Filter>
     <Filter Include="Addons\IconFontsCppHeaders">
       <UniqueIdentifier>{022e0de6-85b6-49b6-943c-8126d2ff24b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Addons\DebugDraw">
+      <UniqueIdentifier>{10994271-4917-4ac3-b7f5-a46339b2c814}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@ class ModuleShader;
 class ModuleTexture;
 class ModuleCamera;
 class ModuleModelLoader;
+class ModuleDebugDraw;
 
 
 class Application
@@ -38,6 +39,7 @@ public:
 	ModuleTexture* texture = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleModelLoader* model = nullptr;
+	ModuleDebugDraw* debugdraw = nullptr;
 
 
 private:

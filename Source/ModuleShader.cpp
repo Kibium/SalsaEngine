@@ -16,9 +16,7 @@ ModuleShader::~ModuleShader()
 {
 }
 
-bool ModuleShader::Init()
-{
-	LOG("Init Shaders\n");
+void ModuleShader::createProgram(GLuint program, char* vs, char* fs) {
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
@@ -29,8 +27,8 @@ bool ModuleShader::Init()
 	try
 	{
 		// open files
-		vShaderFile.open("./Shaders/default.vs");
-		fShaderFile.open("./Shaders/default.fs");
+		vShaderFile.open(vs);
+		fShaderFile.open(fs);
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
@@ -61,14 +59,23 @@ bool ModuleShader::Init()
 	glCompileShader(fragment);
 	checkCompileErrors(fragment, "FRAGMENT");
 	// shader Program
-	def_program = glCreateProgram();
-	glAttachShader(def_program, vertex);
-	glAttachShader(def_program, fragment);
-	glLinkProgram(def_program);
-	checkCompileErrors(def_program, "PROGRAM");
+	program = glCreateProgram();
+	glAttachShader(program, vertex);
+	glAttachShader(program, fragment);
+	glLinkProgram(program);
+	checkCompileErrors(program, "PROGRAM");
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+}
+
+bool ModuleShader::Init()
+{
+	LOG("Init Shaders\n");
+
+	createProgram(def_program, "./Shaders/default.vs", "./Shaders/default.fs");
+	createProgram(phong_program, "./Shaders/Phong.vs", "./Shaders/Phong.fs");
+
 	return true;
 
 }

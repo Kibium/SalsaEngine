@@ -232,10 +232,12 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\DebugDraw.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
+    <ClInclude Include="Source\ModuleDebugDraw.h" />
     <ClInclude Include="Source\ModuleGUI.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleModelLoader.h" />
@@ -244,6 +246,8 @@
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleTriangle.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\Util\debug_draw.hpp" />
+    <ClInclude Include="Source\Util\par_shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
@@ -289,6 +293,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
+    <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleGUI.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
