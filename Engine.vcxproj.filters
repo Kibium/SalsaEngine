@@ -707,6 +707,9 @@
     <Filter Include="Addons\DebugDraw">
       <UniqueIdentifier>{10994271-4917-4ac3-b7f5-a46339b2c814}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{e0e1a1e1-d44a-42f4-a6a8-928678a6d0b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\DevIL\include\IL\config.h.win">
@@ -762,6 +765,24 @@
     </None>
     <None Include="Libraries\Assimp\include\assimp\vector3.inl">
       <Filter>Addons\Assimp</Filter>
+    </None>
+    <None Include="Game\shaders\default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\lines.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\lines.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

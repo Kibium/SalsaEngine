@@ -55,7 +55,7 @@ public:
 	int nvertex = 0;
 	int nmeshes= 0;
 
-private:
+
 
 	struct Figure
 	{
@@ -82,7 +82,7 @@ private:
 		float k_diffuse = 0.0f;
 		float k_ambient = 0.0f;
 	};
-
+private:
 	struct Sphere
 	{
 		math::float3 center = math::float3::zero;
@@ -94,10 +94,10 @@ private:
 		math::float4 color = math::float4::one;
 		math::float3 pos = math::float3::one;
 	};
-
+public:
 	void RenderMesh(const Figure& mesh, const Material& material,
 		const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj);
-
+private:
 	void CreateSphere(const char* name, const math::float3& pos, const math::Quat& rot, float size,
 		unsigned slices, unsigned stacks, const math::float4& color);
 	void CreateTorus(const char* name, const math::float3& pos, const math::Quat& rot, float inner_r, float outer_r,

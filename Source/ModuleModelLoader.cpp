@@ -169,7 +169,7 @@ void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	glBindVertexArray(0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	//glUseProgram(0);
+	glUseProgram(App->shader->grid_program);
 }
 
 void ModuleModelLoader::CreateSphere(const char* name, const math::float3& pos, const math::Quat& rot, float size,
@@ -188,7 +188,7 @@ void ModuleModelLoader::CreateSphere(const char* name, const math::float3& pos, 
 
 
 		Material mat;
-		mat.program = App->shader->phong_program;
+		mat.program = App->shader->def_program;
 		mat.object_color = color;
 
 		materials.push_back(mat);
@@ -210,7 +210,7 @@ void ModuleModelLoader::CreateTorus(const char* name, const math::float3& pos, c
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->phong_program;
+		mat.program = App->shader->def_program;
 		mat.object_color = color;
 
 		materials.push_back(mat);
@@ -247,7 +247,7 @@ void ModuleModelLoader::CreateCylinder(const char* name, const math::float3& pos
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->phong_program;
+		mat.program = App->shader->def_program;
 		mat.object_color = color;
 
 		materials.push_back(mat);
@@ -299,7 +299,7 @@ void ModuleModelLoader::CreateCube(const char* name, const math::float3& pos, co
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->phong_program;
+		mat.program = App->shader->def_program;
 		mat.object_color = color;
 
 		materials.push_back(mat);
@@ -312,10 +312,7 @@ void ModuleModelLoader::CreateCube(const char* name, const math::float3& pos, co
 
 update_status ModuleModelLoader::Update() {
 
-	for (int i = 0; i < figures.size(); ++i) {
-		//const Figure& f = figures[i];
-		RenderMesh(figures[i], materials[figures[i].material], figures[i].transform, App->camera->view, App->camera->proj);
-	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -323,6 +320,11 @@ update_status ModuleModelLoader::Update() {
 
 bool ModuleModelLoader::Init() {
 	LOG("Init Model Loader\n");
+
+
+	//Light stuff
+	light.pos = math::float3(-2.0f, 0.0f, 6.0f);
+	ambient = 0.3f;
 
 	//meshes
 	CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, float4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -402,18 +404,18 @@ void ModuleModelLoader::Load(const char* path)
 	DefaultLogger::get()->attachStream(new myStream(), severity);
 	// read file via ASSIMP
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality );
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
-		LOG( "ERROR::ASSIMP:: %s \n",importer.GetErrorString());
+		LOG("ERROR::ASSIMP:: %s \n", importer.GetErrorString());
 		return;
 	}
 	modelBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
-	
+
 	model = true;
 	DefaultLogger::kill();
 
@@ -431,11 +433,11 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		nmeshes += 1;
 	}
 
-	node->mTransformation.Decompose(modelScale,modelRotation,modelPosition);
+	node->mTransformation.Decompose(modelScale, modelRotation, modelPosition);
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
-	{ 
+	{
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
@@ -452,14 +454,14 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-		
+
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-		
+
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
 	}
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-	
+
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
@@ -522,7 +524,7 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 			texture.id = App->texture->Load((char*)pathing);
 			if (!App->texture->loaded) {
 				LOG("Loading Texture from model's directory\n");
-				std::string filename = directory.c_str() + GetFilename(str.C_Str()) ;
+				std::string filename = directory.c_str() + GetFilename(str.C_Str());
 				const char* file = filename.c_str();
 				texture.id = App->texture->Load((char*)file);
 				texture.path = file;
@@ -539,7 +541,7 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 			}
 			if (App->texture->loaded) {
 				LOG("DEVIL:: Texture Loaded Succesfully\n");
-			}	
+			}
 			else {
 				LOG("DEVIL::ERROR  Loading texture. File not found \n");
 			}
@@ -550,7 +552,7 @@ vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextu
 	}//
 	return textures;
 }
-string ModuleModelLoader::GetModelDirectory(const char *path) 
+string ModuleModelLoader::GetModelDirectory(const char *path)
 {
 	std::string dir = std::string(path);
 
@@ -564,7 +566,7 @@ string ModuleModelLoader::GetFilename(const char *path)
 	std::string dir = std::string(path);
 
 	std::size_t currentDir = dir.find_last_of("/\\");
-	std::string filename = dir.substr(currentDir+1);
+	std::string filename = dir.substr(currentDir + 1);
 
 	return filename;
 }

@@ -1,6 +1,7 @@
 #ifndef __MODULESHADER_H__
 #define __MODULESHADER_H__
 
+#include "Application.h"
 #include "Module.h"
 #include <string>
 
@@ -17,8 +18,7 @@ public:
 	const char* readShader(const char * path);
 	void checkCompileErrors(unsigned int shader, std::string type);
 	void createProgram(GLuint, char*, char*);
-	GLuint def_program;
-	GLuint phong_program;
+	GLuint def_program, phong_program, grid_program;
 };
 #endif // __MODULESHADER_H__
 

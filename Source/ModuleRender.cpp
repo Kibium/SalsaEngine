@@ -101,6 +101,14 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	DrawGrid();
+
+	glUseProgram(App->shader->phong_program);
+
+	for (int i = 0; i < App->model->figures.size(); ++i) {
+		const ModuleModelLoader::Figure& f = App->model->figures[i];
+		App->model->RenderMesh(f, App->model->materials[f.material], f.transform, App->camera->view, App->camera->proj);
+	}
+
 	glUseProgram(App->shader->def_program);
 
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
@@ -137,6 +145,8 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 }
 void ModuleRender::DrawGrid() {
 	// Lines white
+	glUseProgram(App->shader->grid_program);
+
 	glLineWidth(1.0F);
 	float d = 200.0F;
 	glColor4f(1.F, 1.F, 1.F, 1.F);
@@ -185,6 +195,9 @@ void ModuleRender::DrawGrid() {
 
 	glEnd();
 	glLineWidth(1.0F);
+
+	glUseProgram(App->shader->def_program);
+
 }
 
 void ModuleRender::SetWireframe(const bool wireframe) {

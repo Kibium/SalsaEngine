@@ -304,6 +304,12 @@
     <ClCompile Include="Source\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\shaders\default.fs" />
+    <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\lines.fs" />
+    <None Include="Game\shaders\lines.vs" />
+    <None Include="Game\shaders\Phong.fs" />
+    <None Include="Game\shaders\Phong.vs" />
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
     <None Include="Libraries\Assimp\include\assimp\color4.inl" />
     <None Include="Libraries\Assimp\include\assimp\material.inl" />

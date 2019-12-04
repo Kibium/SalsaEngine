@@ -25,8 +25,9 @@ Application::Application()
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(camera = new ModuleCamera());
 	//modules.push_back(triangle = new ModuleTriangle());
-	modules.push_back(model = new ModuleModelLoader());
 	modules.push_back(debugdraw = new ModuleDebugDraw());
+
+	modules.push_back(model = new ModuleModelLoader());
 }
 
 Application::~Application()
