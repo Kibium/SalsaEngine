@@ -74,6 +74,8 @@ update_status ModuleGUI::Update()
 		ShowDefWindow();
 	if(showHelpWindow)
 		ShowHelp();
+	if (showGame)
+		Game();
 	if (showScene)
 		Scene();
 	if (showInspector)
@@ -227,6 +229,7 @@ void ModuleGUI::MainMenu() {
 		{
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
+			ImGui::MenuItem(("Game"), (const char*)0, &showGame);
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
@@ -247,10 +250,29 @@ void ModuleGUI::MainMenu() {
 
 }
 
+void ModuleGUI::Game() {
+	if (ImGui::Begin(ICON_FA_GAMEPAD " Game"))
+	{
+		//isScene= ImGui::IsWindowFocused();
+		sceneWidthGame = ImGui::GetWindowWidth();
+		sceneHeightGame = ImGui::GetWindowHeight();
+		App->renderer->DrawGame(sceneWidthGame, sceneHeightGame);
+
+		ImGui::GetWindowDrawList()->AddImage(
+			(void *)App->renderer->sceneTex,
+			ImVec2(ImGui::GetCursorScreenPos()),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidthGame, ImGui::GetCursorScreenPos().y + sceneHeightGame),
+			ImVec2(0, 1),
+			ImVec2(1, 0)
+		);
+		
+	}
+	ImGui::End();
+}
 void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
-		isScene= ImGui::IsWindowFocused();
+		isScene = ImGui::IsWindowFocused();
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
@@ -258,11 +280,11 @@ void ModuleGUI::Scene() {
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,ImGui::GetCursorScreenPos().y + sceneHeight),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth, ImGui::GetCursorScreenPos().y + sceneHeight),
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-		
+
 	}
 	ImGui::End();
 }
@@ -562,8 +584,16 @@ void ModuleGUI::ShowDefWindow() {
 				}
 					
 			}
-		}
+		}if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::DragFloat3("Front C",(float*) &App->renderer->GameCamera->frustum.front, 0.1);
+			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);
+			ImGui::DragFloat3("Position C", (float*)&App->renderer->GameCamera->frustum.pos, 0.1);
+			
+			ImGui::Separator();
 
+
+		}
 	}
 	ImGui::End();
 }

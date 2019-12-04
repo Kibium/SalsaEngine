@@ -34,9 +34,6 @@
     <ClCompile Include="Source\ModuleTexture.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleTriangle.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
       <Filter>Addons\ImGUI</Filter>
     </ClCompile>
@@ -187,9 +184,6 @@
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTriangle.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\DevIL\include\IL\devil_cpp_wrapper.hpp">

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
+#include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
@@ -109,6 +110,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
+	//App->renderer->GameCamera->Focus();
 }
 
 Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)

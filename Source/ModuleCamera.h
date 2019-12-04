@@ -48,6 +48,7 @@ public:
 	 void Rotate(const float, const float );
 	 void Orbit(const float, const float);
 	 void Focus();
+	 void DrawFrustum();
 
 	 Frustum frustum;
 	 float aspectRatio;

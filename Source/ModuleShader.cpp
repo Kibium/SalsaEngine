@@ -66,6 +66,13 @@ bool ModuleShader::Init()
 	glAttachShader(def_program, fragment);
 	glLinkProgram(def_program);
 	checkCompileErrors(def_program, "PROGRAM");
+
+	test_program = glCreateProgram();
+	glAttachShader(test_program, vertex);
+	glAttachShader(test_program, fragment);
+	glLinkProgram(test_program);
+	checkCompileErrors(test_program, "PROGRAM");
+
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);

@@ -210,3 +210,9 @@ void ModuleCamera::Focus()
 	frustum.pos.y =  (size.Length() / 4);
 	CalculateMatrixes();
 }
+
+void ModuleCamera::DrawFrustum()
+{
+
+
+}
