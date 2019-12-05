@@ -560,6 +560,12 @@ void ModuleGUI::ShowDefWindow() {
 			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
 				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
 
+			if (ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0,1000)) {
+				App->camera->CalculateMatrixes();
+			}
+			if (ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0,1000)) {
+				App->camera->CalculateMatrixes();
+			}
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
@@ -584,7 +590,8 @@ void ModuleGUI::ShowDefWindow() {
 				}
 					
 			}
-		}if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
+		}
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::DragFloat3("Front C",(float*) &App->renderer->GameCamera->frustum.front, 0.1);
 			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);

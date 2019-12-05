@@ -151,6 +151,12 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -653,6 +659,21 @@
     </ClInclude>
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h">
       <Filter>Addons\IconFontsCppHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\debugdraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Util\debug_draw.hpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Util\par_shapes.h">
+      <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

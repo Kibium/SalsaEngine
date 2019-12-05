@@ -2,10 +2,13 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
+#include "ModuleRender.h"
 #include "Geometry/AABB.h"
-
+#include "Math/float4x4.h"
+#include "debugdraw.h"
 #include <glew.h>
 #include "SDL.h"
+
 
 ModuleCamera::ModuleCamera() {
 }
@@ -24,7 +27,7 @@ bool ModuleCamera::Init() {
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
+	frustum.farPlaneDistance = 200.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
@@ -213,6 +216,8 @@ void ModuleCamera::Focus()
 
 void ModuleCamera::DrawFrustum()
 {
-
-
+	math::float4x4 inverseMatrix = proj * view;
+	math::float4x4 inverted = inverseMatrix.Inverted();
+	dd::frustum(inverted,float3(0,1,1));
+	
 }

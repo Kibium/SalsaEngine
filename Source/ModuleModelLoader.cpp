@@ -104,6 +104,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 
 	node->mTransformation.Decompose(modelScale,modelRotation,modelPosition);
 
+
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{ 

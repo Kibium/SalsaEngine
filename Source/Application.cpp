@@ -3,12 +3,12 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
-#include "ModuleTriangle.h"
 #include "ModuleShader.h"
 #include "ModuleGUI.h"
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
 #include <windows.h>
 
 using namespace std;
@@ -25,6 +25,7 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 
 	modules.push_back(model = new ModuleModelLoader());
+	modules.push_back(debug = new ModuleDebugDraw());
 }
 
 Application::~Application()

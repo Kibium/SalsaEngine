@@ -5,6 +5,8 @@
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
+#include "debugdraw.h"
+#include "ModuleDebugDraw.h"	
 
 #include "SDL.h"
 #include "MathGeoLib.h"
@@ -42,10 +44,11 @@ bool ModuleRender::Init()
 	glGenFramebuffers(1, &FBO);
 
 	GameCamera = new ModuleCamera();
+	GameCamera->Init();
 	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
 	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
 	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
-	GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
+	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	GameCamera->CalculateMatrixes();
 	return true;
 }
@@ -111,10 +114,13 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUseProgram(App->shader->test_program);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
+	App->camera->DrawFrustum();
+	dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
 	App->model->Draw();
-
+	//PINTAR AQUI DRAWDEBUG
+	App->debug->Draw(GameCamera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {
@@ -210,6 +216,44 @@ void ModuleRender::DrawGrid() {
 	}
 	glEnd();
 
+	glLineWidth(2.0F);
+	glBegin(GL_LINES);
+
+	// Red X
+	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(1.0F, 0.0F, 0.0F);
+	glVertex3f(1.0F, 0.1F, 0.0F);
+	glVertex3f(1.1F, -0.1F, 0.0F);
+	glVertex3f(1.1F, 0.1F, 0.0F);
+	glVertex3f(1.0F, -0.1F, 0.0F);
+
+	// Green Y
+	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(0.0F, 1.0F, 0.0F);
+	glVertex3f(-0.05F, 1.25F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.05F, 1.25F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.0F, 1.05F, 0.0F);
+
+	// Blue Z
+	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(0.0F, 0.0F, 1.0F);
+	glVertex3f(-0.05F, 0.1F, 1.05F);
+	glVertex3f(0.05F, 0.1F, 1.05F);
+	glVertex3f(0.05F, 0.1F, 1.05F);
+	glVertex3f(-0.05F, -0.1F, 1.05F);
+	glVertex3f(-0.05F, -0.1F, 1.05F);
+	glVertex3f(0.05F, -0.1F, 1.05F);
+
+	glEnd();
+	glLineWidth(1.0F);
+}
+void ModuleRender::SetAxis() {
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);
 

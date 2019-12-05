@@ -30,6 +30,7 @@ public:
 	 void SetAspectRatio(float);
 	 void SetOrbit(bool);
 
+
 	 bool GetSpeeding() { return speeding; };
 	 bool GetOrbit() { return orbit; };
 	 float GetSpeed() { return cameraSpeed; };

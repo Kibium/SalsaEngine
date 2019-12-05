@@ -22,6 +22,7 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 	void DrawGrid();
+	void SetAxis();
 	void SetWireframe(const bool wireframe);
 
 public:
