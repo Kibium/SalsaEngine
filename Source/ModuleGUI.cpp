@@ -16,6 +16,72 @@
 #include <map>
 #include <vector>
 
+struct TestObject {
+	bool selected;
+	std::string name;
+	std::vector<TestObject*> test_object_child;
+};
+
+std::vector<TestObject*> test_object;
+
+void ClearAllSelection() {
+	for (auto &elem : test_object) {
+		elem->selected = false;
+	}
+}
+
+void DrawChild(TestObject * obj) {
+	// same as draw funciton as it allow recurrsive draw for the child item
+	ImGui::TreeNodeEx(obj->name.c_str());
+	ImGui::TreePop();
+}
+
+void Draw() {
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_None;
+
+	for (auto &elem : test_object) {
+
+		bool node_open = ImGui::TreeNodeEx(elem->name.c_str(), node_flags, elem->name.c_str());
+
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MoveToAdd")) {
+				TestObject * test = new TestObject();
+				test->selected = false;
+				test->name = *(static_cast<std::string*>(payload->Data));
+				elem->test_object_child.push_back(test);
+			}
+			ImGui::EndDragDropTarget();
+		}
+		if (ImGui::BeginDragDropSource(node_flags)) {
+			std::string sent_data = elem->name;
+			ImGui::SetDragDropPayload("MoveToAdd", &sent_data, sent_data.size());
+			ImGui::Text("Move to...");
+			ImGui::EndDragDropSource();
+		}
+		if (ImGui::IsItemHovered()) {
+			if (ImGui::GetIO().KeyShift && ImGui::IsMouseReleased(0)) {
+				// some shift click
+			}
+			else if (ImGui::GetIO().KeyCtrl && ImGui::IsMouseReleased(0)) {
+				// some control click function
+			}
+			else if (ImGui::IsMouseReleased(0)) {
+				ClearAllSelection();
+				elem->selected = true;
+			}
+		}
+		if (node_open) {
+			for (auto &child_elem : elem->test_object_child) {
+				DrawChild(child_elem);
+			}
+			ImGui::TreePop();
+		}
+	}
+}
+
+// https://github.com/ocornut/imgui/issues/2597
+// https://github.com/ocornut/imgui/issues/2209
+// https://discourse.dearimgui.org/t/tree-nodes-help/82/3
 
 ModuleGUI::ModuleGUI() {
 }
@@ -50,6 +116,21 @@ bool ModuleGUI::Init() {
 	ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 	io.Fonts->AddFontFromFileTTF("Fonts/" FONT_ICON_FILE_NAME_FAS, 14.0f, &icons_config, icons_ranges);
 
+	// test
+	TestObject *test1 = new TestObject();
+	test1->selected = "false";
+	test1->name = "test1";
+	test_object.push_back(test1);
+
+	TestObject *test2 = new TestObject();
+	test2->selected = "false";
+	test2->name = "test2";
+	test_object.push_back(test2);
+
+	TestObject *test3 = new TestObject();
+	test3->selected = "false!";
+	test3->name = "test3";
+	test_object.push_back(test3);
 	return true;
 }
 
@@ -509,46 +590,8 @@ void ModuleGUI::ShowDefWindow() {
 			}
 		}
 
-		//////////////////////////////////////////////////////
-		static bool openMenu = false;
-		static bool selected = false;
-
-		if (ImGui::TreeNode("RootNode")) {
-			if (selected) ImGui::TreeNodeEx((void*)(intptr_t)0, ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Selected, "Selectable Node %d", 0);
-			else ImGui::TreeNodeEx((void*)(intptr_t)0, ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen, "Selectable Node %d", 0);
-
-			if (ImGui::IsItemClicked()) {
-				selected = !selected;
-			}
-			if (selected && ImGui::IsMouseClicked(1)) {
-				openMenu = !openMenu;
-			}
-			ImGui::TreePop();
-		}
-
-		if (openMenu) {
-			ImGui::OpenPopup("my_select_popup");
-			if (ImGui::BeginPopup("my_select_popup")) {
-				ImGui::MenuItem("Copy");
-				ImGui::MenuItem("Paste");
-				ImGui::Separator();
-				ImGui::MenuItem("Rename");
-				ImGui::MenuItem("Duplicate");
-				ImGui::MenuItem("Delete");
-				ImGui::Separator();
-				ImGui::MenuItem("Create Empty");
-				if (ImGui::BeginMenu("3D Object")) {
-					ImGui::MenuItem("Cube");
-					ImGui::MenuItem("Sphere");
-					ImGui::MenuItem("Cylinder");
-					ImGui::MenuItem("Torus");
-					ImGui::EndMenu();
-				}
-				ImGui::EndPopup();
-			}
-		}
-
+		Draw();
 	}
 	ImGui::End();
-	ImGui::ShowDemoWindow();//
+	ImGui::ShowDemoWindow();
 }

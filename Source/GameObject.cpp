@@ -2,6 +2,8 @@
 #include "Globals.h"
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 GameObject::GameObject() {
 }
@@ -28,11 +30,11 @@ Component* GameObject::CreateComponent(Type type) {
 		break;
 
 	case Type::MESH:
-		//component = new ComponentMesh();
+		component = new ComponentMesh();
 		break;
 
 	case Type::MATERIAL:
-		//component = new ComponentMaterial();
+		component = new ComponentMaterial();
 		break;
 
 	default:
