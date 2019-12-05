@@ -100,6 +100,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//glUseProgram(App->shader->grid_program);
 	DrawGrid();
 
 	glUseProgram(App->shader->phong_program);
@@ -145,7 +146,7 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 }
 void ModuleRender::DrawGrid() {
 	// Lines white
-	glUseProgram(App->shader->grid_program);
+	//
 
 	glLineWidth(1.0F);
 	float d = 200.0F;

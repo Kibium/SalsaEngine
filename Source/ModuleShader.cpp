@@ -64,12 +64,21 @@ void ModuleShader::InitShader(GLuint& program, GLuint& VS, GLuint& FS, char* Vda
 std::string ModuleShader::getShadertext(char* source) {
 	std::ifstream file;
 	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	file.open(source);
-	std::stringstream vShaderStream;
-	vShaderStream << file.rdbuf();
-	file.close();
+	try
+	{
+		file.open(source);
+		std::stringstream vShaderStream;
+		vShaderStream << file.rdbuf();
+		file.close();
 
-	return vShaderStream.str();
+		return vShaderStream.str();
+	}
+
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		return "error";
+	}
 }
 
 bool ModuleShader::Init()
@@ -102,6 +111,9 @@ bool ModuleShader::Init()
 	{
 		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
 	}
+
+
+
 	const char* vShaderCode = vertexCode.c_str();
 	const char* fShaderCode = fragmentCode.c_str();
 	// 2. compile shaders

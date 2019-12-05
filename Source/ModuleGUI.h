@@ -44,5 +44,9 @@ private:
 	float sceneHeight = 0;
 	bool aspectFixed = false;
 
+	//Color picker variables
+	ImGuiColorEditFlags misc_flags;
+
+
 };
 #endif // __MODULEMODELLOADER_H__

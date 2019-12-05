@@ -182,7 +182,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Sphere"))
 			{
-				App->model->CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -191,7 +191,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Torus"))
 			{
-				App->model->CreateTorus("torus0", math::float3(3.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 3, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->CreateTorus("torus0", math::float3(3.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 3, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -200,7 +200,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Cube"))
 			{
-				App->model->CreateCube("cube0", math::float3(5.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->CreateCube("cube0", math::float3(5.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -209,7 +209,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Cylinder"))
 			{
-				App->model->CreateCylinder("cylinder0", math::float3(-3.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, float4(0.0f, 0.5f, 0.5f, 1.0f));
+				App->model->CreateCylinder("cylinder0", math::float3(-3.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -623,6 +623,28 @@ void ModuleGUI::ShowDefWindow() {
 				}
 
 			}
+		}
+
+		if (ImGui::CollapsingHeader(ICON_FA_LIGHTBULB" Light"))
+		{
+			ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
+			if(ImGui::SliderFloat("Color R", &App->model->color.x, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].object_color = App->model->color;
+			}
+			if (ImGui::SliderFloat("Color G", &App->model->color.y, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].object_color = App->model->color;
+
+			}
+			if (ImGui::SliderFloat("Color B", &App->model->color.z, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].object_color = App->model->color;
+			}
+
+			ImGui::SliderFloat("Ambient", &App->model->ambient, 0, 1);
+				
+			
 		}
 
 	}

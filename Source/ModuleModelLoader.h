@@ -125,6 +125,7 @@ public:
 	Sphere                bsphere;
 	Light                 light;
 	float			      ambient = 0.0f;
+	float4				  color;
 	unsigned int shader;
 
 private:

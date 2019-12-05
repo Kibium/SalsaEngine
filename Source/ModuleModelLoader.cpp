@@ -326,6 +326,9 @@ bool ModuleModelLoader::Init() {
 	light.pos = math::float3(-2.0f, 0.0f, 6.0f);
 	ambient = 0.3f;
 
+	//material color
+	color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	//Initialize shader
 	shader = App->shader->phong_program;
 	return true;

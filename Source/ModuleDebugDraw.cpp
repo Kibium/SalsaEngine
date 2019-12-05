@@ -15,7 +15,7 @@ class DDRenderInterfaceCoreGL final
 	: public dd::RenderInterface
 {
 public:
-
+	
 	//
 	// dd::RenderInterface overrides:
 	//
