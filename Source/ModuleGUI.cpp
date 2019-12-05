@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleShader.h"
 #include "ModuleModelLoader.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
@@ -72,7 +73,7 @@ update_status ModuleGUI::Update()
 	MainMenu();
 	if (showAppWindow)
 		ShowDefWindow();
-	if(showHelpWindow)
+	if (showHelpWindow)
 		ShowHelp();
 	if (showScene)
 		Scene();
@@ -179,6 +180,42 @@ void ModuleGUI::MainMenu() {
 			if (ImGui::MenuItem("Create Empty"))
 			{
 			}
+			if (ImGui::MenuItem("Create Sphere"))
+			{
+				App->model->CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Torus"))
+			{
+				App->model->CreateTorus("torus0", math::float3(3.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 3, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Cube"))
+			{
+				App->model->CreateCube("cube0", math::float3(5.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, float4(1.0f, 1.0f, 1.0f, 1.0f));
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Cylinder"))
+			{
+				App->model->CreateCylinder("cylinder0", math::float3(-3.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, float4(0.0f, 0.5f, 0.5f, 1.0f));
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
 			if (ImGui::MenuItem("Effects"))
 			{
 			}
@@ -250,7 +287,7 @@ void ModuleGUI::MainMenu() {
 void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
-		isScene= ImGui::IsWindowFocused();
+		isScene = ImGui::IsWindowFocused();
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
@@ -258,11 +295,11 @@ void ModuleGUI::Scene() {
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,ImGui::GetCursorScreenPos().y + sceneHeight),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth, ImGui::GetCursorScreenPos().y + sceneHeight),
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-		
+
 	}
 	ImGui::End();
 }
@@ -275,7 +312,7 @@ void ModuleGUI::GameObjecInfo() {
 		float height = ImGui::GetWindowHeight();
 		if (App->model->model) {
 			if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
-				
+
 				ImGui::InputFloat3("Position", &App->model->modelPosition[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Rotation", &App->model->modelRotation[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Scale", &App->model->modelScale[0], 3, ImGuiInputTextFlags_ReadOnly);
@@ -339,6 +376,30 @@ void ModuleGUI::GameObjecInfo() {
 				}
 
 			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Shader")) {
+				if (ImGui::Selectable("Flat Shading")) {
+
+					App->model->shader = App->shader->flat_program;
+
+				}
+				if (ImGui::Selectable("Phong Shading")) {
+
+					App->model->shader = App->shader->phong_program;
+
+				}
+				if (ImGui::Selectable("Blinn Shading")) {
+
+					App->model->shader = App->shader->blinn_program;
+
+				}
+				if (ImGui::Selectable("Gouraud Shading")) {
+
+					App->model->shader = App->shader->gouraud_program;
+
+				}
+
+			}
 		}
 
 	}
@@ -351,7 +412,7 @@ void ModuleGUI::ShowHelp() {
 
 		ImGui::Text("USER GUIDE:");
 		ImGui::ShowUserGuide();
-		
+
 	}
 	ImGui::End();
 }
@@ -364,13 +425,13 @@ void ModuleGUI::ShowAbout() {
 		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona.");
 		ImGui::Text("Authors:  "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Jordi Sauras Salas");
-		ImGui::Text("Libraries Used: "); 
+		ImGui::Text("Libraries Used: ");
 		static bool selection[7] = { false, false, false, false, false, false, false };
 		if (ImGui::Selectable("SLD2 2.0.4", selection[0], ImGuiSelectableFlags_AllowDoubleClick))
 			if (ImGui::IsMouseDoubleClicked(0)) {
 				selection[0] = !selection[0];
 				ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
-			}	
+			}
 		if (ImGui::Selectable("GLEW 2.1", selection[1], ImGuiSelectableFlags_AllowDoubleClick))
 			if (ImGui::IsMouseDoubleClicked(0)) {
 				selection[1] = !selection[1];
@@ -407,7 +468,7 @@ void ModuleGUI::ShowAbout() {
 				ShellExecuteA(NULL, "open", "https://fontawesome.com/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		ImGui::Text("License: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1),"MIT");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "MIT");
 
 	}
 	ImGui::End();
@@ -529,12 +590,12 @@ void ModuleGUI::ShowDefWindow() {
 
 			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
 			{
-				if(!aspectFixed)
+				if (!aspectFixed)
 					App->camera->SetAspectRatio(App->camera->aspectRatio);
 			}
 			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
 				App->camera->SetSpeed(App->camera->cameraSpeed);
-			
+
 			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
 				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
 
@@ -557,10 +618,10 @@ void ModuleGUI::ShowDefWindow() {
 						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
 						aspectFixed = true;
 					}
-						
-					
+
+
 				}
-					
+
 			}
 		}
 

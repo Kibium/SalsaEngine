@@ -137,7 +137,7 @@ void ModuleModelLoader::GenerateVAO(Figure& mesh)
 void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
 {
-	unsigned program = App->shader->phong_program;
+	unsigned program = shader;
 	glUseProgram(program);
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
@@ -326,35 +326,8 @@ bool ModuleModelLoader::Init() {
 	light.pos = math::float3(-2.0f, 0.0f, 6.0f);
 	ambient = 0.3f;
 
-	//meshes
-	CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, float4(1.0f, 1.0f, 1.0f, 1.0f));
-	materials.back().k_specular = 0.9f;
-	materials.back().shininess = 64.0f;
-	materials.back().k_specular = 0.6f;
-	materials.back().k_diffuse = 0.5f;
-	materials.back().k_ambient = 1.0f;
-
-	CreateTorus("torus0", math::float3(3.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 3, float4(1.0f, 1.0f, 1.0f, 1.0f));
-	materials.back().k_specular = 0.9f;
-	materials.back().shininess = 64.0f;
-	materials.back().k_specular = 0.6f;
-	materials.back().k_diffuse = 0.5f;
-	materials.back().k_ambient = 1.0f;
-
-	CreateCylinder("cylinder0", math::float3(-3.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, float4(0.0f, 0.5f, 0.5f, 1.0f));
-	materials.back().k_specular = 0.9f;
-	materials.back().shininess = 64.0f;
-	materials.back().k_specular = 0.6f;
-	materials.back().k_diffuse = 0.5f;
-	materials.back().k_ambient = 1.0f;
-
-	CreateCube("cube0", math::float3(5.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, float4(1.0f, 1.0f, 1.0f, 1.0f));
-	materials.back().k_specular = 0.9f;
-	materials.back().shininess = 64.0f;
-	materials.back().k_specular = 0.6f;
-	materials.back().k_diffuse = 0.5f;
-	materials.back().k_ambient = 1.0f;
-
+	//Initialize shader
+	shader = App->shader->phong_program;
 	return true;
 }
 

@@ -784,5 +784,23 @@
     <None Include="Game\shaders\lines.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Game\shaders\Blinn.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Blinn.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

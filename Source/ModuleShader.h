@@ -16,9 +16,12 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	const char* readShader(const char * path);
-	void checkCompileErrors(unsigned int shader, std::string type);
+	void checkCompileErrors(GLuint& shader, std::string type);
 	void createProgram(GLuint, char*, char*);
-	GLuint def_program, phong_program, grid_program;
+	void InitShader(GLuint& program, GLuint& VS, GLuint& FS, char* Vdata, char* Fdata);
+	std::string getShadertext(char* source);
+	GLuint def_program, phong_program, grid_program, blinn_program, gouraud_program, flat_program;
+	GLuint defVS, defFS, phVS, phFS, flatVS, flatFS, blinnVS, blinnFS, gVS, gFS;
 };
 #endif // __MODULESHADER_H__
 

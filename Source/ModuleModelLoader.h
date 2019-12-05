@@ -97,7 +97,7 @@ private:
 public:
 	void RenderMesh(const Figure& mesh, const Material& material,
 		const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj);
-private:
+
 	void CreateSphere(const char* name, const math::float3& pos, const math::Quat& rot, float size,
 		unsigned slices, unsigned stacks, const math::float4& color);
 	void CreateTorus(const char* name, const math::float3& pos, const math::Quat& rot, float inner_r, float outer_r,
@@ -105,6 +105,7 @@ private:
 	void CreateCylinder(const char* name, const math::float3& pos, const math::Quat& rot, float height,
 		float radius, unsigned slices, unsigned stacks, const math::float4& color);
 	void CreateCube(const char* name, const math::float3& pos, const math::Quat& rot, float size, const math::float4& color);
+private:	
 	void GenerateVAO(Figure& mesh);
 
 	void GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh_s* shape);
@@ -124,6 +125,7 @@ public:
 	Sphere                bsphere;
 	Light                 light;
 	float			      ambient = 0.0f;
+	unsigned int shader;
 
 private:
 

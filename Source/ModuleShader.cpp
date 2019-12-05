@@ -22,6 +22,56 @@ void ModuleShader::createProgram(GLuint program, char* vs, char* fs) {
 
 }
 
+void ModuleShader::InitShader(GLuint& program, GLuint& VS, GLuint& FS, char* Vdata, char* Fdata) {
+
+	const GLchar *vdata = Vdata;
+	const GLchar *fdata = Fdata;
+
+	//Creating Vertex Shader
+	VS = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(VS, 1, &vdata, NULL);
+	glCompileShader(VS);
+
+	//Creating Fragment Shader
+	FS = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(FS, 1, &fdata, NULL);
+	glCompileShader(FS);
+
+	//Check that my shaders compile
+	int  success = 0;
+	char infoLog[512];
+
+	checkCompileErrors(VS, "VERTEX");
+
+	checkCompileErrors(FS, "FRAGMENT");
+
+
+
+	//Create program object
+	program = glCreateProgram();
+
+	//Attach shaders
+	glAttachShader(program, VS);
+	glAttachShader(program, FS);
+
+	//Prepare to execute program
+	glLinkProgram(program);
+
+	//Check for errors during program compilation
+	checkCompileErrors(program, "PROGRAM");
+}
+
+std::string ModuleShader::getShadertext(char* source) {
+	std::ifstream file;
+	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	file.open(source);
+	std::stringstream vShaderStream;
+	vShaderStream << file.rdbuf();
+	file.close();
+
+	return vShaderStream.str();
+}
+
 bool ModuleShader::Init()
 {
 	LOG("Init Shaders\n");
@@ -185,6 +235,156 @@ bool ModuleShader::Init()
 	glUniformMatrix4fv(glGetUniformLocation(grid_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(grid_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
+	//TODO: This has to change
+	//.............FLAT.................//
+
+	try
+	{
+		// open files
+		vShaderFile.open("./Shaders/flat.vs");
+		fShaderFile.open("./Shaders/flat.fs");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+	vShaderCode = vertexCode.c_str();
+	fShaderCode = fragmentCode.c_str();
+	// 2. compile shaders
+
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	flat_program = glCreateProgram();
+	glAttachShader(flat_program, vertex);
+	glAttachShader(flat_program, fragment);
+	glLinkProgram(flat_program);
+	checkCompileErrors(flat_program, "PROGRAM");
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
+	glUseProgram(flat_program);
+	glUniformMatrix4fv(glGetUniformLocation(flat_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
+	glUniformMatrix4fv(glGetUniformLocation(flat_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(flat_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+
+	try
+	{
+		// open files
+		vShaderFile.open("./Shaders/Blinn.vs");
+		fShaderFile.open("./Shaders/Blinn.fs");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+	vShaderCode = vertexCode.c_str();
+	fShaderCode = fragmentCode.c_str();
+	// 2. compile shaders
+
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	blinn_program = glCreateProgram();
+	glAttachShader(blinn_program, vertex);
+	glAttachShader(blinn_program, fragment);
+	glLinkProgram(blinn_program);
+	checkCompileErrors(blinn_program, "PROGRAM");
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
+	glUseProgram(blinn_program);
+	glUniformMatrix4fv(glGetUniformLocation(blinn_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
+	glUniformMatrix4fv(glGetUniformLocation(blinn_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(blinn_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+
+	try
+	{
+		// open files
+		vShaderFile.open("./Shaders/Gouraud.vs");
+		fShaderFile.open("./Shaders/Gouraud.fs");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+	vShaderCode = vertexCode.c_str();
+	fShaderCode = fragmentCode.c_str();
+	// 2. compile shaders
+
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	gouraud_program = glCreateProgram();
+	glAttachShader(gouraud_program, vertex);
+	glAttachShader(gouraud_program, fragment);
+	glLinkProgram(gouraud_program);
+	checkCompileErrors(gouraud_program, "PROGRAM");
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
+	glUseProgram(gouraud_program);
+	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
+	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+
 	return true;
 
 }
@@ -232,7 +432,7 @@ const char* ModuleShader::readShader(const char* path) {
 	return shader;
 }
 
-void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
+void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 {
 	int success;
 	char infoLog[1024];

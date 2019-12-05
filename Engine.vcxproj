@@ -304,8 +304,14 @@
     <ClCompile Include="Source\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\shaders\Blinn.fs" />
+    <None Include="Game\shaders\Blinn.vs" />
     <None Include="Game\shaders\default.fs" />
     <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\flat.fs" />
+    <None Include="Game\shaders\flat.vs" />
+    <None Include="Game\shaders\Gouraud.fs" />
+    <None Include="Game\shaders\Gouraud.vs" />
     <None Include="Game\shaders\lines.fs" />
     <None Include="Game\shaders\lines.vs" />
     <None Include="Game\shaders\Phong.fs" />
