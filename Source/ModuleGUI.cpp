@@ -17,18 +17,14 @@
 #include <vector>
 
 
-
-ModuleGUI::ModuleGUI()
-{
+ModuleGUI::ModuleGUI() {
 }
 
 
-ModuleGUI::~ModuleGUI()
-{
+ModuleGUI::~ModuleGUI() {
 }
 
-bool ModuleGUI::Init()
-{
+bool ModuleGUI::Init() {
 	const char* glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -57,8 +53,7 @@ bool ModuleGUI::Init()
 	return true;
 }
 
-update_status ModuleGUI::PreUpdate()
-{
+update_status ModuleGUI::PreUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
@@ -66,13 +61,12 @@ update_status ModuleGUI::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::Update()
-{
+update_status ModuleGUI::Update() {
 
 	MainMenu();
 	if (showAppWindow)
 		ShowDefWindow();
-	if(showHelpWindow)
+	if (showHelpWindow)
 		ShowHelp();
 	if (showScene)
 		Scene();
@@ -86,29 +80,25 @@ update_status ModuleGUI::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::PostUpdate()
-{
+update_status ModuleGUI::PostUpdate() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleGUI::CleanUp()
-{
+bool ModuleGUI::CleanUp() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	return true;
 }
 
-void ModuleGUI::EventManager(SDL_Event event)
-{
+void ModuleGUI::EventManager(SDL_Event event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
-{
+void ModuleGUI::ShowConsole(const char * title, bool * p_opened) {
 	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 	ImGui::Begin(title, p_opened);
 	if (ImGui::Button("Clear")) Clear();
@@ -116,20 +106,17 @@ void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
 	ImGui::BeginChild("scrolling");
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
 
-	if (Filter.IsActive())
-	{
+	if (Filter.IsActive()) {
 		const char* buf_begin = logBuffer.begin();
 		const char* line = buf_begin;
-		for (int line_no = 0; line != NULL; line_no++)
-		{
+		for (int line_no = 0; line != NULL; line_no++) {
 			const char* line_end = (line_no < LineOffsets.Size) ? buf_begin + LineOffsets[line_no] : NULL;
 			if (Filter.PassFilter(line, line_end))
 				ImGui::TextUnformatted(line, line_end);
 			line = line_end && line_end[1] ? line_end + 1 : NULL;
 		}
 	}
-	else
-	{
+	else {
 		ImGui::TextUnformatted(logBuffer.begin());
 	}
 
@@ -142,31 +129,22 @@ void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
 }
 void ModuleGUI::MainMenu() {
 
-	if (ImGui::BeginMainMenuBar())
-	{
+	if (ImGui::BeginMainMenuBar()) {
 
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("New Scene"))
-			{
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("New Scene")) {
 			}
-			if (ImGui::MenuItem("Open Scene"))
-			{
+			if (ImGui::MenuItem("Open Scene")) {
 			}
-			if (ImGui::MenuItem("Save"))
-			{
+			if (ImGui::MenuItem("Save")) {
 			}
-			if (ImGui::MenuItem("New Project"))
-			{
+			if (ImGui::MenuItem("New Project")) {
 			}
-			if (ImGui::MenuItem("Open Project"))
-			{
+			if (ImGui::MenuItem("Open Project")) {
 			}
-			if (ImGui::MenuItem("Save Project"))
-			{
+			if (ImGui::MenuItem("Save Project")) {
 			}
-			if (ImGui::MenuItem("Exit"))
-			{
+			if (ImGui::MenuItem("Exit")) {
 				SDL_Event quit_event;
 				quit_event.type = SDL_QUIT;
 				SDL_PushEvent(&quit_event);
@@ -174,68 +152,50 @@ void ModuleGUI::MainMenu() {
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Game Object"))
-		{
-			if (ImGui::MenuItem("Create Empty"))
-			{
+		if (ImGui::BeginMenu("Game Object")) {
+			if (ImGui::MenuItem("Create Empty")) {
 			}
-			if (ImGui::MenuItem("Effects"))
-			{
+			if (ImGui::MenuItem("Effects")) {
 			}
-			if (ImGui::MenuItem("Lights"))
-			{
+			if (ImGui::MenuItem("Lights")) {
 			}
-			if (ImGui::MenuItem("Audio"))
-			{
+			if (ImGui::MenuItem("Audio")) {
 			}
-			if (ImGui::MenuItem("Video"))
-			{
+			if (ImGui::MenuItem("Video")) {
 			}
-			if (ImGui::MenuItem("UI"))
-			{
+			if (ImGui::MenuItem("UI")) {
 			}
-			if (ImGui::MenuItem("Camera"))
-			{
+			if (ImGui::MenuItem("Camera")) {
 			}
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Component"))
-		{
-			if (ImGui::MenuItem("Mesh"))
-			{
+		if (ImGui::BeginMenu("Component")) {
+			if (ImGui::MenuItem("Mesh")) {
 			}
-			if (ImGui::MenuItem("Effects"))
-			{
+			if (ImGui::MenuItem("Effects")) {
 			}
-			if (ImGui::MenuItem("Physics"))
-			{
+			if (ImGui::MenuItem("Physics")) {
 			}
-			if (ImGui::MenuItem("Audio"))
-			{
+			if (ImGui::MenuItem("Audio")) {
 			}
-			if (ImGui::MenuItem("Video"))
-			{
+			if (ImGui::MenuItem("Video")) {
 			}
-			if (ImGui::MenuItem("UI"))
-			{
+			if (ImGui::MenuItem("UI")) {
 			}
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Window"))
-		{
+		if (ImGui::BeginMenu("Window")) {
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("About"))
-		{
+		if (ImGui::BeginMenu("About")) {
 			ImGui::MenuItem(("Help"), (const char*)0, &showHelpWindow);
 			ImGui::MenuItem(("About Salsa"), (const char*)0, &showAboutWindow);
-			if (ImGui::MenuItem(ICON_FA_JEDI" Repository"))
-			{
+			if (ImGui::MenuItem(ICON_FA_JEDI" Repository")) {
 				ShellExecuteA(NULL, "open", "https://github.com/JorxSS/SalsaEngine", NULL, NULL, SW_SHOWNORMAL);
 			}
 			ImGui::EndMenu();
@@ -248,9 +208,8 @@ void ModuleGUI::MainMenu() {
 }
 
 void ModuleGUI::Scene() {
-	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
-	{
-		isScene= ImGui::IsWindowFocused();
+	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene")) {
+		isScene = ImGui::IsWindowFocused();
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
@@ -258,24 +217,23 @@ void ModuleGUI::Scene() {
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,ImGui::GetCursorScreenPos().y + sceneHeight),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth, ImGui::GetCursorScreenPos().y + sceneHeight),
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-		
+
 	}
 	ImGui::End();
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector"))
-	{
+	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
 		if (App->model->model) {
 			if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
-				
+
 				ImGui::InputFloat3("Position", &App->model->modelPosition[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Rotation", &App->model->modelRotation[0], 3, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputFloat3("Scale", &App->model->modelScale[0], 3, ImGuiInputTextFlags_ReadOnly);
@@ -296,8 +254,7 @@ void ModuleGUI::GameObjecInfo() {
 
 				static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
 				int node_clicked = -1;                // Temporary storage of what node we have clicked to process selection at the end of the loop. May be a pointer to your own node type, etc.
-				for (unsigned int i = 0; i < App->model->textures_loaded.size(); i++)
-				{
+				for (unsigned int i = 0; i < App->model->textures_loaded.size(); i++) {
 					// Disable the default open on single-click behavior and pass in Selected flag according to our selection state.
 					ImGuiTreeNodeFlags node_flags = base_flags;
 					std::string str = App->model->textures_loaded[i].path;
@@ -305,13 +262,11 @@ void ModuleGUI::GameObjecInfo() {
 					const bool is_selected = (selection_mask & (1 << i)) != 0;
 					if (is_selected)
 						node_flags |= ImGuiTreeNodeFlags_Selected;
-					if (i < App->model->textures_loaded.size())
-					{
+					if (i < App->model->textures_loaded.size()) {
 						bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Texture %d", i);
 						if (ImGui::IsItemClicked())
 							node_clicked = i;
-						if (node_open)
-						{
+						if (node_open) {
 							ImGui::Text("Path:");
 							ImGui::SameLine();
 							ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), path);
@@ -329,8 +284,7 @@ void ModuleGUI::GameObjecInfo() {
 						}
 					}
 				}
-				if (node_clicked != -1)
-				{
+				if (node_clicked != -1) {
 					// Update selection state. Process outside of tree loop to avoid visual inconsistencies during the clicking-frame.
 					if (ImGui::GetIO().KeyCtrl)
 						selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
@@ -346,31 +300,29 @@ void ModuleGUI::GameObjecInfo() {
 }
 void ModuleGUI::ShowHelp() {
 	bool* p_open = NULL;
-	if (ImGui::Begin("Help", p_open))
-	{
+	if (ImGui::Begin("Help", p_open)) {
 
 		ImGui::Text("USER GUIDE:");
 		ImGui::ShowUserGuide();
-		
+
 	}
 	ImGui::End();
 }
 void ModuleGUI::ShowAbout() {
 	bool* p_open = NULL;
-	if (ImGui::Begin("About", p_open))
-	{
+	if (ImGui::Begin("About", p_open)) {
 
 		ImGui::Text("SALSA ENGINE 0.1");
 		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona.");
 		ImGui::Text("Authors:  "); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Jordi Sauras Salas");
-		ImGui::Text("Libraries Used: "); 
+		ImGui::Text("Libraries Used: ");
 		static bool selection[7] = { false, false, false, false, false, false, false };
 		if (ImGui::Selectable("SLD2 2.0.4", selection[0], ImGuiSelectableFlags_AllowDoubleClick))
 			if (ImGui::IsMouseDoubleClicked(0)) {
 				selection[0] = !selection[0];
 				ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
-			}	
+			}
 		if (ImGui::Selectable("GLEW 2.1", selection[1], ImGuiSelectableFlags_AllowDoubleClick))
 			if (ImGui::IsMouseDoubleClicked(0)) {
 				selection[1] = !selection[1];
@@ -407,7 +359,7 @@ void ModuleGUI::ShowAbout() {
 				ShellExecuteA(NULL, "open", "https://fontawesome.com/", NULL, NULL, SW_SHOWNORMAL);
 			}
 		ImGui::Text("License: "); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1),"MIT");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "MIT");
 
 	}
 	ImGui::End();
@@ -426,14 +378,12 @@ void ModuleGUI::ShowDefWindow() {
 	static int screen_h = 0;
 	SDL_GetWindowSize(App->window->window, &screen_w, &screen_h);
 	bool* p_open = NULL;
-	if (ImGui::Begin(ICON_FA_COG " Configuration", p_open))
-	{
+	if (ImGui::Begin(ICON_FA_COG " Configuration", p_open)) {
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
 		ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 		ImGui::Spacing();
-		if (ImGui::CollapsingHeader(ICON_FA_TABLET_ALT " Application"))
-		{
+		if (ImGui::CollapsingHeader(ICON_FA_TABLET_ALT " Application")) {
 			ImGui::Text("Engine Version: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
 			ImGui::Separator();
@@ -444,14 +394,12 @@ void ModuleGUI::ShowDefWindow() {
 			//Get frames
 			if (frames.size() > 120) //Max seconds to show
 			{
-				for (size_t i = 1; i < frames.size(); i++)
-				{
+				for (size_t i = 1; i < frames.size(); i++) {
 					frames[i - 1] = frames[i];
 				}
 				frames[frames.size() - 1] = fps;
 			}
-			else
-			{
+			else {
 				frames.push_back(fps);
 			}
 			char title[25];
@@ -515,8 +463,7 @@ void ModuleGUI::ShowDefWindow() {
 
 
 		}
-		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera"))
-		{
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera")) {
 			ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputFloat3("Position", &App->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
@@ -527,22 +474,20 @@ void ModuleGUI::ShowDefWindow() {
 			if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
 				App->camera->SetFOV(App->camera->frustum.horizontalFov);
 
-			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
-			{
-				if(!aspectFixed)
+			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10)) {
+				if (!aspectFixed)
 					App->camera->SetAspectRatio(App->camera->aspectRatio);
 			}
 			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
 				App->camera->SetSpeed(App->camera->cameraSpeed);
-			
+
 			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
 				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
 
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
-			if (clicked & 1)
-			{
+			if (clicked & 1) {
 				App->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->camera->SetSpeed(CAMERA_SPEED);
 				clicked = 0;
@@ -557,13 +502,53 @@ void ModuleGUI::ShowDefWindow() {
 						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
 						aspectFixed = true;
 					}
-						
-					
+
+
 				}
-					
+
+			}
+		}
+
+		//////////////////////////////////////////////////////
+		static bool openMenu = false;
+		static bool selected = false;
+
+		if (ImGui::TreeNode("RootNode")) {
+			if (selected) ImGui::TreeNodeEx((void*)(intptr_t)0, ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Selected, "Selectable Node %d", 0);
+			else ImGui::TreeNodeEx((void*)(intptr_t)0, ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen, "Selectable Node %d", 0);
+
+			if (ImGui::IsItemClicked()) {
+				selected = !selected;
+			}
+			if (selected && ImGui::IsMouseClicked(1)) {
+				openMenu = !openMenu;
+			}
+			ImGui::TreePop();
+		}
+
+		if (openMenu) {
+			ImGui::OpenPopup("my_select_popup");
+			if (ImGui::BeginPopup("my_select_popup")) {
+				ImGui::MenuItem("Copy");
+				ImGui::MenuItem("Paste");
+				ImGui::Separator();
+				ImGui::MenuItem("Rename");
+				ImGui::MenuItem("Duplicate");
+				ImGui::MenuItem("Delete");
+				ImGui::Separator();
+				ImGui::MenuItem("Create Empty");
+				if (ImGui::BeginMenu("3D Object")) {
+					ImGui::MenuItem("Cube");
+					ImGui::MenuItem("Sphere");
+					ImGui::MenuItem("Cylinder");
+					ImGui::MenuItem("Torus");
+					ImGui::EndMenu();
+				}
+				ImGui::EndPopup();
 			}
 		}
 
 	}
 	ImGui::End();
+	ImGui::ShowDemoWindow();//
 }

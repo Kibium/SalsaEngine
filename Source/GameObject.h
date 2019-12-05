@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 
-enum Type { TRANSFORM, MESH, MATERIAL };
+enum class Type { TRANSFORM, MESH, MATERIAL };
 
 class Component;
+class ComponentTransform;
+class ComponentMesh;
+class ComponentMaterial;
 
 class GameObject {
 public:

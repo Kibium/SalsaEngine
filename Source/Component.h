@@ -1,7 +1,7 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
-enum Type;
+enum class Type;
 class GameObject;
 
 class Component {
@@ -10,8 +10,9 @@ public:
 	~Component();
 
 	virtual void Enable();
-	virtual void Update();
+	virtual void Update() {};
 	virtual void Disable();
+	virtual void OnEditor() = 0;
 
 public:
 	Type type;

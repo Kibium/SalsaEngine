@@ -163,6 +163,9 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ComponentTransform.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -678,6 +681,9 @@
     <ClInclude Include="Source\ModuleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ComponentTransform.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -709,6 +715,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{ef7379b0-e0e0-4404-b884-828acfcd30e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components">
+      <UniqueIdentifier>{917e5644-b749-4065-9c4f-5869699967ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

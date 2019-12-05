@@ -1,6 +1,7 @@
 #include "GameObject.h"
-#include "Component.h"
 #include "Globals.h"
+#include "Component.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject() {
 }
@@ -12,23 +13,25 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update() {
-	for each(Component* comp in components)
-		comp->Update();
+	for each(Component* comp in components) {
+		if (comp->active)
+			comp->Update();
+	}
 }
 
 Component* GameObject::CreateComponent(Type type) {
 	Component* component = nullptr;
 
 	switch (type) {
-	case TRANSFORM:
-		//component = new ComponentTransform();
+	case Type::TRANSFORM:
+		component = new ComponentTransform();
 		break;
 
-	case MESH:
+	case Type::MESH:
 		//component = new ComponentMesh();
 		break;
 
-	case MATERIAL:
+	case Type::MATERIAL:
 		//component = new ComponentMaterial();
 		break;
 

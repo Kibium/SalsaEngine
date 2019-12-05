@@ -233,6 +233,7 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentTransform.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
