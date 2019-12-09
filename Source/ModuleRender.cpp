@@ -6,7 +6,8 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "debugdraw.h"
-#include "ModuleDebugDraw.h"	
+#include "ModuleDebugDraw.h"
+#include "Skybox.h"
 
 #include "SDL.h"
 #include "MathGeoLib.h"
@@ -173,6 +174,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 	DrawGrid();
 	App->model->Draw();
+	App->skybox->Draw();
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

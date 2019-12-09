@@ -18,6 +18,7 @@ public:
 	void checkCompileErrors(unsigned int shader, std::string type);
 	GLuint def_program;
 	GLuint test_program;
+	GLuint skybox_program;
 };
 #endif // __MODULESHADER_H__
 

@@ -9,6 +9,7 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleDebugDraw.h"
+#include "Skybox.h"
 #include <windows.h>
 
 using namespace std;
@@ -26,6 +27,7 @@ Application::Application()
 
 	modules.push_back(model = new ModuleModelLoader());
 	modules.push_back(debug = new ModuleDebugDraw());
+
 }
 
 Application::~Application()
@@ -43,6 +45,7 @@ bool Application::Init()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 
+	skybox = new Skybox();
 	return ret;
 }
 

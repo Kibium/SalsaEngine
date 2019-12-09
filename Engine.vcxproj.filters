@@ -157,6 +157,9 @@
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Skybox.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -673,6 +676,9 @@
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Util\par_shapes.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Skybox.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>

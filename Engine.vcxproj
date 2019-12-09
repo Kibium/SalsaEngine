@@ -248,6 +248,7 @@
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
@@ -302,6 +303,7 @@
     <ClCompile Include="Source\ModuleShader.cpp" />
     <ClCompile Include="Source\ModuleTexture.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />

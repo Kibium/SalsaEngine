@@ -26,6 +26,7 @@ bool ModuleShader::Init()
 	// ensure ifstream objects can throw exceptions:
 	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
 	try
 	{
 		// open files
@@ -76,6 +77,55 @@ bool ModuleShader::Init()
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+
+
+	//CUTRE
+	unsigned int vertex2, fragment2;
+	try
+	{
+		// open files
+		vShaderFile.open("./shaders/skybox.vs.txt");
+		fShaderFile.open("./shaders/skybox.fs.txt");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+	vShaderCode = vertexCode.c_str();
+	fShaderCode = fragmentCode.c_str();
+	// 2. compile shaders
+	// vertex shader
+	vertex2 = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex2, 1, &vShaderCode, NULL);
+	glCompileShader(vertex2);
+	checkCompileErrors(vertex2, "VERTEX");
+	// fragment Shader
+	fragment2 = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment2, 1, &fShaderCode, NULL);
+	glCompileShader(fragment2);
+	checkCompileErrors(fragment2, "FRAGMENT");
+	// shader Program
+	skybox_program = glCreateProgram();
+	glAttachShader(skybox_program, vertex2);
+	glAttachShader(skybox_program, fragment2);
+	glLinkProgram(skybox_program);
+	checkCompileErrors(skybox_program, "PROGRAM");
+
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex2);
+	glDeleteShader(fragment2);
+
+
 	return true;
 
 }
