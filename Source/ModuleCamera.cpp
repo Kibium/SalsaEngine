@@ -223,7 +223,7 @@ void ModuleCamera::DrawFrustum()
 	
 }
 
-int ModuleCamera::ContainsAABOX(const AABB& refBox) {
+in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
 
 	float3 vCorner[8];
 	int iTotalIn = 0;

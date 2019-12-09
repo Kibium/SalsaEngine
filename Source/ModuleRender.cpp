@@ -38,7 +38,7 @@ bool ModuleRender::Init()
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glFrontFace(GL_CCW);
-	//glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
@@ -116,9 +116,10 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
 	App->camera->DrawFrustum();
-	dd::axisTriad(App->camera->view.Inverted(),5,8);
+	//dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
-	App->model->Draw();
+	if(App->camera->ContainsAABOX(App->model->modelBox)!= 0)
+		App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
 	App->debug->Draw(GameCamera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
