@@ -15,6 +15,10 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "GameObject.h"
+#include "ModuleScene.h"
+#include "Component.h"
+#include "ComponentTransform.h"
 
 struct TestObject {
 	bool selected;
@@ -31,29 +35,32 @@ void ClearAllSelection() {
 }
 
 void DrawChild(TestObject * obj) {
-	// same as draw funciton as it allow recurrsive draw for the child item
-	ImGui::TreeNodeEx(obj->name.c_str());
-	ImGui::TreePop();
+	//ImGui::TreeNodeEx(obj->name.c_str());
+	//LOG("%d\n", obj->name.c_str());
+	//ImGui::TreeNodeEx("test");
+	//ImGui::TreePop();
 }
 
 void Draw() {
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_None;
 
-	for (auto &elem : test_object) {
+	for (int i = 0; i < test_object.size(); ++i) {
 
-		bool node_open = ImGui::TreeNodeEx(elem->name.c_str(), node_flags, elem->name.c_str());
+		bool node_open = ImGui::TreeNodeEx(test_object[i]->name.c_str(), node_flags, test_object[i]->name.c_str());
 
 		if (ImGui::BeginDragDropTarget()) {
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MoveToAdd")) {
 				TestObject * test = new TestObject();
 				test->selected = false;
 				test->name = *(static_cast<std::string*>(payload->Data));
-				elem->test_object_child.push_back(test);
+				LOG("Name: %s\n", static_cast<std::string*>(payload->Data));
+				test_object[i]->test_object_child.push_back(test);
+				test_object.erase(test_object.begin() + i + 1);
 			}
 			ImGui::EndDragDropTarget();
 		}
 		if (ImGui::BeginDragDropSource(node_flags)) {
-			std::string sent_data = elem->name;
+			std::string sent_data = test_object[i]->name;
 			ImGui::SetDragDropPayload("MoveToAdd", &sent_data, sent_data.size());
 			ImGui::Text("Move to...");
 			ImGui::EndDragDropSource();
@@ -67,11 +74,11 @@ void Draw() {
 			}
 			else if (ImGui::IsMouseReleased(0)) {
 				ClearAllSelection();
-				elem->selected = true;
+				test_object[i]->selected = true;
 			}
 		}
 		if (node_open) {
-			for (auto &child_elem : elem->test_object_child) {
+			for (auto &child_elem : test_object[i]->test_object_child) {
 				DrawChild(child_elem);
 			}
 			ImGui::TreePop();
@@ -82,6 +89,7 @@ void Draw() {
 // https://github.com/ocornut/imgui/issues/2597
 // https://github.com/ocornut/imgui/issues/2209
 // https://discourse.dearimgui.org/t/tree-nodes-help/82/3
+// https://github.com/CITMProject3/Project3/blob/master/Hierarchy.cpp
 
 ModuleGUI::ModuleGUI() {
 }
@@ -116,21 +124,21 @@ bool ModuleGUI::Init() {
 	ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 	io.Fonts->AddFontFromFileTTF("Fonts/" FONT_ICON_FILE_NAME_FAS, 14.0f, &icons_config, icons_ranges);
 
-	// test
-	TestObject *test1 = new TestObject();
-	test1->selected = "false";
-	test1->name = "test1";
-	test_object.push_back(test1);
+	// Hierarchy
+	//GameObject* obj1 = new GameObject();
+	//obj1->name = "Obj1";
 
-	TestObject *test2 = new TestObject();
-	test2->selected = "false";
-	test2->name = "test2";
-	test_object.push_back(test2);
+	//GameObject* obj2 = new GameObject();
+	//obj2->name = "Obj2";
 
-	TestObject *test3 = new TestObject();
-	test3->selected = "false!";
-	test3->name = "test3";
-	test_object.push_back(test3);
+	//GameObject* obj3 = new GameObject();
+	//obj3->name = "Obj3";
+
+	//App->scene->game_objects.push_back(obj1);
+	//App->scene->game_objects.push_back(obj2);
+	//App->scene->game_objects.push_back(obj3);
+
+
 	return true;
 }
 
@@ -590,8 +598,23 @@ void ModuleGUI::ShowDefWindow() {
 			}
 		}
 
-		Draw();
+		App->scene->game_objects[0]->Draw();
+		if (ImGui::IsItemHovered()) {
+			App->scene->game_objects[0]->selected = !App->scene->game_objects[0]->selected;
+		}
 	}
 	ImGui::End();
 	ImGui::ShowDemoWindow();
+
+
+	////////////////////////////////////////////////////////////
+	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector2")) {
+
+		for (int i = 0; i < App->scene->game_objects.size(); ++i) {
+			if (App->scene->game_objects[i]->selected)
+				App->scene->game_objects[i]->Update();
+		}
+
+		ImGui::End();
+	}
 }

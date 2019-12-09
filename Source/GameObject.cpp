@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "imgui.h"
 
 GameObject::GameObject() {
 }
@@ -14,10 +15,15 @@ GameObject::~GameObject() {
 	components.clear();
 }
 
+void GameObject::Draw() {
+	ImGui::TreeNodeEx(name.c_str());
+	//ImGui::TreePop();
+}
+
 void GameObject::Update() {
 	for each(Component* comp in components) {
 		if (comp->active)
-			comp->Update();
+			comp->OnEditor();
 	}
 }
 

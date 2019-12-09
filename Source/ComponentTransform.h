@@ -21,6 +21,8 @@ public:
 	math::float3 position;
 	math::float3 rotation;
 	math::float3 scale;
+
+	// local and world transform and dirty flag to know if needs to be recalculated
 };
 
 #endif // __COMPONENTTRANSFORM_H__

@@ -16,12 +16,14 @@ public:
 	GameObject();
 	~GameObject();
 
+	void Draw();
 	void Update();
 	Component* CreateComponent(Type type);
 
 public:
+	bool selected;
 	bool active;
-	std::string name;
+	std::string name = "Object";
 	std::vector<Component*> components;
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
