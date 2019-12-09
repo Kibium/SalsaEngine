@@ -10,6 +10,11 @@
 #define ROTATION_SPEED 0.02f
 #define MAXIMUM_PITCH 89.f
 #define MINIMUM_PITCH -89.f
+#define ABB_IN 1
+#define ABB_OUT 0
+#define INTERSECT 2
+
+const bool BEHIND = false; 
 
 
 class ModuleCamera : public Module
@@ -50,6 +55,8 @@ public:
 	 void Orbit(const float, const float);
 	 void Focus();
 	 void DrawFrustum();
+
+	 int ContainsAABOX(const AABB & refBox);
 
 	 Frustum frustum;
 	 float aspectRatio;
