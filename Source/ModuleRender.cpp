@@ -40,7 +40,7 @@ bool ModuleRender::Init()
 	glFrontFace(GL_CCW);
 	//glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
 
 	GameCamera = new ModuleCamera();
