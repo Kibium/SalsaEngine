@@ -13,6 +13,7 @@ using namespace std;
 struct Vertex {
 	float3 Position;
 	float2 TexCoords;
+	float3 Normals;
 };
 
 struct Texture {

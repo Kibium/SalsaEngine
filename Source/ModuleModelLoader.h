@@ -74,10 +74,22 @@ public:
 
 	struct Material
 	{
-		unsigned program = 0;
+		
+		//Textures
 		unsigned diffuse_map = 0;
-		math::float4 object_color = math::float4::zero;
+		unsigned specular_map = 0;
+		unsigned occlusion_map = 0;
+		unsigned emissive_map = 0;
+
+		//Colors
+		math::float4 diffuse_color = math::float4::zero;
+		math::float4 specular_color = math::float4::zero;
+		math::float4 occlusion_color = math::float4::zero;
+		math::float4 emissive_color = math::float4::zero;
+
+		//Constants
 		float shininess = 0.0f;
+
 		float k_specular = 0.0f;
 		float k_diffuse = 0.0f;
 		float k_ambient = 0.0f;
@@ -110,6 +122,7 @@ private:
 
 	void GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh_s* shape);
 	void GenerateMeshes(const aiScene* scene);
+	void GenerateMaterials(const aiScene* scene);
 	
 	void Load(const char*);
 	void processNode(aiNode*, const aiScene*);

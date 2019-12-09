@@ -630,16 +630,16 @@ void ModuleGUI::ShowDefWindow() {
 			ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
 			if(ImGui::SliderFloat("Color R", &App->model->color.x, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
-					App->model->materials[i].object_color = App->model->color;
+					App->model->materials[i].diffuse_color = App->model->color;
 			}
 			if (ImGui::SliderFloat("Color G", &App->model->color.y, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
-					App->model->materials[i].object_color = App->model->color;
+					App->model->materials[i].diffuse_color = App->model->color;
 
 			}
 			if (ImGui::SliderFloat("Color B", &App->model->color.z, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
-					App->model->materials[i].object_color = App->model->color;
+					App->model->materials[i].diffuse_color = App->model->color;
 			}
 
 			ImGui::SliderFloat("Ambient", &App->model->ambient, 0, 1);

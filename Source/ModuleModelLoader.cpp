@@ -101,6 +101,8 @@ void ModuleModelLoader::GenerateMesh(const char* name, const math::float3& pos, 
 	bsphere.radius = (max_v - min_v).Length()*0.5f;
 }
 
+
+
 void ModuleModelLoader::GenerateVAO(Figure& mesh)
 {
 	glGenVertexArrays(1, &mesh.vao);
@@ -112,17 +114,19 @@ void ModuleModelLoader::GenerateVAO(Figure& mesh)
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	if (mesh.normals_offset != 0)
-	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normals_offset*mesh.num_vertices));
-	}
-
 	if (mesh.texcoords_offset != 0)
 	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texcoords_offset*mesh.num_vertices));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.texcoords_offset*mesh.num_vertices));
 	}
+
+	if (mesh.normals_offset != 0)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)(mesh.normals_offset*mesh.num_vertices));
+	}
+
+
 
 	glBindVertexArray(0);
 
@@ -154,7 +158,7 @@ void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	if (material.diffuse_map == 0)
 	{
 		glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 0);
-		glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (const float*)&material.object_color);
+		glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (const float*)&material.diffuse_color);
 	}
 	else
 	{
@@ -188,8 +192,7 @@ void ModuleModelLoader::CreateSphere(const char* name, const math::float3& pos, 
 
 
 		Material mat;
-		mat.program = App->shader->def_program;
-		mat.object_color = color;
+		mat.diffuse_color = color;
 
 		materials.push_back(mat);
 	}
@@ -210,8 +213,7 @@ void ModuleModelLoader::CreateTorus(const char* name, const math::float3& pos, c
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->def_program;
-		mat.object_color = color;
+		mat.diffuse_color = color;
 
 		materials.push_back(mat);
 
@@ -247,8 +249,7 @@ void ModuleModelLoader::CreateCylinder(const char* name, const math::float3& pos
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->def_program;
-		mat.object_color = color;
+		mat.diffuse_color = color;
 
 		materials.push_back(mat);
 
@@ -299,8 +300,7 @@ void ModuleModelLoader::CreateCube(const char* name, const math::float3& pos, co
 		figures.back().material = materials.size();
 
 		Material mat;
-		mat.program = App->shader->def_program;
-		mat.object_color = color;
+		mat.diffuse_color = color;
 
 		materials.push_back(mat);
 
@@ -312,7 +312,7 @@ void ModuleModelLoader::CreateCube(const char* name, const math::float3& pos, co
 
 update_status ModuleModelLoader::Update() {
 
-	
+
 
 	return UPDATE_CONTINUE;
 }
@@ -430,8 +430,8 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+		vertex.Normals = float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
 
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
