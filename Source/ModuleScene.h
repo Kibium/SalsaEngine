@@ -20,10 +20,15 @@ public:
 
 public:
 	GameObject* CreateGameObject();
+	void DrawHierarchy();
+	void DrawPopup(int parentID, int childID);
 
 public:
-	std::vector<GameObject*> game_objects;
+	std::vector<GameObject*> gameObjects;
 	GameObject* root = nullptr;
+	int nodeClicked = -1;
+
+	bool rename = false;
 };
 
 #endif // __MODULESCENE_H__

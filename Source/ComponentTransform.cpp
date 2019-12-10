@@ -28,6 +28,7 @@ void ComponentTransform::Update() {
 
 void ComponentTransform::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform")) {
+		ImGui::Text("ID: %d", ID);
 		ImGui::DragFloat3("Position", &position[0], 0.5F);
 		ImGui::DragFloat3("Rotation", &rotation[0], 0.5F);
 		ImGui::DragFloat3("Scale", &scale[0], 0.5F);

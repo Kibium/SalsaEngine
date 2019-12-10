@@ -19,6 +19,7 @@ public:
 	void Draw();
 	void Update();
 	Component* CreateComponent(Type type);
+	void SetParent(int parentID, GameObject *parent);
 
 public:
 	bool selected;

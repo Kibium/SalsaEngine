@@ -15,9 +15,10 @@ public:
 	virtual void OnEditor() = 0;
 
 public:
+	int ID = 0;
 	Type type;
 	bool active;
-	GameObject* my_go = nullptr;
+	GameObject* myGo = nullptr;
 };
 
 #endif // __COMPONENT_H__

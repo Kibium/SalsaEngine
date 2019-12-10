@@ -16,7 +16,7 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Draw() {
-	ImGui::TreeNodeEx(name.c_str());
+	ImGui::TreeNode(name.c_str());
 	//ImGui::TreePop();
 }
 
@@ -52,4 +52,9 @@ Component* GameObject::CreateComponent(Type type) {
 		components.push_back(component);
 
 	return component;
+}
+
+void GameObject::SetParent(int parentID, GameObject *parent) {
+	this->parent = parent;
+	//TODO errase object from gameobjects modulescene and insert it as aa children
 }

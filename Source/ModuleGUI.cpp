@@ -598,10 +598,7 @@ void ModuleGUI::ShowDefWindow() {
 			}
 		}
 
-		App->scene->game_objects[0]->Draw();
-		if (ImGui::IsItemHovered()) {
-			App->scene->game_objects[0]->selected = !App->scene->game_objects[0]->selected;
-		}
+		App->scene->DrawHierarchy();
 	}
 	ImGui::End();
 	ImGui::ShowDemoWindow();
@@ -610,9 +607,11 @@ void ModuleGUI::ShowDefWindow() {
 	////////////////////////////////////////////////////////////
 	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector2")) {
 
-		for (int i = 0; i < App->scene->game_objects.size(); ++i) {
-			if (App->scene->game_objects[i]->selected)
-				App->scene->game_objects[i]->Update();
+		if (App->scene->gameObjects.size() > 0) {
+			if (App->scene->nodeClicked != -1) {
+				App->scene->gameObjects[App->scene->nodeClicked]->selected = true;
+				App->scene->gameObjects[App->scene->nodeClicked]->Update();
+			}
 		}
 
 		ImGui::End();
