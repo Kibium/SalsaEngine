@@ -15,81 +15,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "GameObject.h"
 #include "ModuleScene.h"
-#include "Component.h"
-#include "ComponentTransform.h"
-
-struct TestObject {
-	bool selected;
-	std::string name;
-	std::vector<TestObject*> test_object_child;
-};
-
-std::vector<TestObject*> test_object;
-
-void ClearAllSelection() {
-	for (auto &elem : test_object) {
-		elem->selected = false;
-	}
-}
-
-void DrawChild(TestObject * obj) {
-	//ImGui::TreeNodeEx(obj->name.c_str());
-	//LOG("%d\n", obj->name.c_str());
-	//ImGui::TreeNodeEx("test");
-	//ImGui::TreePop();
-}
-
-void Draw() {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_None;
-
-	for (int i = 0; i < test_object.size(); ++i) {
-
-		bool node_open = ImGui::TreeNodeEx(test_object[i]->name.c_str(), node_flags, test_object[i]->name.c_str());
-
-		if (ImGui::BeginDragDropTarget()) {
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MoveToAdd")) {
-				TestObject * test = new TestObject();
-				test->selected = false;
-				test->name = *(static_cast<std::string*>(payload->Data));
-				LOG("Name: %s\n", static_cast<std::string*>(payload->Data));
-				test_object[i]->test_object_child.push_back(test);
-				test_object.erase(test_object.begin() + i + 1);
-			}
-			ImGui::EndDragDropTarget();
-		}
-		if (ImGui::BeginDragDropSource(node_flags)) {
-			std::string sent_data = test_object[i]->name;
-			ImGui::SetDragDropPayload("MoveToAdd", &sent_data, sent_data.size());
-			ImGui::Text("Move to...");
-			ImGui::EndDragDropSource();
-		}
-		if (ImGui::IsItemHovered()) {
-			if (ImGui::GetIO().KeyShift && ImGui::IsMouseReleased(0)) {
-				// some shift click
-			}
-			else if (ImGui::GetIO().KeyCtrl && ImGui::IsMouseReleased(0)) {
-				// some control click function
-			}
-			else if (ImGui::IsMouseReleased(0)) {
-				ClearAllSelection();
-				test_object[i]->selected = true;
-			}
-		}
-		if (node_open) {
-			for (auto &child_elem : test_object[i]->test_object_child) {
-				DrawChild(child_elem);
-			}
-			ImGui::TreePop();
-		}
-	}
-}
-
-// https://github.com/ocornut/imgui/issues/2597
-// https://github.com/ocornut/imgui/issues/2209
-// https://discourse.dearimgui.org/t/tree-nodes-help/82/3
-// https://github.com/CITMProject3/Project3/blob/master/Hierarchy.cpp
 
 ModuleGUI::ModuleGUI() {
 }
@@ -124,21 +50,6 @@ bool ModuleGUI::Init() {
 	ImFontConfig icons_config; icons_config.MergeMode = true; icons_config.PixelSnapH = true;
 	io.Fonts->AddFontFromFileTTF("Fonts/" FONT_ICON_FILE_NAME_FAS, 14.0f, &icons_config, icons_ranges);
 
-	// Hierarchy
-	//GameObject* obj1 = new GameObject();
-	//obj1->name = "Obj1";
-
-	//GameObject* obj2 = new GameObject();
-	//obj2->name = "Obj2";
-
-	//GameObject* obj3 = new GameObject();
-	//obj3->name = "Obj3";
-
-	//App->scene->game_objects.push_back(obj1);
-	//App->scene->game_objects.push_back(obj2);
-	//App->scene->game_objects.push_back(obj3);
-
-
 	return true;
 }
 
@@ -153,18 +64,31 @@ update_status ModuleGUI::PreUpdate() {
 update_status ModuleGUI::Update() {
 
 	MainMenu();
+
 	if (showAppWindow)
 		ShowDefWindow();
+
 	if (showHelpWindow)
 		ShowHelp();
+
 	if (showScene)
 		Scene();
-	if (showInspector)
+
+	if (true)
 		GameObjecInfo();
+
 	if (showAboutWindow)
 		ShowAbout();
 
+	if (showHierarchy)
+		App->scene->DrawHierarchy(&showHierarchy);
+
+	if (showInspector)
+		App->scene->DrawInspector(&showInspector);
+
 	ShowConsole(ICON_FA_TERMINAL " Console");
+
+	ImGui::ShowDemoWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -278,6 +202,7 @@ void ModuleGUI::MainMenu() {
 		if (ImGui::BeginMenu("Window")) {
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
+			ImGui::MenuItem(("Hierarchy"), (const char*)0, &showHierarchy);
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
@@ -316,7 +241,7 @@ void ModuleGUI::Scene() {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector")) {
+	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
@@ -597,23 +522,6 @@ void ModuleGUI::ShowDefWindow() {
 
 			}
 		}
-
-		App->scene->DrawHierarchy();
 	}
 	ImGui::End();
-	ImGui::ShowDemoWindow();
-
-
-	////////////////////////////////////////////////////////////
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector2")) {
-
-		if (App->scene->gameObjects.size() > 0) {
-			if (App->scene->nodeClicked != -1) {
-				App->scene->gameObjects[App->scene->nodeClicked]->selected = true;
-				App->scene->gameObjects[App->scene->nodeClicked]->Update();
-			}
-		}
-
-		ImGui::End();
-	}
 }

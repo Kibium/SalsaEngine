@@ -15,9 +15,8 @@ void ComponentMesh::Update() {
 }
 
 void ComponentMesh::OnEditor() {
-	if (ImGui::CollapsingHeader(ICON_FA_CUBES " Mesh")) {
-		ImGui::Text("Mesh");
-		ImGui::Text("Mesh");
-		ImGui::Text("Mesh");
+	if (ImGui::CollapsingHeader(ICON_FA_CUBE " Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
+		ImGui::Checkbox("Active", &active);
 	}
+	ImGui::Separator();
 }

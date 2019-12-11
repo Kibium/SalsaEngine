@@ -12,12 +12,11 @@ public:
 	virtual void Enable();
 	virtual void Update() {};
 	virtual void Disable();
-	virtual void OnEditor() = 0;
+	virtual void OnEditor(){}
 
 public:
-	int ID = 0;
 	Type type;
-	bool active;
+	bool active = true;
 	GameObject* myGo = nullptr;
 };
 
