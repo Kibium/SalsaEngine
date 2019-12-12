@@ -74,7 +74,33 @@ void GameObject::DrawComponents() {
 	for (int i = 0; i < components.size(); ++i) {
 		components[i]->OnEditor();
 	}
-	ImGui::Button("Add Component");
+	if (ImGui::Button("Add Component")) {
+		ImGui::OpenPopup("Add Component Popup");
+	}
+	if (ImGui::BeginPopup("Add Component Popup")) {
+		if (ImGui::MenuItem("Transform")) {
+			CreateComponent(Type::TRANSFORM);
+		}
+		if (ImGui::MenuItem("Mesh")) {
+			CreateComponent(Type::MESH);
+		}
+		if (ImGui::MenuItem("Material")) {
+			CreateComponent(Type::MATERIAL);
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void GameObject::DeleteChild(GameObject *child) {
+	assert(child != nullptr);
+
+	for (int i = 0; i < children.size(); ++i) {
+		if (child == children[i]) {
+			children.erase(children.begin() + i);
+			break;
+		}
+	}
 }
 
 GameObject* GameObject::GetChild(unsigned childIndex) const {

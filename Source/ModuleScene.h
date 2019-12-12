@@ -18,15 +18,20 @@ public:
 
 public:
 	GameObject* CreateGameObject();
+	void DeleteGameObject(GameObject *gameObject);
+
+	void DrawGameObject(unsigned index, const std::vector<GameObject*>& objects);
 	void DrawHierarchy(bool *showHierarchy);
 	void DrawInspector(bool *showInspector);
-	void DrawPopup(int parentID, int childID);
+	void DrawPopup(GameObject *gameObject);
+
+	void SortGameObjects(std::vector<GameObject*> &objects);
 
 public:
 	std::vector<GameObject*> gameObjects;
 	GameObject* root = nullptr;
+	GameObject* draggedObject = nullptr;
 	GameObject* selectedObject = nullptr;
-	int selectedObjectIndex = -1;
 };
 
 #endif // __MODULESCENE_H__
