@@ -3,6 +3,12 @@
 
 #include "Module.h"
 
+enum TextureType {
+	DIFFUSE = 0,
+	SPECULAR,
+	OCCLUSION
+};
+
 typedef unsigned int GLuint;
 typedef unsigned int ILenum;
 struct ILinfo;

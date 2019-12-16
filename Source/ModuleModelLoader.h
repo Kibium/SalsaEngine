@@ -11,6 +11,7 @@
 #include "assimp/LogStream.hpp"
 #include "MathGeoLib.h"
 #include "Geometry/AABB.h"
+#include "ModuleTexture.h"
 
 struct aiScene;
 struct par_shapes_mesh_s;
@@ -31,7 +32,7 @@ public:
 
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
-	string directory;
+	string directory, model_name;
 	vector<int> textureWidth;
 	vector<int> textureHeight;
 
@@ -95,6 +96,7 @@ public:
 		float k_ambient = 0.0f;
 	};
 private:
+
 	struct Sphere
 	{
 		math::float3 center = math::float3::zero;
@@ -106,7 +108,8 @@ private:
 		math::float4 color = math::float4::one;
 		math::float3 pos = math::float3::one;
 	};
-public:
+public:	
+	bool load_once = false;
 	void RenderMesh(const Figure& mesh, const Material& material,
 		const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj);
 
@@ -117,9 +120,10 @@ public:
 	void CreateCylinder(const char* name, const math::float3& pos, const math::Quat& rot, float height,
 		float radius, unsigned slices, unsigned stacks, const math::float4& color);
 	void CreateCube(const char* name, const math::float3& pos, const math::Quat& rot, float size, const math::float4& color);
+	string GetFilename(const char*);
 private:	
 	void GenerateVAO(Figure& mesh);
-
+	void LoadTexture(vector<Texture>& v, TextureType type);
 	void GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh_s* shape);
 	void GenerateMeshes(const aiScene* scene);
 	void GenerateMaterials(const aiScene* scene);
@@ -129,7 +133,7 @@ private:
 	Mesh processMesh(aiMesh*, const aiScene*);
 	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
 	string GetModelDirectory(const char*);
-	string GetFilename(const char*);
+
 
 public:
 

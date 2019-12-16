@@ -226,6 +226,11 @@ bool ModuleInput::CleanUp()
 
 void ModuleInput::DroppedFile(const char* file) const
 {
+	//If the house is BakerHouse.fbx, returns BakerHouse
+	App->model->model_name = App->model->GetFilename(file);
+	App->model->load_once = false;
+	
+
 	if (file == NULL) {
 		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");
 		return;

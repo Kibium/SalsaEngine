@@ -1,7 +1,7 @@
 #include "ModuleModelLoader.h"
 #include "Application.h"
 #include "ModuleShader.h"
-#include "ModuleTexture.h"
+
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
@@ -419,6 +419,51 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 	App->camera->Focus();
 }
 
+void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
+	string dir;
+	Texture tex;
+
+	switch (type) {
+	case DIFFUSE:
+		dir = directory + model_name + "_diffuse.png";
+		tex.id = App->texture->Load(dir.c_str());
+
+		if (tex.id != NULL) {
+			tex.type = "diffuse";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+		}
+
+		break;
+
+
+	case SPECULAR:
+		dir = directory + model_name + "_specular.png";
+		tex.id = App->texture->Load(dir.c_str());
+		if (tex.id != NULL) {
+			tex.type = "specular";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+		}
+		break;
+
+	case OCCLUSION:
+		dir = directory + model_name + "_occlusion.png";
+		tex.id = App->texture->Load(dir.c_str());
+		if (tex.id != NULL) {
+			tex.type = "occlusion";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+		}
+		break;
+	}
+
+
+}
+
 Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	// data to fill
@@ -450,9 +495,9 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	nvertex += indices.size();
 
 	// process materials
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+/*	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
 	// Same applies to other texture as the following list summarizes:
 	// diffuse: texture_diffuseN
 	// specular: texture_specularN
@@ -471,6 +516,20 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 	// return a mesh object created from the extracted mesh data
+*/
+
+
+/*diffuse texture loading*/
+	if (!load_once) {
+		LoadTexture(textures, DIFFUSE);
+		LoadTexture(textures, SPECULAR);
+		LoadTexture(textures, OCCLUSION);
+		load_once = true;
+	}
+
+
+
+
 	return Mesh(vertices, indices, textures);
 }
 
@@ -543,6 +602,7 @@ string ModuleModelLoader::GetFilename(const char *path)
 
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string filename = dir.substr(currentDir + 1);
+	filename = filename.substr(0, filename.find('.'));
 
 	return filename;
 }
