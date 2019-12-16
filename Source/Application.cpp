@@ -10,7 +10,6 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include <windows.h>
-#include "ModuleScene.h"
 
 using namespace std;
 
@@ -26,7 +25,6 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	//modules.push_back(triangle = new ModuleTriangle());
 	modules.push_back(model = new ModuleModelLoader());
-	modules.push_back(scene = new ModuleScene());
 }
 
 Application::~Application()
