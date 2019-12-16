@@ -28,7 +28,7 @@ Application::Application()
 	modules.push_back(model = new ModuleModelLoader());
 	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(scene = new ModuleScene());
-
+	
 }
 
 Application::~Application()

@@ -33,7 +33,7 @@ bool ModuleCamera::Init() {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	CalculateMatrixes();
-
+	auxView = view;
 	return true;
 }
 

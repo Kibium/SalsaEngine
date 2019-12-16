@@ -64,6 +64,7 @@ public:
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;
+	 math::float4x4 auxView;
 	 float cameraSpeed = CAMERA_SPEED;
 	 float rotationSpeed = ROTATION_SPEED;
 private:

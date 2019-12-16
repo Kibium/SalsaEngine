@@ -68,7 +68,6 @@ Skybox::Skybox()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
 	cubemapTexture = loadCubemap(faces);
 }
 
@@ -102,7 +101,11 @@ GLuint Skybox::loadCubemap(std::vector<std::string> &nfaces )
 void Skybox::Draw() {
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 	glUseProgram(App->shader->skybox_program);
-	//glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
+	float3x3 auxView;
+	auxView[0][0] = App->camera->frustum.pos.x; auxView[0][1] = App->camera->frustum.pos.y; auxView[0][2] = App->camera->frustum.pos.z;
+	auxView[1][0] = App->camera->frustum.up.x; auxView[1][1] = App->camera->frustum.up.y; auxView[1][2] = App->camera->frustum.up.z;
+	auxView[2][0] = App->camera->frustum.front.x; auxView[2][1] = App->camera->frustum.front.y; auxView[2][2] = App->camera->frustum.front.z;
+
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 	// skybox cube

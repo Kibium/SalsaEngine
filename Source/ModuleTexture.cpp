@@ -84,10 +84,10 @@ void ModuleTexture::LoadSkybox(const char *filename, int index) {
 	ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 	ILinfo ImageInfo;
 	iluGetImageInfo(&ImageInfo);
-	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	/*if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 	{
 		iluFlipImage();
-	}
+	}*/
 	//glGenTextures(1, &texture);
 	//glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 	int width = ilGetInteger(IL_IMAGE_WIDTH);
