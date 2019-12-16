@@ -19,7 +19,7 @@ update_status ComponentMaterial::Update() {
 
 void ComponentMaterial::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canDelete, ImGuiTreeNodeFlags_DefaultOpen)) {
-		if (ImGui::Checkbox("Active", &canDelete)) {
+		if (ImGui::Checkbox("Active Material", &active)) {
 			active ? Enable() : Disable();
 		}
 	}

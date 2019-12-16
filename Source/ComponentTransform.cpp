@@ -30,7 +30,7 @@ update_status ComponentTransform::Update() {
 
 void ComponentTransform::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform", &canDelete, ImGuiTreeNodeFlags_DefaultOpen)) {
-		if (ImGui::Checkbox("Active", &canDelete)) {
+		if (ImGui::Checkbox("Active Transform", &active)) {
 			active ? Enable() : Disable();
 		}
 		ImGui::DragFloat3("Position", &position[0], 0.5F, -9999.F, 9999.F, "%.1f");
