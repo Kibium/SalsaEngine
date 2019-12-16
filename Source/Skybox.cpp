@@ -7,7 +7,7 @@
 
 Skybox::Skybox()
 {
-	textures.clear();
+	//textures.clear();
 	data.clear();
 	float skyboxVertices[] = {
 		// positions          
@@ -75,9 +75,10 @@ Skybox::Skybox()
 
 Skybox::~Skybox()
 {
+	//glDelete
 }
 
-GLuint Skybox::loadCubemap(std::vector<std::string> nfaces )
+GLuint Skybox::loadCubemap(std::vector<std::string> &nfaces )
 {
 	GLuint textureID;
 	glGenTextures(1, &textureID);
@@ -85,7 +86,7 @@ GLuint Skybox::loadCubemap(std::vector<std::string> nfaces )
 
 	for (unsigned int i = 0; i < nfaces.size(); i++)
 	{
-		textures.push_back(App->texture->LoadSkybox(nfaces[i].c_str(), i));
+		App->texture->LoadSkybox(nfaces[i].c_str(), i);
 		//glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, textureWidth[i], textureHeight[i], 0, GL_RGB, GL_UNSIGNED_BYTE, data[i]);
 	}
 

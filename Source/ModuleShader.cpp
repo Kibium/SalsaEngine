@@ -30,8 +30,8 @@ bool ModuleShader::Init()
 	try
 	{
 		// open files
-		vShaderFile.open("./Shaders/default.vs");
-		fShaderFile.open("./Shaders/default.fs");
+		vShaderFile.open("./shaders/default.vs");
+		fShaderFile.open("./shaders/default.fs");
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
@@ -183,7 +183,7 @@ void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- " );
+			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- \n" );
 		}
 	}
 	else
@@ -192,7 +192,7 @@ void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: ", "\n",infoLog, "\n -- --------------------------------------------------- -- ");
+			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: ", "\n",infoLog, "\n -- --------------------------------------------------- -- \n ");
 		}
 	}
 }

@@ -11,12 +11,12 @@ class Skybox
 public:
 	Skybox();
 	 ~Skybox();
-	GLuint loadCubemap(std::vector<std::string>);
+	GLuint loadCubemap(std::vector<std::string> &);
 	void Draw();
 	GLuint cubemapTexture;
 	std::vector<int> textureWidth;
 	std::vector<int> textureHeight;
-	std::vector<GLuint> textures;
+	//std::vector<GLuint> textures;
 	std::vector<ILubyte*> data;
 
 

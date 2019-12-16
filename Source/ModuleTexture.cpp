@@ -66,7 +66,7 @@ GLuint ModuleTexture::Load(const char *filename) {
 
 	return texture;
 }
-GLuint ModuleTexture::LoadSkybox(const char *filename, int index) {
+void ModuleTexture::LoadSkybox(const char *filename, int index) {
 	GLuint texture;
 	ILuint image;
 	ilGenImages(1, &image);
@@ -88,14 +88,13 @@ GLuint ModuleTexture::LoadSkybox(const char *filename, int index) {
 	{
 		iluFlipImage();
 	}
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	//glGenTextures(1, &texture);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 	int width = ilGetInteger(IL_IMAGE_WIDTH);
 	int height = ilGetInteger(IL_IMAGE_HEIGHT);
 
 	ILubyte* data = ilGetData();
 	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	ilDeleteImages(1, &image);
 
-
-	return texture;
 }

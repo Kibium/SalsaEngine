@@ -16,7 +16,7 @@ public:
 
 public:
 	GLuint Load(const char*);
-	GLuint LoadSkybox(const char * , int);
+	void LoadSkybox(const char * , int);
 	bool loaded;
 
 };
