@@ -11,6 +11,7 @@
 #include <shlwapi.h>
 #include <iostream>
 #pragma comment(lib,"shlwapi.lib")
+#include "optick/optick.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -113,6 +114,8 @@ bool ModuleInput::Init()
 
 update_status ModuleInput::Update()
 {
+	OPTICK_CATEGORY("UpdateInput", Optick::Category::Input);
+
 	SDL_PumpEvents();
 	SDL_Event sdlEvent;
 

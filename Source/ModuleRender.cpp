@@ -11,6 +11,7 @@
 
 #include "SDL.h"
 #include "MathGeoLib.h"
+#include "optick/optick.h"
 
 ModuleRender::ModuleRender()
 {
@@ -64,7 +65,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-
+	OPTICK_CATEGORY("UpdateRender", Optick::Category::Rendering);
 	//DrawScene();
 	return UPDATE_CONTINUE;
 }

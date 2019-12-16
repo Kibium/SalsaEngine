@@ -9,7 +9,7 @@
 #include "debugdraw.h"
 #include <glew.h>
 #include "SDL.h"
-
+#include "optick/optick.h"
 
 ModuleCamera::ModuleCamera() {
 }
@@ -42,6 +42,7 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
+	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
 	return UPDATE_CONTINUE;
 }
 

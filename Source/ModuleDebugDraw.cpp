@@ -10,6 +10,7 @@
 
 #include "glew.h"
 #include <assert.h>
+#include "optick/optick.h"
 
 class DDRenderInterfaceCoreGL final
     : public dd::RenderInterface
@@ -613,6 +614,7 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
+	OPTICK_CATEGORY("UpdateDebugDraw", Optick::Category::Debug);
 	return UPDATE_CONTINUE;
 }
 

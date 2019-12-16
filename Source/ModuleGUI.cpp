@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include "ModuleScene.h"
+#include "optick/optick.h"
 
 ModuleGUI::ModuleGUI() {
 }
@@ -62,6 +63,8 @@ update_status ModuleGUI::PreUpdate() {
 }
 
 update_status ModuleGUI::Update() {
+
+	OPTICK_CATEGORY("UpdateUI", Optick::Category::UI);
 
 	MainMenu();
 

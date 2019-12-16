@@ -231,19 +231,31 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Libraries\optick\optick.config.h" />
+    <ClInclude Include="Libraries\optick\optick.h" />
+    <ClInclude Include="Libraries\optick\optick_common.h" />
+    <ClInclude Include="Libraries\optick\optick_core.freebsd.h" />
+    <ClInclude Include="Libraries\optick\optick_core.h" />
+    <ClInclude Include="Libraries\optick\optick_core.linux.h" />
+    <ClInclude Include="Libraries\optick\optick_core.macos.h" />
+    <ClInclude Include="Libraries\optick\optick_core.platform.h" />
+    <ClInclude Include="Libraries\optick\optick_core.win.h" />
+    <ClInclude Include="Libraries\optick\optick_gpu.h" />
+    <ClInclude Include="Libraries\optick\optick_memory.h" />
+    <ClInclude Include="Libraries\optick\optick_message.h" />
+    <ClInclude Include="Libraries\optick\optick_miniz.h" />
+    <ClInclude Include="Libraries\optick\optick_serialization.h" />
+    <ClInclude Include="Libraries\optick\optick_server.h" />
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
     <ClInclude Include="Source\Application.h" />
-
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\debugdraw.h" />
-
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\GameObject.h" />
-
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Module.h" />
@@ -298,15 +310,19 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="Libraries\optick\optick_core.cpp" />
+    <ClCompile Include="Libraries\optick\optick_gpu.cpp" />
+    <ClCompile Include="Libraries\optick\optick_message.cpp" />
+    <ClCompile Include="Libraries\optick\optick_miniz.cpp" />
+    <ClCompile Include="Libraries\optick\optick_serialization.cpp" />
+    <ClCompile Include="Libraries\optick\optick_server.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
-
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
-
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
