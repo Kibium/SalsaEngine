@@ -57,9 +57,6 @@ private:
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
 
-
-
-
 };
 #endif // __MODULEMODELLOADER_H__
 

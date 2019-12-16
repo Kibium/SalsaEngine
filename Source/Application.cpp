@@ -3,12 +3,13 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
-#include "ModuleTriangle.h"
 #include "ModuleShader.h"
 #include "ModuleGUI.h"
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
+#include "Skybox.h"
 #include <windows.h>
 #include "ModuleScene.h"
 
@@ -24,9 +25,10 @@ Application::Application()
 	modules.push_back(shader = new ModuleShader());
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(camera = new ModuleCamera());
-	//modules.push_back(triangle = new ModuleTriangle());
 	modules.push_back(model = new ModuleModelLoader());
+	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(scene = new ModuleScene());
+
 }
 
 Application::~Application()
@@ -44,6 +46,7 @@ bool Application::Init()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 
+	skybox = new Skybox();
 	return ret;
 }
 

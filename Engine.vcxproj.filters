@@ -34,9 +34,6 @@
     <ClCompile Include="Source\ModuleTexture.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleTriangle.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
       <Filter>Addons\ImGUI</Filter>
     </ClCompile>
@@ -154,6 +151,16 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
+
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Skybox.cpp">
+      <Filter>Modules\Added Modules</Filter>
+
     <ClCompile Include="Source\ModuleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -171,6 +178,7 @@
     </ClCompile>
     <ClCompile Include="Source\ComponentMaterial.cpp">
       <Filter>Scene\Components</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,9 +213,6 @@
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTriangle.h">
       <Filter>Modules\Added Modules</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\DevIL\include\IL\devil_cpp_wrapper.hpp">
@@ -678,6 +683,25 @@
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h">
       <Filter>Addons\IconFontsCppHeaders</Filter>
     </ClInclude>
+
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\debugdraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Util\debug_draw.hpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Util\par_shapes.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Skybox.h">
+      <Filter>Modules\Added Modules</Filter>
+
     <ClInclude Include="Source\GameObject.h">
       <Filter>Scene</Filter>
     </ClInclude>
