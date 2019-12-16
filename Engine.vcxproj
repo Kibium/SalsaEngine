@@ -232,6 +232,11 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentMaterial.h" />
+    <ClInclude Include="Source\ComponentMesh.h" />
+    <ClInclude Include="Source\ComponentTransform.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Module.h" />
@@ -240,6 +245,7 @@
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleModelLoader.h" />
     <ClInclude Include="Source\ModuleRender.h" />
+    <ClInclude Include="Source\ModuleScene.h" />
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleTriangle.h" />
@@ -285,6 +291,11 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentMaterial.cpp" />
+    <ClCompile Include="Source\ComponentMesh.cpp" />
+    <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
@@ -293,6 +304,7 @@
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
+    <ClCompile Include="Source\ModuleScene.cpp" />
     <ClCompile Include="Source\ModuleShader.cpp" />
     <ClCompile Include="Source\ModuleTexture.cpp" />
     <ClCompile Include="Source\ModuleTriangle.cpp" />
