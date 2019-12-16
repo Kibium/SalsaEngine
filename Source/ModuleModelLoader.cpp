@@ -372,7 +372,7 @@ void ModuleModelLoader::SwitchTexture(const char *file)
 		meshes[i].textures = textures;
 
 }
-
+//
 void ModuleModelLoader::Load(const char* path)
 {
 	DefaultLogger::create("", Logger::VERBOSE);
