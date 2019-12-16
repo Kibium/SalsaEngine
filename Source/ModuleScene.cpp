@@ -20,35 +20,23 @@ bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
 
-	root = new GameObject("Root");
+	root = new GameObject("RootNode");
 
 	GameObject* obj1 = new GameObject("Pepito");
-	obj1->CreateComponent(Type::TRANSFORM);
-	obj1->CreateComponent(Type::MESH);
-	obj1->CreateComponent(Type::MATERIAL);
-	gameObjects.push_back(obj1);
 	obj1->parent = root;
+	gameObjects.push_back(obj1);
 
 	GameObject* obj1C = new GameObject("Pepa");
-	obj1C->CreateComponent(Type::TRANSFORM);
-	obj1C->CreateComponent(Type::MESH);
-	obj1C->CreateComponent(Type::MATERIAL);
-	obj1->children.push_back(obj1C);
 	obj1C->parent = obj1;
+	obj1->children.push_back(obj1C);
 
 	GameObject* obj1C2 = new GameObject("Jorge");
-	obj1C2->CreateComponent(Type::TRANSFORM);
-	obj1C2->CreateComponent(Type::MESH);
-	obj1C2->CreateComponent(Type::MATERIAL);
-	obj1->children.push_back(obj1C2);
 	obj1C2->parent = obj1;
+	obj1->children.push_back(obj1C2);
 
 	GameObject* obj2 = new GameObject("Marta");
-	obj2->CreateComponent(Type::TRANSFORM);
-	obj2->CreateComponent(Type::MESH);
-	obj2->CreateComponent(Type::MATERIAL);
-	gameObjects.push_back(obj2);
 	obj2->parent = root;
+	gameObjects.push_back(obj2);
 
 	SortGameObjects(gameObjects);
 	SortGameObjects(obj1->children);
@@ -112,54 +100,58 @@ void ModuleScene::DeleteGameObject(GameObject *gameObject) {
 }
 
 void ModuleScene::DrawGameObject(unsigned index, const std::vector<GameObject*>& objects) {
-	for (int i = 0; i < objects.size(); ++i, ++index) {
+	if (objects.size() > 0) {
 
-		// Tree node flags processing
-		ImGuiTreeNodeFlags objectFlags = ImGuiTreeNodeFlags_None;
-		objectFlags = (objects[i]->children.empty()) ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_DefaultOpen;
+		for (int i = 0; i < objects.size(); ++i, ++index) {
 
-		if (selectedObject == objects[i])
-			objectFlags |= ImGuiTreeNodeFlags_Selected;
+			// Tree node flags processing
+			ImGuiTreeNodeFlags objectFlags = ImGuiTreeNodeFlags_SpanFullWidth;
+			objectFlags |= (objects[i]->children.empty()) ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_DefaultOpen;
 
-		// Process each gameobject
-		if (ImGui::TreeNodeEx(objects[i]->name.c_str(), objectFlags)) {
+			if (selectedObject == objects[i])
+				objectFlags |= ImGuiTreeNodeFlags_Selected;
 
-			if (ImGui::IsItemClicked())
-				selectedObject = objects[i];
+			// Process each gameobject
+			std::string objectName = (objects[i]->isActive) ? objects[i]->name : objects[i]->name + " (Inactive) ";
+			if (ImGui::TreeNodeEx(objectName.c_str(), objectFlags)) {
 
-			// Popup options
-			DrawPopup(objects[i]);
+				if (ImGui::IsItemClicked())
+					selectedObject = objects[i];
 
-			// Change hierarchy structure depending on dragged object
-			if (ImGui::BeginDragDropTarget()) {
-				if (ImGui::AcceptDragDropPayload("GameObject")) {
-					draggedObject->parent == root ? DeleteGameObject(draggedObject) : draggedObject->parent->DeleteChild(draggedObject);
-					draggedObject->parent = objects[i];
-					objects[i]->children.push_back(draggedObject);
-					SortGameObjects(objects[i]->children);
-					draggedObject = nullptr;
+				// Popup options
+				DrawPopup(objects[i]);
+
+				// Change hierarchy structure depending on dragged object
+				if (ImGui::BeginDragDropTarget()) {
+					if (ImGui::AcceptDragDropPayload("GameObject")) {
+						draggedObject->parent == root ? DeleteGameObject(draggedObject) : draggedObject->parent->DeleteChild(draggedObject);
+						draggedObject->parent = objects[i];
+						objects[i]->children.push_back(draggedObject);
+						SortGameObjects(objects[i]->children);
+						draggedObject = nullptr;
+					}
+					ImGui::EndDragDropTarget();
 				}
-				ImGui::EndDragDropTarget();
-			}
 
-			// Save dragged object
-			if (ImGui::BeginDragDropSource()) {
-				draggedObject = objects[i];
-				ImGui::SetDragDropPayload("GameObject", NULL, NULL);
-				ImGui::Text("Move to...");
-				ImGui::EndDragDropSource();
-			}
+				// Save dragged object
+				if (ImGui::BeginDragDropSource()) {
+					draggedObject = objects[i];
+					ImGui::SetDragDropPayload("GameObject", NULL, NULL);
+					ImGui::Text("Move to...");
+					ImGui::EndDragDropSource();
+				}
 
-			// Process each gameobject's childs
-			DrawGameObject(index, objects[i]->children);
-			ImGui::TreePop();
+				// Process each gameobject's childs
+				DrawGameObject(index, objects[i]->children);
+				ImGui::TreePop();
+			}
 		}
 	}
 }
 
 void ModuleScene::DrawHierarchy(bool *showHierarchy) {
 	if (showHierarchy && ImGui::Begin(ICON_FA_CUBES" Hierarchy", showHierarchy)) {
-		if (gameObjects.size() > 0 && (ImGui::TreeNode("Root"))) {
+		if (gameObjects.size() > 0 && (ImGui::TreeNode(root->name.c_str()))) {
 			DrawGameObject(0, gameObjects);
 			ImGui::TreePop();
 		}
@@ -181,44 +173,15 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		ImGui::OpenPopup("GameObject Popup");
 		selectedObject = gameObject;
 	}
-
-	if (ImGui::BeginPopup("GameObject Popup")) { //TODO popupmodal can be useful
+	if (ImGui::BeginPopup("GameObject Popup")) { 
 		ImGui::TextDisabled("Copy");
 		ImGui::TextDisabled("Paste");
 		ImGui::Separator();
 		ImGui::TextDisabled("Rename");
-		if (ImGui::MenuItem("Duplicate")) {
-			//GameObject* temp = new GameObject();
-			//temp = selectedObject;
-			//gameObjects.push_back(temp);
-		}
-
-		static bool canDelete = false;
+		ImGui::TextDisabled("Duplicate");
 		if (ImGui::MenuItem("Delete")) {
-			ImGui::OpenPopup("Delete?");
-			LOG("peppe");
-			canDelete = true;
+			gameObject->parent == root ? DeleteGameObject(gameObject) : gameObject->parent->DeleteChild(gameObject);
 		}
-
-		if (ImGui::BeginPopupModal("Delete?", &canDelete, ImGuiWindowFlags_AlwaysAutoResize)) {
-			ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
-			ImGui::Separator();
-
-			//static int dummy_i = 0;
-			//ImGui::Combo("Combo", &dummy_i, "Delete\0Delete harder\0");
-
-			static bool dont_ask_me_next_time = false;
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-			ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
-			ImGui::PopStyleVar();
-
-			if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); gameObject->parent == root ? DeleteGameObject(gameObject) : gameObject->parent->DeleteChild(gameObject); }
-			ImGui::SetItemDefaultFocus();
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-			ImGui::EndPopup();
-		}
-
 		ImGui::Separator();
 		if (ImGui::MenuItem("Create Empty")) {
 			CreateGameObject();

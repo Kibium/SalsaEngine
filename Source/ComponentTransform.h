@@ -14,7 +14,7 @@ public:
 	ComponentTransform operator+(const ComponentTransform &transform) const;
 	ComponentTransform operator-(const ComponentTransform &transform) const;
 
-	void Update() override;
+	update_status Update() override;
 	void OnEditor() override;
 
 public:

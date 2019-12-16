@@ -28,6 +28,7 @@ public:
 	Component* CreateComponent(Type type);
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
+	void DeleteComponent(Type type);
 
 	GameObject* GetChild(unsigned childIndex) const;
 	GameObject* GetChild(const std::string &childName) const;

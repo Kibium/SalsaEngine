@@ -1,8 +1,10 @@
 #include "ComponentMaterial.h"
 #include "imgui.h"
 #include "IconsFontAwesome5.h"
+#include "GameObject.h"
 
 ComponentMaterial::ComponentMaterial() {
+	type = Type::MATERIAL;
 }
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial &material) {
@@ -11,12 +13,16 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial &material) {
 ComponentMaterial::~ComponentMaterial() {
 }
 
-void ComponentMaterial::Update() {
+update_status ComponentMaterial::Update() {
+	return UPDATE_CONTINUE;
 }
 
 void ComponentMaterial::OnEditor() {
-	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-		ImGui::Checkbox("Active", &active);
+	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canDelete, ImGuiTreeNodeFlags_DefaultOpen)) {
+		if (ImGui::Checkbox("Active", &canDelete)) {
+			active ? Enable() : Disable();
+		}
 	}
 	ImGui::Separator();
+	Component::OnEditor();
 }

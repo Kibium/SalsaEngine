@@ -9,7 +9,7 @@ public:
 	ComponentMesh(const ComponentMesh &mesh);
 	~ComponentMesh();
 
-	void Update() override;
+	update_status Update() override;
 	void OnEditor() override;
 };
 

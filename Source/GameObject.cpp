@@ -7,9 +7,11 @@
 #include "imgui.h"
 
 GameObject::GameObject() {
+	CreateComponent(Type::TRANSFORM);
 }
 
 GameObject::GameObject(const std::string &name) : name(name) {
+	CreateComponent(Type::TRANSFORM);
 }
 
 GameObject::~GameObject() {
@@ -27,7 +29,14 @@ update_status GameObject::PreUpdate() {
 }
 
 update_status GameObject::Update() {
-	return UPDATE_CONTINUE;
+	update_status ret = UPDATE_CONTINUE;
+
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+		if ((*it)->active)
+			ret = (*it)->Update();
+	}
+
+	return ret;
 }
 
 update_status GameObject::PostUpdate() {
@@ -44,14 +53,17 @@ Component* GameObject::CreateComponent(Type type) {
 	switch (type) {
 	case Type::TRANSFORM:
 		component = new ComponentTransform();
+		component->myGo = this;
 		break;
 
 	case Type::MESH:
 		component = new ComponentMesh();
+		component->myGo = this;
 		break;
 
 	case Type::MATERIAL:
 		component = new ComponentMaterial();
+		component->myGo = this;
 		break;
 
 	default:
@@ -79,15 +91,20 @@ void GameObject::DrawComponents() {
 	}
 	if (ImGui::BeginPopup("Add Component Popup")) {
 		if (ImGui::MenuItem("Transform")) {
-			CreateComponent(Type::TRANSFORM);
+			if (GetComponent(Type::TRANSFORM) == nullptr) {
+				CreateComponent(Type::TRANSFORM);
+			}
 		}
 		if (ImGui::MenuItem("Mesh")) {
-			CreateComponent(Type::MESH);
+			if (GetComponent(Type::MESH) == nullptr) {
+				CreateComponent(Type::MESH);
+			}
 		}
 		if (ImGui::MenuItem("Material")) {
-			CreateComponent(Type::MATERIAL);
+			if (GetComponent(Type::MATERIAL) == nullptr) {
+				CreateComponent(Type::MATERIAL);
+			}
 		}
-
 		ImGui::EndPopup();
 	}
 }
@@ -95,9 +112,22 @@ void GameObject::DrawComponents() {
 void GameObject::DeleteChild(GameObject *child) {
 	assert(child != nullptr);
 
-	for (int i = 0; i < children.size(); ++i) {
-		if (child == children[i]) {
-			children.erase(children.begin() + i);
+	if (children.size() == 1)
+		children.clear();
+	else {
+		for (int i = 0; i < children.size(); ++i) {
+			if (child == children[i]) {
+				children.erase(children.begin() + i);
+				break;
+			}
+		}
+	}
+}
+
+void GameObject::DeleteComponent(Type type) {
+	for (int i = 0; i < components.size(); ++i) {
+		if (type == components[i]->type) {
+			components.erase(components.begin() + i);
 			break;
 		}
 	}

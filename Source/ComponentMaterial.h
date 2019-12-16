@@ -9,7 +9,7 @@ public:
 	ComponentMaterial(const ComponentMaterial &material);
 	~ComponentMaterial();
 
-	void Update() override;
+	update_status Update() override;
 	void OnEditor() override;
 };
 
