@@ -6,16 +6,16 @@
 
 class ModuleRender;
 class ModuleWindow;
-class ModuleTextures;
 class ModuleInput;
-class ModuleRenderExercise;
-class ModuleTriangle;
 class ModuleGUI;
 class ModuleShader;
 class ModuleTexture;
 class ModuleCamera;
 class ModuleModelLoader;
+class ModuleDebugDraw;
+class Skybox;
 class ModuleScene;
+
 
 class Application
 {
@@ -32,12 +32,13 @@ public:
 	ModuleRender* renderer = nullptr;
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
-	ModuleTriangle* triangle = nullptr;
 	ModuleGUI* gui = nullptr;
 	ModuleShader* shader = nullptr;
 	ModuleTexture* texture = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleModelLoader* model = nullptr;
+	ModuleDebugDraw* debug = nullptr;
+	Skybox* skybox = nullptr;
 	ModuleScene* scene = nullptr;
 
 private:

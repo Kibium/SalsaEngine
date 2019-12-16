@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
+#include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
@@ -103,12 +104,14 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 
 	node->mTransformation.Decompose(modelScale,modelRotation,modelPosition);
 
+
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{ 
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
+	//App->renderer->GameCamera->Focus();
 }
 
 Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
