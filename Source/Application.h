@@ -14,6 +14,7 @@ class ModuleCamera;
 class ModuleModelLoader;
 class ModuleDebugDraw;
 class Skybox;
+class ModuleScene;
 
 
 class Application
@@ -38,7 +39,7 @@ public:
 	ModuleModelLoader* model = nullptr;
 	ModuleDebugDraw* debug = nullptr;
 	Skybox* skybox = nullptr;
-
+	ModuleScene* scene = nullptr;
 
 private:
 

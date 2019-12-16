@@ -11,6 +11,7 @@
 #include "ModuleDebugDraw.h"
 #include "Skybox.h"
 #include <windows.h>
+#include "ModuleScene.h"
 
 using namespace std;
 
@@ -24,9 +25,9 @@ Application::Application()
 	modules.push_back(shader = new ModuleShader());
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(camera = new ModuleCamera());
-
 	modules.push_back(model = new ModuleModelLoader());
 	modules.push_back(debug = new ModuleDebugDraw());
+	modules.push_back(scene = new ModuleScene());
 
 }
 
