@@ -34,7 +34,6 @@ private:
 	bool showHelpWindow = false;
 	bool showAppWindow = true;
 	bool showScene = true;
-	bool showHierarchy = true;
 	bool showInspector = true;
 	std::vector<float> frames;
 	int max_h = 0;
