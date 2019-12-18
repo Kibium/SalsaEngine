@@ -18,8 +18,8 @@ update_status ComponentMaterial::Update() {
 }
 
 void ComponentMaterial::OnEditor() {
-	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canDelete, ImGuiTreeNodeFlags_DefaultOpen)) {
-		if (ImGui::Checkbox("Active Material", &active)) {
+	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		if (ImGui::Checkbox("Active##ComponentMaterial", &active)) {
 			active ? Enable() : Disable();
 		}
 	}

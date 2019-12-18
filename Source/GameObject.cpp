@@ -78,9 +78,20 @@ Component* GameObject::CreateComponent(Type type) {
 }
 
 void GameObject::DrawComponents() {
-	ImGui::Checkbox("Active", &isActive);
+	if (ImGui::Checkbox("Active##ObjectActive", &isActive)) {
+		if (isActive) {
+			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+				(*it)->active = true;
+			}
+		}
+		else {
+			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+				(*it)->active = false;
+			}
+		}
+	}
 	ImGui::SameLine();
-	ImGui::InputText("", &name[0], name.size());
+	ImGui::InputText("##ObjectName", &name[0], name.size());
 	ImGui::SameLine();
 	ImGui::Checkbox("Static", &isStatic);
 	for (int i = 0; i < components.size(); ++i) {
@@ -112,14 +123,10 @@ void GameObject::DrawComponents() {
 void GameObject::DeleteChild(GameObject *child) {
 	assert(child != nullptr);
 
-	if (children.size() == 1)
-		children.clear();
-	else {
-		for (int i = 0; i < children.size(); ++i) {
-			if (child == children[i]) {
-				children.erase(children.begin() + i);
-				break;
-			}
+	for (int i = 0; i < children.size(); ++i) {
+		if (child == children[i]) {
+			children.erase(children.begin() + i);
+			break;
 		}
 	}
 }
