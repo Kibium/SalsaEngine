@@ -419,16 +419,33 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 	App->camera->Focus();
 }
 
+bool ModuleModelLoader::item_exists(const char* path) {
+
+
+	FILE *file = nullptr;
+
+	fopen_s(&file, path, "rb");
+	if (file)
+		return true;
+
+	else
+		return false;
+}
+/*DIFFUSE IN PNG
+SPECULAR IN TIF
+OCCLUSSION IN PNG*/
 void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 	string dir;
 	Texture tex;
+	
 
 	switch (type) {
 	case DIFFUSE:
 		dir = directory + model_name + "_diffuse.png";
 		tex.id = App->texture->Load(dir.c_str());
+		
 
-		if (tex.id != NULL) {
+		if (item_exists(dir.c_str())) {
 			tex.type = "diffuse";
 			tex.path = dir;
 			textures_loaded.push_back(tex);
@@ -439,9 +456,10 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 
 
 	case SPECULAR:
-		dir = directory + model_name + "_specular.png";
+		dir = directory + model_name + "_specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
-		if (tex.id != NULL) {
+		cout <<tex.id;
+		if (item_exists(dir.c_str())) {
 			tex.type = "specular";
 			tex.path = dir;
 			textures_loaded.push_back(tex);
@@ -452,7 +470,7 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 	case OCCLUSION:
 		dir = directory + model_name + "_occlusion.png";
 		tex.id = App->texture->Load(dir.c_str());
-		if (tex.id != NULL) {
+		if (item_exists(dir.c_str())) {
 			tex.type = "occlusion";
 			tex.path = dir;
 			textures_loaded.push_back(tex);
@@ -460,7 +478,6 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 		}
 		break;
 	}
-
 
 }
 
@@ -519,11 +536,13 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 */
 
 
-/*diffuse texture loading*/
+	/*should load the texture based on the mesh*/
+	/*now loads a texture and applies it to all  meshes*/
 	if (!load_once) {
 		LoadTexture(textures, DIFFUSE);
 		LoadTexture(textures, SPECULAR);
 		LoadTexture(textures, OCCLUSION);
+
 		load_once = true;
 	}
 

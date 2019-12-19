@@ -35,6 +35,9 @@ public:
 	string directory, model_name;
 	vector<int> textureWidth;
 	vector<int> textureHeight;
+	
+
+
 
 	ModuleModelLoader();
 	~ModuleModelLoader();
@@ -127,6 +130,7 @@ private:
 	void GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh_s* shape);
 	void GenerateMeshes(const aiScene* scene);
 	void GenerateMaterials(const aiScene* scene);
+	bool item_exists(const char* path);
 	
 	void Load(const char*);
 	void processNode(aiNode*, const aiScene*);
@@ -136,7 +140,7 @@ private:
 
 
 public:
-
+	vector<Material> materials;
 	std::vector<Figure>     figures;
 	std::vector<Material> materials;
 	Sphere                bsphere;
