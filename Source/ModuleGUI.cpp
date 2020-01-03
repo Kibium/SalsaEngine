@@ -182,7 +182,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Sphere"))
 			{
-				App->model->CreateSphere("sphere0", math::float3(0.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
+				App->model->CreateSphere("sphere0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -191,7 +191,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Torus"))
 			{
-				App->model->CreateTorus("torus0", math::float3(3.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 3, App->model->color);
+				App->model->CreateTorus("torus0", math::float3(10.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -200,7 +200,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Cube"))
 			{
-				App->model->CreateCube("cube0", math::float3(5.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, App->model->color);
+				App->model->CreateCube("cube0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -209,7 +209,7 @@ void ModuleGUI::MainMenu() {
 			}
 			if (ImGui::MenuItem("Create Cylinder"))
 			{
-				App->model->CreateCylinder("cylinder0", math::float3(-3.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, App->model->color);
+				App->model->CreateCylinder("cylinder0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
 				App->model->materials.back().k_specular = 0.6f;
@@ -327,7 +327,8 @@ void ModuleGUI::GameObjecInfo() {
 				App->renderer->SetWireframe(wireframe);
 
 			}
-			if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
+			//Texture - changed to material
+			/*if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
 
 				static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
@@ -375,7 +376,7 @@ void ModuleGUI::GameObjecInfo() {
 						selection_mask = (1 << node_clicked);           // Click to single-select
 				}
 
-			}
+			}*/
 
 			if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Shader")) {
 				if (ImGui::Selectable("Flat Shading")) {
@@ -396,6 +397,68 @@ void ModuleGUI::GameObjecInfo() {
 				if (ImGui::Selectable("Gouraud Shading")) {
 
 					App->model->shader = App->shader->gouraud_program;
+
+				}
+
+			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Material")) {
+				
+				if (ImGui::TreeNodeEx("Diffuse")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+					ImGui::Text(App->model->mat.diff_path.c_str());
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.diffuse_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+
+					ImGui::SliderFloat("Color R", &App->model->mat.diffuse_color.x, 0, 1);
+					ImGui::SliderFloat("Color G", &App->model->mat.diffuse_color.y, 0, 1); 				
+					ImGui::SliderFloat("Color B", &App->model->mat.diffuse_color.z, 0, 1);					
+					ImGui::SliderFloat("Color W", &App->model->mat.diffuse_color.w, 0, 1);
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), App->model->mat.diffuse_color.x, App->model->mat.diffuse_color.y, App->model->mat.diffuse_color.z, App->model->mat.diffuse_color.w);
+
+					
+					ImGui::TreePop();
+				}
+
+				if (ImGui::TreeNodeEx("Occlusion")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.occlusion_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+
+					ImGui::SliderFloat("Color R", &App->model->mat.occlusion_color.x, 0, 1);
+					ImGui::SliderFloat("Color G", &App->model->mat.occlusion_color.y, 0, 1);
+					ImGui::SliderFloat("Color B", &App->model->mat.occlusion_color.z, 0, 1);
+					ImGui::SliderFloat("Color W", &App->model->mat.occlusion_color.w, 0, 1);
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), App->model->mat.occlusion_color.x, App->model->mat.occlusion_color.y, App->model->mat.occlusion_color.z, App->model->mat.occlusion_color.w);
+
+
+					ImGui::TreePop();
+				}
+				
+				if (ImGui::TreeNodeEx("Specular")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Texture: ");
+
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.specular_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+
+					ImGui::SliderFloat("Color R", &App->model->mat.specular_color.x, 0, 1);
+					ImGui::SliderFloat("Color G", &App->model->mat.specular_color.y, 0, 1);
+					ImGui::SliderFloat("Color B", &App->model->mat.specular_color.z, 0, 1);
+					ImGui::SliderFloat("Color W", &App->model->mat.specular_color.w, 0, 1);
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), App->model->mat.specular_color.x, App->model->mat.specular_color.y, App->model->mat.specular_color.z, App->model->mat.specular_color.w);
+
+					ImGui::TreePop();
+				}
+				
+				if (ImGui::SliderFloat("Shininess", &App->model->mat.shininess, -100, 100)) {
+					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), App->model->mat.shininess);
 
 				}
 
@@ -627,23 +690,37 @@ void ModuleGUI::ShowDefWindow() {
 
 		if (ImGui::CollapsingHeader(ICON_FA_LIGHTBULB" Light"))
 		{
-			ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
-			if(ImGui::SliderFloat("Color R", &App->model->color.x, 0, 1)) {
+			/*ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
+			if(ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
 					App->model->materials[i].diffuse_color = App->model->color;
 			}
-			if (ImGui::SliderFloat("Color G", &App->model->color.y, 0, 1)) {
+			if (ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
 					App->model->materials[i].diffuse_color = App->model->color;
 
 			}
-			if (ImGui::SliderFloat("Color B", &App->model->color.z, 0, 1)) {
+			if (ImGui::SliderFloat("Color B", &App->model->light.color.z, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
 					App->model->materials[i].diffuse_color = App->model->color;
 			}
 
-			ImGui::SliderFloat("Ambient", &App->model->ambient, 0, 1);
-				
+			if (ImGui::SliderFloat("Ambient", &App->model->light.ambient, 0, 1)) {
+			
+				glUniform1f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.ambient);
+
+			}*/
+
+			if (ImGui::DragFloat3("Position", &App->model->light.pos[0], 3)) {
+				glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
+
+			}
+			ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1);
+			ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1);
+			ImGui::SliderFloat("Color B", &App->model->light.color.z, 0, 1);
+			
+			glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.color.x, App->model->light.color.y, App->model->light.color.z);
+
 			
 		}
 

@@ -22,13 +22,40 @@ struct Texture {
 	string path;
 };
 
+struct Material
+{
+
+	//Textures
+	unsigned diffuse_map = 0;
+	unsigned specular_map = 0;
+	unsigned occlusion_map = 0;
+	unsigned emissive_map = 0;
+
+	//Paths
+	string diff_path, spec_path, occ_path, emi_path;
+
+	//Colors
+	math::float4 diffuse_color = math::float4(1, 1, 1, 1);
+	math::float4 specular_color = math::float4(1, 1, 1, 1);
+	math::float4 occlusion_color = math::float4(1, 1, 1, 1);
+	math::float4 emissive_color = math::float4(1, 1, 1, 1);
+
+	//Constants
+	float shininess = 64;
+
+	float k_specular = 1.0f;
+	float k_diffuse = 1.0f;
+	float k_ambient = 1.0f;
+};
+
 class Mesh {
 public:
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	Material meshMaterial;
 	unsigned int VAO;
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m);
 	void Draw();
 
 private:

@@ -23,6 +23,11 @@ void ModuleModelLoader::Draw()
 		meshes[i].Draw();
 }
 
+void ModuleModelLoader::UpdateFigures(){
+	for (int i = 0; i < figures.size(); ++i) {
+		figures[i].transform = math::float4x4(math::Quat::identity, light.pos);
+	}
+}
 
 
 void ModuleModelLoader::GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh* shape)
@@ -100,8 +105,6 @@ void ModuleModelLoader::GenerateMesh(const char* name, const math::float3& pos, 
 	bsphere.center = (max_v + min_v)*0.5f;
 	bsphere.radius = (max_v - min_v).Length()*0.5f;
 }
-
-
 
 void ModuleModelLoader::GenerateVAO(Figure& mesh)
 {
@@ -312,7 +315,7 @@ void ModuleModelLoader::CreateCube(const char* name, const math::float3& pos, co
 
 update_status ModuleModelLoader::Update() {
 
-
+	UpdateFigures();
 
 	return UPDATE_CONTINUE;
 }
@@ -323,7 +326,16 @@ bool ModuleModelLoader::Init() {
 
 
 	//Light stuff
-	light.pos = math::float3(-2.0f, 0.0f, 6.0f);
+	light.pos = math::float3(100.0f, 0.0f, 0.0f);
+
+	App->model->CreateSphere("sphere1", light.pos, math::Quat::identity, 0.5f, 30, 30, float4(204, 204, 0,1));
+	App->model->materials.back().k_specular = 0.9f;
+	App->model->materials.back().shininess = 64.0f;
+	App->model->materials.back().k_specular = 0.6f;
+	App->model->materials.back().k_diffuse = 0.5f;
+	App->model->materials.back().k_ambient = 1.0f;
+
+
 	ambient = 0.3f;
 
 	//material color
@@ -395,6 +407,10 @@ void ModuleModelLoader::Load(const char* path)
 	model = true;
 	DefaultLogger::kill();
 
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 0.5f, 0.5f, 0.5f);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
 }
 
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
@@ -450,6 +466,9 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 			tex.path = dir;
 			textures_loaded.push_back(tex);
 			v.push_back(tex);
+
+			mat.diffuse_map = tex.id;
+			mat.diff_path = dir;
 		}
 
 		break;
@@ -464,6 +483,9 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 			tex.path = dir;
 			textures_loaded.push_back(tex);
 			v.push_back(tex);
+
+			mat.specular_map = tex.id;
+			mat.spec_path = dir;
 		}
 		break;
 
@@ -475,6 +497,8 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 			tex.path = dir;
 			textures_loaded.push_back(tex);
 			v.push_back(tex);
+
+			mat.occlusion_map = tex.id;
 		}
 		break;
 	}
@@ -547,9 +571,9 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	}
 
 
+	
 
-
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices, mat);
 }
 
 vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)

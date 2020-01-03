@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
+#include "ModuleShader.h"
 #include "Geometry/AABB.h"
 
 #include <glew.h>
@@ -38,6 +39,8 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "viewPos"), frustum.pos.x, frustum.pos.y, frustum.pos.z);
+
 	return UPDATE_CONTINUE;
 }
 
