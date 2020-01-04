@@ -56,31 +56,6 @@ public:
 	int nvertex = 0;
 	int nmeshes= 0;
 
-	//struct Material
-	//{
-
-	//	//Textures
-	//	unsigned diffuse_map = 0;
-	//	unsigned specular_map = 0;
-	//	unsigned occlusion_map = 0;
-	//	unsigned emissive_map = 0;
-
-	//	//Paths
-	//	string diff_path, spec_path, occ_path, emi_path;
-
-	//	//Colors
-	//	math::float4 diffuse_color = math::float4::zero;
-	//	math::float4 specular_color = math::float4::zero;
-	//	math::float4 occlusion_color = math::float4::zero;
-	//	math::float4 emissive_color = math::float4::zero;
-
-	//	//Constants
-	//	float shininess = 0.1f;
-
-	//	float k_specular = 1.0f;
-	//	float k_diffuse = 1.0f;
-	//	float k_ambient = 1.0f;
-	//};
 
 	Material mat; //The one applied to the model
 
@@ -102,7 +77,7 @@ public:
 
 	
 private:
-
+	BOOL GetOpenFileNameA(LPOPENFILENAMEA Arg1);
 	struct Sphere
 	{
 		math::float3 center = math::float3::zero;
@@ -136,7 +111,6 @@ private:
 	void GenerateMaterials(const aiScene* scene);
 	bool item_exists(const char* path);
 	void UpdateFigures();
-	
 	void Load(const char*);
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);

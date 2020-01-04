@@ -23,7 +23,7 @@ void ModuleModelLoader::Draw()
 		meshes[i].Draw();
 }
 
-void ModuleModelLoader::UpdateFigures(){
+void ModuleModelLoader::UpdateFigures() {
 	for (int i = 0; i < figures.size(); ++i) {
 		figures[i].transform = math::float4x4(math::Quat::identity, light.pos);
 	}
@@ -328,7 +328,7 @@ bool ModuleModelLoader::Init() {
 	//Light stuff
 	light.pos = math::float3(100.0f, 0.0f, 0.0f);
 
-	App->model->CreateSphere("sphere1", light.pos, math::Quat::identity, 0.5f, 30, 30, float4(204, 204, 0,1));
+	App->model->CreateSphere("sphere1", light.pos, math::Quat::identity, 0.5f, 30, 30, float4(204, 204, 0, 1));
 	App->model->materials.back().k_specular = 0.9f;
 	App->model->materials.back().shininess = 64.0f;
 	App->model->materials.back().k_specular = 0.6f;
@@ -450,16 +450,18 @@ bool ModuleModelLoader::item_exists(const char* path) {
 /*DIFFUSE IN PNG
 SPECULAR IN TIF
 OCCLUSSION IN PNG*/
+
+
 void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 	string dir;
 	Texture tex;
-	
+
 
 	switch (type) {
 	case DIFFUSE:
 		dir = directory + model_name + "_diffuse.png";
 		tex.id = App->texture->Load(dir.c_str());
-		
+
 
 		if (item_exists(dir.c_str())) {
 			tex.type = "diffuse";
@@ -477,7 +479,7 @@ void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
 	case SPECULAR:
 		dir = directory + model_name + "_specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
-		cout <<tex.id;
+		cout << tex.id;
 		if (item_exists(dir.c_str())) {
 			tex.type = "specular";
 			tex.path = dir;
@@ -560,8 +562,8 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 */
 
 
-	/*should load the texture based on the mesh*/
-	/*now loads a texture and applies it to all  meshes*/
+/*should load the texture based on the mesh*/
+/*now loads a texture and applies it to all  meshes*/
 	if (!load_once) {
 		LoadTexture(textures, DIFFUSE);
 		LoadTexture(textures, SPECULAR);
@@ -569,9 +571,6 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 
 		load_once = true;
 	}
-
-
-	
 
 	return Mesh(vertices, indices, mat);
 }

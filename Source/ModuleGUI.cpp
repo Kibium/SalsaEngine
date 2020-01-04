@@ -83,6 +83,7 @@ update_status ModuleGUI::Update()
 		ShowAbout();
 
 	ShowConsole(ICON_FA_TERMINAL " Console");
+	ImGui::ShowDemoWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -304,6 +305,26 @@ void ModuleGUI::Scene() {
 	ImGui::End();
 }
 
+char* ModuleGUI::GetInputFile()
+{
+	OPENFILENAME ofn = { 0 };
+	ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
+	ofn.hwndOwner = 0;
+	ofn.lpstrFilter = _T("Texture (*.png)\0*.\0All Files (*.*)\0*.*\0\0");
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = _T("png");
+
+	if (GetOpenFileName(&ofn)) // user selected an input file
+	{
+		MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
+		return szFileName;
+	}
+	else
+		return "Not valid";
+}
+
 void ModuleGUI::GameObjecInfo() {
 	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector"))
 	{
@@ -319,7 +340,7 @@ void ModuleGUI::GameObjecInfo() {
 
 			}
 			if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
-				ImGui::InputInt("Mesh", &App->model->nmeshes, 0, 0, ImGuiInputTextFlags_ReadOnly);
+				ImGui::Text("Meshes: %d",App->model->meshes.size());
 				ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				static bool wireframe = false;
@@ -402,7 +423,34 @@ void ModuleGUI::GameObjecInfo() {
 
 			}
 
-			if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Material")) {
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) {
+				for (int i = 0; i < App->model->meshes.size(); ++i) {
+					ImGui::Text("Mesh %d", i);
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.diffuse_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
+						App->model->meshes[i].meshMaterial.diffuse_map = App->texture->Load(GetInputFile());
+					} ImGui::SameLine();
+
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.occlusion_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
+						App->model->meshes[i].meshMaterial.occlusion_map = App->texture->Load(GetInputFile());
+					} ImGui::SameLine();
+
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.specular_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
+						App->model->meshes[i].meshMaterial.specular_map = App->texture->Load(GetInputFile());
+
+					}
+				}
+
+				if(ImGui::Button("Apply Textures to the gun!")) {
+					string dir;
+					Texture tex;
+
+					dir = App->model->directory + "Gun_diffuse.png";
+					tex.id = App->texture->Load(dir.c_str());
+					App->model->meshes[0].meshMaterial.diffuse_map = tex.id;
+				}
+			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Material")) {
 				
 				if (ImGui::TreeNodeEx("Diffuse")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
@@ -418,6 +466,10 @@ void ModuleGUI::GameObjecInfo() {
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), App->model->mat.diffuse_color.x, App->model->mat.diffuse_color.y, App->model->mat.diffuse_color.z, App->model->mat.diffuse_color.w);
 
+					if (ImGui::SliderFloat("k diffuse", &App->model->mat.k_diffuse, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), App->model->mat.k_diffuse);
+
+					}
 					
 					ImGui::TreePop();
 				}
@@ -436,6 +488,10 @@ void ModuleGUI::GameObjecInfo() {
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), App->model->mat.occlusion_color.x, App->model->mat.occlusion_color.y, App->model->mat.occlusion_color.z, App->model->mat.occlusion_color.w);
 
+					if (ImGui::SliderFloat("k ambient", &App->model->mat.k_ambient, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), App->model->mat.k_ambient);
+
+					}
 
 					ImGui::TreePop();
 				}
@@ -453,6 +509,11 @@ void ModuleGUI::GameObjecInfo() {
 					ImGui::SliderFloat("Color W", &App->model->mat.specular_color.w, 0, 1);
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), App->model->mat.specular_color.x, App->model->mat.specular_color.y, App->model->mat.specular_color.z, App->model->mat.specular_color.w);
+
+					if (ImGui::SliderFloat("k specular", &App->model->mat.k_specular, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), App->model->mat.k_specular);
+
+					}
 
 					ImGui::TreePop();
 				}

@@ -6,6 +6,8 @@
 #include "SDL.h"
 #include <vector>
 #include <time.h>
+#include <tchar.h>
+
 
 class ModuleGUI :public Module
 {
@@ -30,6 +32,8 @@ public:
 	bool isScene = false;
 	bool isInspector = false;
 private:
+	char* GetInputFile();
+	char szFileName[MAX_PATH] = _T("");
 	bool showAboutWindow = false;
 	bool showHelpWindow = false;
 	bool showAppWindow = true;

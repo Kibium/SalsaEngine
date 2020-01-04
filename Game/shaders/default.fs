@@ -37,6 +37,7 @@ struct Light {
 in vec2 texCoord;
 in vec3 FragPos;
 in vec3 Normal;
+in mat4 auxView;
 
 
 uniform sampler2D ourTexture;
@@ -46,22 +47,34 @@ uniform vec3 viewPos;
 
 void main()
 {
+	vec3 norm = normalize(Normal);
+	vec3 light_dir = normalize(light.position - FragPos);
+    float diff = max(0.0, dot(norm, light_dir));
+	float spec =0;    
+
+	if(diff > 0.0 && material.shininess > 0.0)
+    {
+        vec3 view_pos    = transpose(mat3(auxView))*(-auxView[3].xyz);
+        vec3 view_dir    = normalize(view_pos-FragPos);
+        vec3 reflect_dir = normalize(reflect(-light_dir, norm));
+        float sp         = max(dot(view_dir, reflect_dir), 0.0);
+
+        if(sp > 0.0)
+        {
+			//specular
+            spec = pow(sp, material.shininess); 
+        }
+    }
+
 	//ambient
 	vec3 ambient = light.ambient * texture(material.diff_map, texCoord).rgb;
 
-	//diffuse
-	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(light.position - FragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.diffuse* diff *texture(material.diff_map, texCoord).rgb;  
+	//diffuse	
+    vec3 diffuse = light.diffuse* (diff *texture(material.diff_map, texCoord).rgb);  
 
-	//specular
-	vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);  
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);    
 	vec3 specular = light.specular * spec * texture(material.spec_map, texCoord).rgb;  
 
-	vec3 result = ambient + diffuse+ specular;
+	vec3 result = material.k_occ*ambient + material.k_diff*diffuse + material.k_spec*specular;
 
     color = vec4(result, 1.0);
 
