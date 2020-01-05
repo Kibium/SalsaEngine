@@ -11,6 +11,8 @@
 #include <shlwapi.h>
 #include <iostream>
 #pragma comment(lib,"shlwapi.lib")
+#include "ModuleScene.h"
+#include "GameObject.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -234,7 +236,34 @@ void ModuleInput::DroppedFile(const char* file) const
 	if (assimpMap.find(extension) != assimpMap.end()) {
 
 		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
+		// Process file and create empty gameobject
 		App->model->SwitchModel(file);
+		auto obj = App->scene->CreateGameObject();
+
+		// Process name
+		std::string fileName = file;
+		std::string objName;
+		for (std::string::iterator it = fileName.end()-1; it != fileName.begin(); --it) {
+			if ((*it) != '\\')
+				objName += (*it);
+			else
+				break;
+		}
+		std::reverse(objName.begin(), objName.end());
+		objName.pop_back();
+		objName.pop_back();
+		objName.pop_back();
+		objName.pop_back();
+		obj->name = objName;
+
+		// Process components
+		obj->model = App->model;
+		obj->DeleteComponent(Type::TRANSFORM);
+		obj->CreateComponent(Type::TRANSFORM);
+		obj->CreateComponent(Type::MESH);
+		obj->CreateComponent(Type::MATERIAL);
+		App->scene->root->children.push_back(obj);
+
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {
 		LOG("TEXTURE FILE FORMAT '%s' ACCEPTED\n ", extension);
