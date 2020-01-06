@@ -4,6 +4,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleShader.h"
 #include "Geometry/AABB.h"
+#include "ModuleMSTimer.h"
 
 #include <glew.h>
 #include "SDL.h"
@@ -40,7 +41,7 @@ update_status ModuleCamera::PreUpdate() {
 
 update_status ModuleCamera::Update() {
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "viewPos"), frustum.pos.x, frustum.pos.y, frustum.pos.z);
-
+	cameraSpeed = CAMERA_SPEED / App->globalTimer->dt;
 	return UPDATE_CONTINUE;
 }
 

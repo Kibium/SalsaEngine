@@ -67,14 +67,14 @@ void main()
     }
 
 	//ambient
-	vec3 ambient = light.ambient * texture(material.diff_map, texCoord).rgb;
+	vec3 ambient = light.ambient * texture(material.occ_map, texCoord).rgb * texture(material.diff_map, texCoord).rgb;
 
 	//diffuse	
     vec3 diffuse = light.diffuse* (diff *texture(material.diff_map, texCoord).rgb);  
 
 	vec3 specular = light.specular * spec * texture(material.spec_map, texCoord).rgb;  
 
-	vec3 result = material.k_occ*ambient + material.k_diff*diffuse + material.k_spec*specular;
+	vec3 result = material.k_occ*ambient*material.occ_color.rgb + material.k_diff*diffuse*material.diff_color.rgb + material.k_spec*specular*material.spec_color.rgb;
 
     color = vec4(result, 1.0);
 

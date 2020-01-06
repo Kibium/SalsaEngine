@@ -434,7 +434,6 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 	}
 	App->camera->Focus();
 }
-
 bool ModuleModelLoader::item_exists(const char* path) {
 
 

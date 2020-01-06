@@ -157,6 +157,9 @@
     <ClCompile Include="Source\ModuleDebugDraw.cpp">
       <Filter>Modules\Added Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleMSTimer.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -674,6 +677,9 @@
     </ClInclude>
     <ClInclude Include="Source\DebugDraw.h">
       <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleMSTimer.h">
+      <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

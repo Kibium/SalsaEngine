@@ -29,6 +29,7 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
+	void ShowTimeButtons();//Play Pause Stop 
 	bool isScene = false;
 	bool isInspector = false;
 private:
@@ -47,6 +48,8 @@ private:
 	float sceneWidth = 0;
 	float sceneHeight = 0;
 	bool aspectFixed = false;
+
+	void UpdateMaterial(unsigned int& textureID);
 
 	//Color picker variables
 	ImGuiColorEditFlags misc_flags;

@@ -146,8 +146,8 @@ update_status ModuleInput::Update()
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
 				if (!App->camera->GetSpeeding()) {
 					App->camera->SetSpeeding(true);
-					App->camera->SetSpeed(App->camera->cameraSpeed + App->camera->cameraSpeed);
-					App->camera->SetRotationSpeed(App->camera->rotationSpeed + App->camera->rotationSpeed);	
+					App->camera->SetSpeed(App->camera->cameraSpeed * 2);
+					App->camera->SetRotationSpeed(App->camera->rotationSpeed * 2);	
 				}
 			}
 			break;
@@ -157,7 +157,7 @@ update_status ModuleInput::Update()
 				App->camera->SetOrbit(false);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
-				App->camera->SetSpeed(CAMERA_SPEED);
+				App->camera->SetSpeed(App->camera->cameraSpeed);
 				App->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->camera->SetSpeeding(false);
 			}

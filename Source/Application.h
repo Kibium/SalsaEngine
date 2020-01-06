@@ -16,6 +16,7 @@ class ModuleTexture;
 class ModuleCamera;
 class ModuleModelLoader;
 class ModuleDebugDraw;
+class ModuleMSTimer;
 
 
 class Application
@@ -40,6 +41,8 @@ public:
 	ModuleCamera* camera = nullptr;
 	ModuleModelLoader* model = nullptr;
 	ModuleDebugDraw* debugdraw = nullptr;
+	ModuleMSTimer* mstimer = nullptr;
+	ModuleMSTimer* globalTimer = nullptr;
 
 
 private:

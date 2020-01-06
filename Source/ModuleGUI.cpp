@@ -6,6 +6,7 @@
 #include "ModuleCamera.h"
 #include "ModuleShader.h"
 #include "ModuleModelLoader.h"
+#include "ModuleMSTimer.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "IconsMaterialDesignIcons.h"
@@ -26,6 +27,19 @@ ModuleGUI::ModuleGUI()
 
 ModuleGUI::~ModuleGUI()
 {
+}
+
+static void HelpMarker(const char* desc)
+{
+	ImGui::TextDisabled("(?)");
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
 }
 
 bool ModuleGUI::Init()
@@ -81,9 +95,10 @@ update_status ModuleGUI::Update()
 		GameObjecInfo();
 	if (showAboutWindow)
 		ShowAbout();
+	ShowTimeButtons();
 
 	ShowConsole(ICON_FA_TERMINAL " Console");
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -285,6 +300,32 @@ void ModuleGUI::MainMenu() {
 
 }
 
+void ModuleGUI::ShowTimeButtons() {
+	if(ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoScrollbar)) {
+		
+		ImVec2 time_window_size = ImGui::GetWindowSize();
+
+		ImVec2 play_button_pos((time_window_size.x - 24)*0.5f - 26, (time_window_size.y - 24)*0.5f);
+		ImGui::SetCursorPos(play_button_pos);
+		
+		if (ImGui::Button(ICON_FA_PLAY, ImVec2(24, 24)))
+		{
+			//TODO
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_STOP, ImVec2(24, 24)))
+		{
+			//TODO
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_STEP_FORWARD, ImVec2(24, 24)))
+		{
+			//TODO
+		}
+	}
+	ImGui::End();
+}
+
 void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
@@ -305,24 +346,38 @@ void ModuleGUI::Scene() {
 	ImGui::End();
 }
 
-char* ModuleGUI::GetInputFile()
+char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item
 {
 	OPENFILENAME ofn = { 0 };
-	ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
+	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = 0;
-	ofn.lpstrFilter = _T("Texture (*.png)\0*.\0All Files (*.*)\0*.*\0\0");
+	ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0\0");
 	ofn.lpstrFile = szFileName;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
 	ofn.lpstrDefExt = _T("png");
 
-	if (GetOpenFileName(&ofn)) // user selected an input file
+	if (GetOpenFileName(&ofn))
 	{
-		MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
-		return szFileName;
+		//MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
+		string temp = szFileName;
+
+		//TODO: ADD HERE ACCEPETD FILETYPES
+		if(temp.substr(temp.size()-4) == ".png" || temp.substr(temp.size() - 4) == ".ttf")
+			return szFileName;
+		else
+			return "Not valid";
 	}
 	else
 		return "Not valid";
+}
+
+void ModuleGUI::UpdateMaterial(unsigned int& materialID) {
+
+	char* dir = GetInputFile();
+	if (dir != "Not valid")
+		materialID = App->texture->Load(dir);
+
 }
 
 void ModuleGUI::GameObjecInfo() {
@@ -340,7 +395,7 @@ void ModuleGUI::GameObjecInfo() {
 
 			}
 			if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
-				ImGui::Text("Meshes: %d",App->model->meshes.size());
+				ImGui::Text("Meshes: %d", App->model->meshes.size());
 				ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				static bool wireframe = false;
@@ -423,46 +478,47 @@ void ModuleGUI::GameObjecInfo() {
 
 			}
 
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) {
+			//For every mesh, see its material, and allow to update textures
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
 				for (int i = 0; i < App->model->meshes.size(); ++i) {
 					ImGui::Text("Mesh %d", i);
-					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.diffuse_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
-						App->model->meshes[i].meshMaterial.diffuse_map = App->texture->Load(GetInputFile());
+
+					ImGui::Spacing();
+
+					ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.diffuse_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+
+						UpdateMaterial(App->model->meshes[i].meshMaterial.diffuse_map);
+
+					} ImGui::SameLine();
+					
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.occlusion_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+
+						UpdateMaterial(App->model->meshes[i].meshMaterial.occlusion_map);
+
 					} ImGui::SameLine();
 
-					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.occlusion_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
-						App->model->meshes[i].meshMaterial.occlusion_map = App->texture->Load(GetInputFile());
-					} ImGui::SameLine();
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.specular_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
 
-					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.specular_map, ImVec2(width*0.2, width*0.2), ImVec2(0, 1), ImVec2(1, 0))) {
-						App->model->meshes[i].meshMaterial.specular_map = App->texture->Load(GetInputFile());
-
+						UpdateMaterial(App->model->meshes[i].meshMaterial.specular_map);
 					}
 				}
 
-				if(ImGui::Button("Apply Textures to the gun!")) {
-					string dir;
-					Texture tex;
-
-					dir = App->model->directory + "Gun_diffuse.png";
-					tex.id = App->texture->Load(dir.c_str());
-					App->model->meshes[0].meshMaterial.diffuse_map = tex.id;
-				}
 			}
 
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Material")) {
-				
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
+				HelpMarker("Now only shows the default mmaterial applied to every mesh");
 				if (ImGui::TreeNodeEx("Diffuse")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
 					ImGui::Text(App->model->mat.diff_path.c_str());
 					ImGui::Spacing();
 
 					ImGui::Image((void*)(intptr_t)App->model->mat.diffuse_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
-
-					ImGui::SliderFloat("Color R", &App->model->mat.diffuse_color.x, 0, 1);
-					ImGui::SliderFloat("Color G", &App->model->mat.diffuse_color.y, 0, 1); 				
-					ImGui::SliderFloat("Color B", &App->model->mat.diffuse_color.z, 0, 1);					
-					ImGui::SliderFloat("Color W", &App->model->mat.diffuse_color.w, 0, 1);
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.diffuse_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color B", &App->model->mat.diffuse_color.z, 0, 1);
+					
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), App->model->mat.diffuse_color.x, App->model->mat.diffuse_color.y, App->model->mat.diffuse_color.z, App->model->mat.diffuse_color.w);
 
@@ -470,7 +526,7 @@ void ModuleGUI::GameObjecInfo() {
 						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), App->model->mat.k_diffuse);
 
 					}
-					
+
 					ImGui::TreePop();
 				}
 
@@ -480,11 +536,11 @@ void ModuleGUI::GameObjecInfo() {
 					ImGui::Spacing();
 
 					ImGui::Image((void*)(intptr_t)App->model->mat.occlusion_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
-
-					ImGui::SliderFloat("Color R", &App->model->mat.occlusion_color.x, 0, 1);
-					ImGui::SliderFloat("Color G", &App->model->mat.occlusion_color.y, 0, 1);
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.occlusion_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.occlusion_color.y, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color B", &App->model->mat.occlusion_color.z, 0, 1);
-					ImGui::SliderFloat("Color W", &App->model->mat.occlusion_color.w, 0, 1);
+					
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), App->model->mat.occlusion_color.x, App->model->mat.occlusion_color.y, App->model->mat.occlusion_color.z, App->model->mat.occlusion_color.w);
 
@@ -495,18 +551,18 @@ void ModuleGUI::GameObjecInfo() {
 
 					ImGui::TreePop();
 				}
-				
+
 				if (ImGui::TreeNodeEx("Specular")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Texture: ");
 
 					ImGui::Spacing();
 
 					ImGui::Image((void*)(intptr_t)App->model->mat.specular_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
-
-					ImGui::SliderFloat("Color R", &App->model->mat.specular_color.x, 0, 1);
-					ImGui::SliderFloat("Color G", &App->model->mat.specular_color.y, 0, 1);
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.specular_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.specular_color.y, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color B", &App->model->mat.specular_color.z, 0, 1);
-					ImGui::SliderFloat("Color W", &App->model->mat.specular_color.w, 0, 1);
+					
 
 					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), App->model->mat.specular_color.x, App->model->mat.specular_color.y, App->model->mat.specular_color.z, App->model->mat.specular_color.w);
 
@@ -517,13 +573,42 @@ void ModuleGUI::GameObjecInfo() {
 
 					ImGui::TreePop();
 				}
-				
+
 				if (ImGui::SliderFloat("Shininess", &App->model->mat.shininess, -100, 100)) {
 					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), App->model->mat.shininess);
 
 				}
 
 			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_CLOCK " Timers")) {
+
+				if (ImGui::CollapsingHeader("Time")) {
+					ImGui::SliderFloat("Max FPS", &App->globalTimer->FPS, 10, 100);
+					ImGui::Text("Limiting to %0.1f, mmeans each frame needs %0.1f ms to render", App->globalTimer->FPS, App->globalTimer->frameDelay);
+					ImGui::Text("dt: %0.3f", App->globalTimer->dt);
+
+				}
+
+				if (ImGui::CollapsingHeader("Chrono")) {
+
+					if (ImGui::Button("Play")) {
+						App->mstimer->Start();
+						LOG("STARTING TIMER! \n");
+					}
+
+					if (ImGui::Button("Read")) {
+						LOG("Time elapsed since play was pressed: %0.2f s \n", App->mstimer->Read() / 1000);
+					}
+
+					if (ImGui::Button("Stop") && App->mstimer->isCounting) {
+						LOG("Clock stopped. Final time: %0.2f s \n", App->mstimer->Stop() / 1000);
+					}
+				}
+
+
+			}
+
 		}
 
 	}
@@ -767,7 +852,7 @@ void ModuleGUI::ShowDefWindow() {
 			}
 
 			if (ImGui::SliderFloat("Ambient", &App->model->light.ambient, 0, 1)) {
-			
+
 				glUniform1f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.ambient);
 
 			}*/
@@ -779,10 +864,10 @@ void ModuleGUI::ShowDefWindow() {
 			ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1);
 			ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1);
 			ImGui::SliderFloat("Color B", &App->model->light.color.z, 0, 1);
-			
+
 			glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.color.x, App->model->light.color.y, App->model->light.color.z);
 
-			
+
 		}
 
 	}
