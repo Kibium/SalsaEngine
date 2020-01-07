@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include "ModuleScene.h"
+#include "optick/optick.h"
 
 ModuleGUI::ModuleGUI() {
 }
@@ -63,6 +64,8 @@ update_status ModuleGUI::PreUpdate() {
 
 update_status ModuleGUI::Update() {
 
+	OPTICK_CATEGORY("UpdateUI", Optick::Category::UI);
+
 	MainMenu();
 
 	if (showAppWindow)
@@ -70,6 +73,9 @@ update_status ModuleGUI::Update() {
 
 	if (showHelpWindow)
 		ShowHelp();
+
+	if (showGame)
+		Game();
 
 	if (showScene)
 		Scene();
@@ -202,7 +208,9 @@ void ModuleGUI::MainMenu() {
 		if (ImGui::BeginMenu("Window")) {
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
+			ImGui::MenuItem(("Game"), (const char*)0, &showGame);
 			ImGui::MenuItem(("Hierarchy"), (const char*)0, &showHierarchy);
+
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
@@ -221,8 +229,28 @@ void ModuleGUI::MainMenu() {
 
 }
 
+void ModuleGUI::Game() {
+	if (ImGui::Begin(ICON_FA_GAMEPAD " Game"))
+	{
+		//isScene= ImGui::IsWindowFocused();
+		sceneWidthGame = ImGui::GetWindowWidth();
+		sceneHeightGame = ImGui::GetWindowHeight();
+		App->renderer->DrawGame(sceneWidthGame, sceneHeightGame);
+
+		ImGui::GetWindowDrawList()->AddImage(
+			(void *)App->renderer->sceneTex,
+			ImVec2(ImGui::GetCursorScreenPos()),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidthGame, ImGui::GetCursorScreenPos().y + sceneHeightGame),
+			ImVec2(0, 1),
+			ImVec2(1, 0)
+		);
+		
+	}
+	ImGui::End();
+}
 void ModuleGUI::Scene() {
-	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene")) {
+	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
+	{
 		isScene = ImGui::IsWindowFocused();
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
@@ -498,6 +526,12 @@ void ModuleGUI::ShowDefWindow() {
 			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
 				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
 
+			if (ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0,1000)) {
+				App->camera->CalculateMatrixes();
+			}
+			if (ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0,1000)) {
+				App->camera->CalculateMatrixes();
+			}
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
@@ -521,6 +555,17 @@ void ModuleGUI::ShowDefWindow() {
 				}
 
 			}
+		}
+
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::DragFloat3("Front C",(float*) &App->renderer->GameCamera->frustum.front, 0.1);
+			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);
+			ImGui::DragFloat3("Position C", (float*)&App->renderer->GameCamera->frustum.pos, 0.1);
+			
+			ImGui::Separator();
+
+
 		}
 	}
 	ImGui::End();

@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include <algorithm>
+#include "optick/optick.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -50,6 +51,8 @@ bool ModuleScene::Init() {
 }
 
 update_status ModuleScene::Update() {
+
+	OPTICK_CATEGORY("UpdateScene", Optick::Category::Scene);
 
 	update_status ret = UPDATE_CONTINUE;
 

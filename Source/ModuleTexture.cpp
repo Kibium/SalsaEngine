@@ -1,6 +1,7 @@
 #include "ModuleTexture.h"
 #include "Application.h"
 #include "ModuleModelLoader.h"
+#include "Skybox.h"
 #include "Globals.h"
 #include <glew.h>
 #include <il.h>
@@ -65,4 +66,35 @@ GLuint ModuleTexture::Load(const char *filename) {
 
 	return texture;
 }
+void ModuleTexture::LoadSkybox(const char *filename, int index) {
+	GLuint texture;
+	ILuint image;
+	ilGenImages(1, &image);
 
+	ilBindImage(image);
+	ilLoadImage(filename);
+
+	ILenum error;
+	error = ilGetError();
+	if (error == IL_COULD_NOT_OPEN_FILE)
+	{
+		LOG("SKYBOX:: SKYBOX CANNOT BE LOADED");
+	}
+
+	ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+	ILinfo ImageInfo;
+	iluGetImageInfo(&ImageInfo);
+	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+	{
+		iluFlipImage();
+	}
+	//glGenTextures(1, &texture);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	int width = ilGetInteger(IL_IMAGE_WIDTH);
+	int height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+	ILubyte* data = ilGetData();
+	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	ilDeleteImages(1, &image);
+
+}

@@ -1,4 +1,14 @@
 #include "ModuleModelLoader.h"
+#include "Application.h"
+#include "ModuleShader.h"
+#include "ModuleTexture.h"
+#include "ModuleRender.h"
+#include "ModuleCamera.h"
+#include "assimp/DefaultLogger.hpp"
+#include <assimp/cimport.h>
+#include <assimp/material.h>
+#include <assimp/mesh.h>
+using namespace Assimp;
 
 ModuleModelLoader::ModuleModelLoader() {
 }
