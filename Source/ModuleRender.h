@@ -1,6 +1,7 @@
 #ifndef __MODULERENDER_H__
 #define __MODULERENDER_H__
 #include "Module.h"
+#include "ModuleCamera.h"
 #include "Globals.h"
 
 struct SDL_Texture;
@@ -29,7 +30,7 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ModuleCamera* GameCamera;
+	ModuleCamera* GameCamera = nullptr;
 private:
 	GLuint FBO;
 	GLuint RBO;

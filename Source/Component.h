@@ -6,6 +6,8 @@
 enum class Type;
 class GameObject;
 
+typedef unsigned int uint32_t;
+
 class Component {
 public:
 	Component();
@@ -17,6 +19,7 @@ public:
 	virtual void OnEditor();
 
 public:
+	uint32_t UUID;
 	Type type;
 	bool active = true;
 	GameObject* myGo = nullptr;

@@ -246,6 +246,7 @@
     <ClInclude Include="Libraries\optick\optick_miniz.h" />
     <ClInclude Include="Libraries\optick\optick_serialization.h" />
     <ClInclude Include="Libraries\optick\optick_server.h" />
+    <ClInclude Include="Libraries\pcg\pcg_basic.h" />
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
     <ClInclude Include="Source\Application.h" />
@@ -317,6 +318,10 @@
     <ClCompile Include="Libraries\optick\optick_miniz.cpp" />
     <ClCompile Include="Libraries\optick\optick_serialization.cpp" />
     <ClCompile Include="Libraries\optick\optick_server.cpp" />
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg_basic.c" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Component.cpp" />

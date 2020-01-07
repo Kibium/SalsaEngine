@@ -21,6 +21,7 @@ update_status ComponentMesh::Update() {
 
 void ComponentMesh::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_CUBE " Mesh", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		Component::OnEditor();
 		if (ImGui::Checkbox("Active##ComponentMesh", &active)) {
 			active ? Enable() : Disable();
 		}
@@ -34,5 +35,4 @@ void ComponentMesh::OnEditor() {
 		}
 	}
 	ImGui::Separator();
-	Component::OnEditor();
 }

@@ -5,13 +5,16 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "imgui.h"
+#include "pcg/pcg_basic.h"
 
 GameObject::GameObject() {
 	CreateComponent(Type::TRANSFORM);
+	UUID = pcg32_random();
 }
 
 GameObject::GameObject(const std::string &name) : name(name) {
 	CreateComponent(Type::TRANSFORM);
+	UUID = pcg32_random();
 }
 
 GameObject::~GameObject() {
@@ -78,18 +81,19 @@ Component* GameObject::CreateComponent(Type type) {
 }
 
 void GameObject::DrawComponents() {
+	ImGui::Text("UUID: %d", UUID);
 	if (ImGui::Checkbox("Active##ObjectActive", &isActive)) {
 		if (isActive) {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = true;
 			}
-			model->isActive = true;
+			if (model != nullptr) model->isActive = true;
 		}
 		else {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = false;
 			}
-			model->isActive = false;
+			if (model != nullptr) model->isActive = false;
 		}
 	}
 	ImGui::SameLine();

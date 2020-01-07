@@ -46,9 +46,6 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -86,39 +83,6 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Math\MathOps.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGUI.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleModelLoader.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRender.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleScene.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleShader.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTexture.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\OBB.cpp">
@@ -196,8 +160,56 @@
     <ClCompile Include="Libraries\optick\optick_server.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleCamera.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleGUI.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleModelLoader.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRender.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleScene.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleShader.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleTexture.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
-      <Filter>Modules\Added Modules</Filter>
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg_basic.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c">
+      <Filter>Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,9 +367,6 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Frustum.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h">
@@ -522,43 +531,7 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleDebugDraw.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGUI.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleModelLoader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleShader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\myassert.h">
@@ -783,8 +756,50 @@
     <ClInclude Include="Libraries\optick\optick_server.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleCamera.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleGUI.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleModelLoader.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRender.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleShader.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleTexture.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Model.h">
-      <Filter>Modules\Added Modules</Filter>
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\pcg\pcg_basic.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
