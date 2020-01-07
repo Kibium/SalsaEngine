@@ -83,11 +83,13 @@ void GameObject::DrawComponents() {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = true;
 			}
+			model->isActive = true;
 		}
 		else {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = false;
 			}
+			model->isActive = false;
 		}
 	}
 	ImGui::SameLine();

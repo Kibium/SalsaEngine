@@ -47,7 +47,7 @@ public:
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
 	std::vector<Mesh> meshes;
-	ModuleModelLoader* model = nullptr;
+	Model* model = nullptr;
 };
 
 #endif // __GAMEOBJECT_H__

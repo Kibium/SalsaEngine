@@ -60,8 +60,8 @@ GLuint ModuleTexture::Load(const char *filename) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	App->model->textureWidth.push_back(width);
-	App->model->textureHeight.push_back(height);
+//	App->model->textureWidth.push_back(width);
+	//App->model->textureHeight.push_back(height);
 
 	return texture;
 }

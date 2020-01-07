@@ -241,7 +241,7 @@ void ModuleGUI::Scene() {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
+	/*if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
@@ -310,7 +310,7 @@ void ModuleGUI::GameObjecInfo() {
 		}
 
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 void ModuleGUI::ShowHelp() {
 	bool* p_open = NULL;

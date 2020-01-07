@@ -172,6 +172,9 @@
     <ClCompile Include="Source\ComponentMaterial.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -695,6 +698,9 @@
     </ClInclude>
     <ClInclude Include="Source\ComponentMaterial.h">
       <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
