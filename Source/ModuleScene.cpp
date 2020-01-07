@@ -176,6 +176,7 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		selected = gameObject;
 	}
 	if (ImGui::BeginPopup("GameObject Popup")) { 
+		ImGui::Separator();
 		ImGui::TextDisabled("Copy");
 		ImGui::TextDisabled("Paste");
 		ImGui::Separator();
@@ -188,23 +189,25 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 			duplicate->children = gameObject->children;
 			if (duplicate->parent == root) {
 				root->children.push_back(duplicate);
-				SortGameObjects(root->children);
+				//SortGameObjects(root->children);
 			}
 			else {
 				duplicate->parent->children.push_back(duplicate);
-				SortGameObjects(duplicate->parent->children);
+				//SortGameObjects(duplicate->parent->children);
 			}
 			selected = duplicate;
 		}
 		if (ImGui::MenuItem("Delete")) {
 			gameObject->parent == root ? DeleteGameObject(gameObject) : gameObject->parent->DeleteChild(gameObject);
+			//delete gameObject;
 			selected = nullptr;
 		}
 		ImGui::Separator();
 		if (ImGui::MenuItem("Create Empty")) {
 			GameObject* newObject = CreateGameObject();
+			selected = nullptr;
 			if (selected == nullptr) {
-				root->children.push_back(gameObject);
+				root->children.push_back(newObject);
 			}
 			else {
 				newObject->parent = gameObject;
