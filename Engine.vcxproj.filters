@@ -196,6 +196,9 @@
     <ClCompile Include="Libraries\optick\optick_server.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -779,6 +782,9 @@
     </ClInclude>
     <ClInclude Include="Libraries\optick\optick_server.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Modules\Added Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,9 +20,9 @@ void Component::Disable() {
 }
 
 void Component::OnEditor() {
-	if (!canDelete) {
+	if (!canBeDeleted) {
 		LOG("Deleted component!\n");
 		myGo->DeleteComponent(type);
-		canDelete = true;
+		canBeDeleted = true;
 	}
 }
