@@ -7,6 +7,7 @@
 #include "ModuleGUI.h"
 #include <algorithm>
 #include "optick/optick.h"
+#include "ComponentCamera.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -20,9 +21,9 @@ ModuleScene::~ModuleScene() {
 bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
-
+	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
-
+	
 	GameObject* obj1 = new GameObject("Pepito");
 	obj1->parent = root;
 	root->children.push_back(obj1);
@@ -46,7 +47,7 @@ bool ModuleScene::Init() {
 		if ((*it)->isActive)
 			ret = (*it)->Init();
 	}
-
+	
 	return ret;
 }
 

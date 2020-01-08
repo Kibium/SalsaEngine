@@ -6,6 +6,7 @@
 #include <vector>
 
 class GameObject;
+class ComponentCamera;
 
 class ModuleScene : public Module {
 public:
@@ -26,11 +27,13 @@ public:
 	void DrawPopup(GameObject *gameObject);
 
 	void SortGameObjects(std::vector<GameObject*> &objects);
+	ComponentCamera* camera = nullptr;
 
 public:
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
+
 };
 
 #endif // __MODULESCENE_H__

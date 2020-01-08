@@ -91,34 +91,7 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGUI.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleModelLoader.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRender.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleScene.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleShader.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTexture.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\OBB.cpp">
@@ -142,9 +115,6 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Ray.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Skybox.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Sphere.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -161,18 +131,6 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentMaterial.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentMesh.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentTransform.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Source\Main.cpp">
@@ -196,8 +154,53 @@
     <ClCompile Include="Libraries\optick\optick_server.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Skybox.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
-      <Filter>Modules\Added Modules</Filter>
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Main\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentMaterial.cpp">
+      <Filter>Main\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentMesh.cpp">
+      <Filter>Main\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentTransform.cpp">
+      <Filter>Main\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleCamera.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleGUI.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleModelLoader.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRender.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleScene.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleShader.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleTexture.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Main\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Main\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,37 +531,7 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ModuleDebugDraw.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGUI.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleModelLoader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleShader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\myassert.h">
@@ -651,9 +624,6 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\SkeletonMeshBuilder.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Skybox.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\SmoothingGroups.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -726,18 +696,6 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMaterial.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMesh.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentTransform.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\optick\optick.config.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -783,8 +741,56 @@
     <ClInclude Include="Libraries\optick\optick_server.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Skybox.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Model.h">
-      <Filter>Modules\Added Modules</Filter>
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Main\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMaterial.h">
+      <Filter>Main\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMesh.h">
+      <Filter>Main\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentTransform.h">
+      <Filter>Main\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleCamera.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleGUI.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleModelLoader.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRender.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleShader.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleTexture.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Main\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Main\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -849,6 +855,12 @@
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{10f02be4-ecf7-40f3-8aa4-98bdf7a7066c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Components">
+      <UniqueIdentifier>{68a7a6a3-21f2-4d0e-85f2-42813e06dea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Modules">
+      <UniqueIdentifier>{43d8f7b2-472f-47c3-b599-969386a02815}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

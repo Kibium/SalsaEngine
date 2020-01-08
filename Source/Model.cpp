@@ -3,6 +3,8 @@
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
+#include "ComponentCamera.h"
+#include "ModuleScene.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
 #include <assimp/material.h>
@@ -116,7 +118,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
 		processNode(node->mChildren[i], scene);
 	}
-	App->camera->Focus();
+	App->scene->camera->Focus();
 }
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {

@@ -12,6 +12,8 @@
 #include "SDL.h"
 #include "MathGeoLib.h"
 #include "optick/optick.h"
+#include "ModuleScene.h"
+#include "ComponentCamera.h"
 
 ModuleRender::ModuleRender()
 {
@@ -45,7 +47,7 @@ bool ModuleRender::Init()
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
 
-	GameCamera = new ModuleCamera();
+	GameCamera = new ComponentCamera();
 	GameCamera->Init();
 	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
 	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
@@ -115,15 +117,17 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 
 	glUseProgram(App->shader->test_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
-	App->camera->DrawFrustum();
+	App->scene->camera->DrawFrustum();
 	//dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
-	if(App->camera->ContainsAABOX(App->model->modelBox)!= 0)
+	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
+	glUseProgram(0);
+	App->skybox->Draw();
 	App->debug->Draw(GameCamera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -171,9 +175,9 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
 	DrawGrid();
 	App->model->Draw();
 	glUseProgram(0);

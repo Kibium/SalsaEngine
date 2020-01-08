@@ -67,7 +67,7 @@ GLuint ModuleTexture::Load(const char *filename) {
 	return texture;
 }
 void ModuleTexture::LoadSkybox(const char *filename, int index) {
-	GLuint texture;
+
 	ILuint image;
 	ilGenImages(1, &image);
 
