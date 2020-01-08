@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include "optick/optick.h"
 
 ModuleShader::ModuleShader()
 {
@@ -137,6 +137,7 @@ update_status ModuleShader::PreUpdate()
 
 update_status ModuleShader::Update()
 {
+	OPTICK_CATEGORY("UpdateShader", Optick::Category::None);
 	return UPDATE_CONTINUE;
 
 }

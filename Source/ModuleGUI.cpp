@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include "ModuleScene.h"
+#include "optick/optick.h"
 
 ModuleGUI::ModuleGUI() {
 }
@@ -62,6 +63,8 @@ update_status ModuleGUI::PreUpdate() {
 }
 
 update_status ModuleGUI::Update() {
+
+	OPTICK_CATEGORY("UpdateUI", Optick::Category::UI);
 
 	MainMenu();
 
@@ -266,7 +269,7 @@ void ModuleGUI::Scene() {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
+	/*if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
@@ -335,7 +338,7 @@ void ModuleGUI::GameObjecInfo() {
 		}
 
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 void ModuleGUI::ShowHelp() {
 	bool* p_open = NULL;

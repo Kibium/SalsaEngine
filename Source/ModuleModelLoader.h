@@ -2,41 +2,23 @@
 #define __MODULEMODELLOADER_H__
 
 #include "Module.h"
-#include "Mesh.h"
+#include "Model.h"
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
-#include "assimp/Logger.hpp"
-#include "assimp/LogStream.hpp"
-#include "MathGeoLib.h"
-#include "Geometry/AABB.h"
-
-using namespace std;
-class myStream : public Assimp::LogStream
-{
-public:
-	myStream(){}
-	~myStream(){}
-	void write(const char* message)
-	{
-		LOG("ASSIMP:: %s\n", message);
-	}
-};
 class ModuleModelLoader : public Module {
 public:
+	std::vector<Model*> models;
 
-	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	vector<Mesh> meshes;
-	string directory;
-	vector<int> textureWidth;
-	vector<int> textureHeight;
+public:
 	ModuleModelLoader();
 	~ModuleModelLoader();
+
+	void AddModel(const char* filePath);
+	Model* GetModel(const char* filePath);
 
 	void Draw();
 	bool Init();
 	bool CleanUp();
+
 	void SwitchModel(const char*);
 	void SwitchTexture(const char*);
 	void RenderAABB();

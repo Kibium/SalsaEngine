@@ -20,7 +20,7 @@ public:
 	Type type;
 	bool active = true;
 	GameObject* myGo = nullptr;
-	bool canDelete = true;
+	bool canBeDeleted = true;
 };
 
 #endif // __COMPONENT_H__

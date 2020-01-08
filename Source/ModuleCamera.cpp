@@ -9,7 +9,7 @@
 #include "debugdraw.h"
 #include <glew.h>
 #include "SDL.h"
-
+#include "optick/optick.h"
 
 ModuleCamera::ModuleCamera() {
 }
@@ -42,6 +42,7 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
+	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
 	return UPDATE_CONTINUE;
 }
 
@@ -168,7 +169,7 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 void ModuleCamera::Orbit(const float xpos, float ypos)
 {
 
-	if (orbit) {
+	/*if (orbit) {
 		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
 		
 		if (xpos != 0.0f)
@@ -195,13 +196,13 @@ void ModuleCamera::Orbit(const float xpos, float ypos)
 		LookAt(center);
 		CalculateMatrixes();
 	}
-
+	*/
 	
 }
 
 void ModuleCamera::Focus()
 {
-	float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
+	/*float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
 	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
 
 	float3 direction = (center - frustum.pos).Normalized();
@@ -212,7 +213,7 @@ void ModuleCamera::Focus()
 	frustum.farPlaneDistance = 1000 * (size.Length() / 2);
 	frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
 	frustum.pos.y =  (size.Length() / 4);
-	CalculateMatrixes();
+	CalculateMatrixes();*/
 }
 
 void ModuleCamera::DrawFrustum()
