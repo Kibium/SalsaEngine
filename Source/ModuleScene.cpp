@@ -83,7 +83,7 @@ bool ModuleScene::CleanUp() {
 		if ((*it)->isActive)
 			ret = (*it)->CleanUp();
 	}
-
+	delete camera;
 	return ret;
 }
 

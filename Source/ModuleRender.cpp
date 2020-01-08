@@ -202,6 +202,7 @@ bool ModuleRender::CleanUp()
 	glDeleteTextures(1, &frameTex);
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
+	delete GameCamera;
 	//Destroy window
 
 	return true;
