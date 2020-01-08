@@ -3,9 +3,11 @@
 #include "Module.h"
 #include "Globals.h"
 
+
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ComponentCamera;
 
 class ModuleRender : public Module
 {
@@ -29,8 +31,8 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ModuleCamera* GameCamera;
-	//Skybox* skybox;
+	ComponentCamera* GameCamera;
+
 private:
 	GLuint FBO;
 	GLuint RBO;

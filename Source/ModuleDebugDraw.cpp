@@ -618,7 +618,7 @@ update_status  ModuleDebugDraw::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebugDraw::Draw(ModuleCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height)
+void ModuleDebugDraw::Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height)
 {
 	math::float4x4 view  = camera->view;
 	math::float4x4 proj = camera->proj;

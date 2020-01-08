@@ -3,6 +3,8 @@
 #include "ModuleTexture.h"
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
+#include "ComponentCamera.h"
+#include "ModuleScene.h"
 
 
 Skybox::Skybox()
@@ -102,12 +104,12 @@ void Skybox::Draw() {
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 	glUseProgram(App->shader->skybox_program);
 	float4x4 auxView;
-	auxView[0][0] = App->camera->view[0][0]; auxView[0][1] = App->camera->view[0][1]; auxView[0][2] = App->camera->view[0][2]; auxView[0][3] = 0;
-	auxView[1][0] = App->camera->view[1][0]; auxView[1][1] = App->camera->view[1][1]; auxView[1][2] = App->camera->view[1][2]; auxView[1][3] = 0;
-	auxView[2][0] = App->camera->view[2][0]; auxView[2][1] = App->camera->view[2][1]; auxView[2][2] = App->camera->view[2][2]; auxView[2][3] = 0;
+	auxView[0][0] = App->scene->camera->view[0][0]; auxView[0][1] = App->scene->camera->view[0][1]; auxView[0][2] = App->scene->camera->view[0][2]; auxView[0][3] = 0;
+	auxView[1][0] = App->scene->camera->view[1][0]; auxView[1][1] = App->scene->camera->view[1][1]; auxView[1][2] = App->scene->camera->view[1][2]; auxView[1][3] = 0;
+	auxView[2][0] = App->scene->camera->view[2][0]; auxView[2][1] = App->scene->camera->view[2][1]; auxView[2][2] = App->scene->camera->view[2][2]; auxView[2][3] = 0;
 
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "view"), 1, GL_TRUE, &auxView[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->skybox_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
 	// skybox cube
 	glBindVertexArray(skyboxVAO);
 	glActiveTexture(GL_TEXTURE0);

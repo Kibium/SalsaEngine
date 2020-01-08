@@ -1,4 +1,4 @@
-#include "ModuleCamera.h"
+#include "ComponentCamera.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
@@ -11,13 +11,24 @@
 #include "SDL.h"
 #include "optick/optick.h"
 
-ModuleCamera::ModuleCamera() {
+
+ComponentCamera::ComponentCamera()
+{
+	Init();
 }
 
-ModuleCamera::~ModuleCamera() {
+ComponentCamera::~ComponentCamera()
+{
 }
 
-bool ModuleCamera::Init() {
+ComponentCamera::ComponentCamera(const ComponentCamera & cam)
+{
+}
+
+void ComponentCamera::OnEditor()
+{
+}
+bool ComponentCamera::Init() {
 	LOG("Init Camera\n");
 	int width, height;
 	SDL_GetWindowSize(App->window->window, &width, &height);
@@ -37,56 +48,50 @@ bool ModuleCamera::Init() {
 	return true;
 }
 
-update_status ModuleCamera::PreUpdate() {
-	return UPDATE_CONTINUE;
-}
 
-update_status ModuleCamera::Update() {
+update_status ComponentCamera::Update() {
 	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleCamera::PostUpdate() {
-	return UPDATE_CONTINUE;
-}
 
-bool ModuleCamera::CleanUp() {
+bool ComponentCamera::CleanUp() {
 	return true;
 }
 
-void ModuleCamera::SetFOV(float verticalFOV) {
+void ComponentCamera::SetFOV(float verticalFOV) {
 	frustum.verticalFov = verticalFOV;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	CalculateMatrixes();
 }
-void ModuleCamera::SetSpeeding(const bool speed) {
+void ComponentCamera::SetSpeeding(const bool speed) {
 	speeding = speed;
 }
 
-void ModuleCamera::SetSpeed(float Speed) {
+void ComponentCamera::SetSpeed(float Speed) {
 	cameraSpeed = Speed;
 }
-void ModuleCamera::SetRotationSpeed(float Speed) {
+void ComponentCamera::SetRotationSpeed(float Speed) {
 	rotationSpeed = Speed;
 
 }
-void ModuleCamera::SetAspectRatio(float aspectRatio) {
+void ComponentCamera::SetAspectRatio(float aspectRatio) {
 	this->aspectRatio = aspectRatio;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * this->aspectRatio);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::SetOrbit(const bool isOrbit)
+void ComponentCamera::SetOrbit(const bool isOrbit)
 {
 	orbit = isOrbit;
 }
 
-void ModuleCamera::CalculateMatrixes() {
+void ComponentCamera::CalculateMatrixes() {
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 }
 
-math::float4x4 ModuleCamera::LookAt(math::float3 eye, math::float3 target, math::float3 up) const {
+math::float4x4 ComponentCamera::LookAt(math::float3 eye, math::float3 target, math::float3 up) const {
 	math::float4x4 matrix;
 	math::float3 f(target - eye); f.Normalize();
 	math::float3 s(f.Cross(up)); s.Normalize();
@@ -102,7 +107,7 @@ math::float4x4 ModuleCamera::LookAt(math::float3 eye, math::float3 target, math:
 	return matrix;
 }
 
-void ModuleCamera::LookAt(const float3 target)
+void ComponentCamera::LookAt(const float3 target)
 {
 	float3 direction = (target - frustum.pos).Normalized();
 	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
@@ -110,43 +115,43 @@ void ModuleCamera::LookAt(const float3 target)
 	frustum.up = rotationMatrix.Transform(frustum.up).Normalized();
 }
 
-void ModuleCamera::MoveUp()
+void ComponentCamera::MoveUp()
 {
 	frustum.pos.y += cameraSpeed;
 	CalculateMatrixes();
 }
 
-void ModuleCamera::MoveDown()
+void ComponentCamera::MoveDown()
 {
 	frustum.pos.y -= cameraSpeed;
 	CalculateMatrixes();
 }
 
-void ModuleCamera::MoveFoward()
+void ComponentCamera::MoveFoward()
 {
 	frustum.pos += frustum.front.ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::MoveBackward()
+void ComponentCamera::MoveBackward()
 {
 	frustum.pos -= frustum.front.ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::MoveLeft()
+void ComponentCamera::MoveLeft()
 {
 	frustum.pos -= frustum.WorldRight().ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::MoveRight()
+void ComponentCamera::MoveRight()
 {
 	frustum.pos += frustum.WorldRight().ScaledToLength(cameraSpeed);
 	CalculateMatrixes();
 }
 
-void ModuleCamera::Rotate(const float xpos, const float ypos)
+void ComponentCamera::Rotate(const float xpos, const float ypos)
 {
 
 	if (xpos != 0.0f)
@@ -158,7 +163,7 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 
 	if (ypos != 0.0f)
 	{
-		
+
 		float3x3 rotationX = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
 		frustum.up = rotationX.Transform(frustum.up).Normalized();
 		frustum.front = rotationX.Transform(frustum.front).Normalized();
@@ -166,12 +171,12 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 	CalculateMatrixes();
 }
 
-void ModuleCamera::Orbit(const float xpos, float ypos)
+void ComponentCamera::Orbit(const float xpos, float ypos)
 {
 
 	/*if (orbit) {
 		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
-		
+
 		if (xpos != 0.0f)
 		{
 			float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
@@ -197,10 +202,10 @@ void ModuleCamera::Orbit(const float xpos, float ypos)
 		CalculateMatrixes();
 	}
 	*/
-	
+
 }
 
-void ModuleCamera::Focus()
+void ComponentCamera::Focus()
 {
 	/*float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
 	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
@@ -216,15 +221,15 @@ void ModuleCamera::Focus()
 	CalculateMatrixes();*/
 }
 
-void ModuleCamera::DrawFrustum()
+void ComponentCamera::DrawFrustum()
 {
 	math::float4x4 inverseMatrix = proj * view;
 	math::float4x4 inverted = inverseMatrix.Inverted();
-	dd::frustum(inverted,float3(0,1,1));
-	
+	dd::frustum(inverted, float3(0, 1, 1));
+
 }
 
-/*in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
+in_out_frustum ComponentCamera::ContainsAABOX(const AABB& refBox) {
 
 	float3 vCorner[8];
 	int iTotalIn = 0;
@@ -245,7 +250,7 @@ void ModuleCamera::DrawFrustum()
 			}
 		}
 		// were all the points outside of plane p?
-		if(iInCount == 0)
+		if (iInCount == 0)
 			return(ABB_OUT);
 		// check if they were all on the right side of the plane
 		iTotalIn += iPtIn;
@@ -256,4 +261,4 @@ void ModuleCamera::DrawFrustum()
 	// we must be partly in then otherwise
 	return(INTERSECT);
 
-}*/
+}

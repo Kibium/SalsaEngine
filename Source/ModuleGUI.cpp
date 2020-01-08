@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include "ModuleScene.h"
+#include "ComponentCamera.h"
 #include "optick/optick.h"
 
 ModuleGUI::ModuleGUI() {
@@ -506,38 +507,38 @@ void ModuleGUI::ShowDefWindow() {
 
 		}
 		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera")) {
-			ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Position", &App->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Front", &App->scene->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Up", &App->scene->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Position", &App->scene->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
 
 			ImGui::Separator();
 
 
-			if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
-				App->camera->SetFOV(App->camera->frustum.horizontalFov);
+			if (ImGui::SliderFloat("FOV", &App->scene->camera->frustum.horizontalFov, 0, 2 * 3.14f))
+				App->scene->camera->SetFOV(App->scene->camera->frustum.horizontalFov);
 
-			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10)) {
+			if (ImGui::SliderFloat("Aspect Ratio", &App->scene->camera->aspectRatio, 0, 10)) {
 				if (!aspectFixed)
-					App->camera->SetAspectRatio(App->camera->aspectRatio);
+					App->scene->camera->SetAspectRatio(App->scene->camera->aspectRatio);
 			}
-			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
-				App->camera->SetSpeed(App->camera->cameraSpeed);
+			if (ImGui::SliderFloat("Camera Speed", &App->scene->camera->cameraSpeed, 0, 1))
+				App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed);
 
-			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
-				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
+			if (ImGui::SliderFloat("Rotation Speed", &App->scene->camera->rotationSpeed, 0, 1))
+				App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed);
 
-			if (ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0,1000)) {
-				App->camera->CalculateMatrixes();
+			if (ImGui::SliderFloat("Near Plane", &App->scene->camera->frustum.nearPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
 			}
-			if (ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0,1000)) {
-				App->camera->CalculateMatrixes();
+			if (ImGui::SliderFloat("Far Plane", &App->scene->camera->frustum.farPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
 			}
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
 			if (clicked & 1) {
-				App->camera->SetRotationSpeed(ROTATION_SPEED);
-				App->camera->SetSpeed(CAMERA_SPEED);
+				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				clicked = 0;
 			}
 			ImGui::SameLine();
@@ -547,7 +548,7 @@ void ModuleGUI::ShowDefWindow() {
 					if (aspectFixed)
 						aspectFixed = false;
 					else {
-						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
+						App->scene->camera->SetAspectRatio(sceneWidth / sceneHeight);
 						aspectFixed = true;
 					}
 
