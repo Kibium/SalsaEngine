@@ -30,6 +30,7 @@ public:
 	GLuint frameTex;
 	GLuint sceneTex;
 	ModuleCamera* GameCamera;
+	//Skybox* skybox;
 private:
 	GLuint FBO;
 	GLuint RBO;

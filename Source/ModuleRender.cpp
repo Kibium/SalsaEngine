@@ -52,6 +52,7 @@ bool ModuleRender::Init()
 	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
 	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	GameCamera->CalculateMatrixes();
+
 	return true;
 }
 
@@ -175,8 +176,8 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 	DrawGrid();
 	App->model->Draw();
-	App->skybox->Draw();
 	glUseProgram(0);
+	App->skybox->Draw();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
