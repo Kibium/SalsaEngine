@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL_image/include/SDL_image.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -62,6 +63,10 @@ bool ModuleWindow::Init()
 
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		SDL_Surface* s = IMG_Load("../Source/Util/sauce.png");
+		SDL_SetWindowIcon(window, s);
+
 	}
 
 	return ret;

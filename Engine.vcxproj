@@ -52,8 +52,8 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86;./Libraries/SDL_image/libx86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,7 +71,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86;./Libraries/SDL_image/libx86</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -249,14 +249,7 @@
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\Camera.h" />
-    <ClInclude Include="Source\ComponentCamera.h" />
-    <ClInclude Include="Source\debugdraw.h" />
-    <ClInclude Include="Source\Component.h" />
-    <ClInclude Include="Source\ComponentMaterial.h" />
-    <ClInclude Include="Source\ComponentMesh.h" />
-    <ClInclude Include="Source\ComponentTransform.h" />
-    <ClInclude Include="Source\GameObject.h" />
+
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Model.h" />
@@ -266,12 +259,15 @@
     <ClInclude Include="Source\ModuleGUI.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleModelLoader.h" />
+    <ClInclude Include="Source\ModuleMSTimer.h" />
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleScene.h" />
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+
     <ClInclude Include="Source\Skybox.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
@@ -335,6 +331,7 @@
     <ClCompile Include="Source\ModuleGUI.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
+    <ClCompile Include="Source\ModuleMSTimer.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleScene.cpp" />
     <ClCompile Include="Source\ModuleShader.cpp" />
@@ -343,6 +340,18 @@
     <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\shaders\Blinn.fs" />
+    <None Include="Game\shaders\Blinn.vs" />
+    <None Include="Game\shaders\default.fs" />
+    <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\flat.fs" />
+    <None Include="Game\shaders\flat.vs" />
+    <None Include="Game\shaders\Gouraud.fs" />
+    <None Include="Game\shaders\Gouraud.vs" />
+    <None Include="Game\shaders\lines.fs" />
+    <None Include="Game\shaders\lines.vs" />
+    <None Include="Game\shaders\Phong.fs" />
+    <None Include="Game\shaders\Phong.vs" />
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
     <None Include="Libraries\Assimp\include\assimp\color4.inl" />
     <None Include="Libraries\Assimp\include\assimp\material.inl" />

@@ -202,6 +202,12 @@
     <ClCompile Include="Source\ComponentCamera.cpp">
       <Filter>Main\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleMSTimer.cpp">
+      <Filter>Modules\Added Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -792,10 +798,27 @@
     <ClInclude Include="Source\ComponentCamera.h">
       <Filter>Main\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\debug_draw.hpp">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\par_shapes.h">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DebugDraw.h">
+      <Filter>Addons\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleMSTimer.h">
+      <Filter>Modules\Added Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+
     <None Include="Libraries\Assimp\include\assimp\.editorconfig">
       <Filter>Other</Filter>
+
     </None>
     <None Include="Libraries\Assimp\include\assimp\color4.inl">
       <Filter>Other</Filter>
@@ -847,6 +870,42 @@
     </None>
     <None Include="Libraries\Assimp\include\assimp\vector3.inl">
       <Filter>Other</Filter>
+    </None>
+    <None Include="Game\shaders\default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\lines.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\lines.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Blinn.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Blinn.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

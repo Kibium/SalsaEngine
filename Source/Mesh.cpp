@@ -9,12 +9,26 @@
 
 
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 {
 
 	this->vertices = vertices;
 	this->indices = indices;
-	this->textures = textures;
+	this->meshMaterial = m;
+
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), meshMaterial.diffuse_color.x, meshMaterial.diffuse_color.y, meshMaterial.diffuse_color.z, meshMaterial.diffuse_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), meshMaterial.specular_color.x, meshMaterial.specular_color.y, meshMaterial.specular_color.z, meshMaterial.specular_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), meshMaterial.occlusion_color.x, meshMaterial.occlusion_color.y, meshMaterial.occlusion_color.z, meshMaterial.occlusion_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), meshMaterial.emissive_color.x, meshMaterial.emissive_color.y, meshMaterial.emissive_color.z, meshMaterial.emissive_color.w);
+	
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), meshMaterial.shininess);
+
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), meshMaterial.k_specular);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), meshMaterial.k_diffuse);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), meshMaterial.k_ambient);
+	
+
+
 
 	setupMesh();
 
@@ -23,30 +37,27 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 
 void Mesh::Draw()
 {
-	unsigned int diffuseNr = 1;
-	unsigned int specularNr = 1;
-	unsigned int normalNr = 1;
-	unsigned int heightNr = 1;
-	for (unsigned int i = 0; i < textures.size(); i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
-		// retrieve texture number (the N in diffuse_textureN)
-		string number;
-		string name = textures[i].type;
-		if (name == "texture_diffuse")
-			number = std::to_string(diffuseNr++);
-		else if (name == "texture_specular")
-			number = std::to_string(specularNr++); // transfer unsigned int to stream
-		else if (name == "texture_normal")
-			number = std::to_string(normalNr++); // transfer unsigned int to stream
-		else if (name == "texture_height")
-			number = std::to_string(heightNr++); // transfer unsigned int to stream
 
-												 // now set the sampler to the correct texture unit
-		glUniform1i(glGetUniformLocation(App->shader->def_program, (name + number).c_str()), i);
-		// and finally bind the texture
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
-	}
+	//Assigning "ids" to textures
+	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.diff_map"), 0);
+	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.spec_map"), 1);
+	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.occ_map"), 2);
+	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.emi_map"), 3);
+
+	//applying textures to the variables deppending on its id
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, meshMaterial.diffuse_map);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, meshMaterial.specular_map);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, meshMaterial.occlusion_map);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, meshMaterial.emissive_map);
+
+	
 
 	// draw mesh
 	glBindVertexArray(VAO);
@@ -80,9 +91,14 @@ void Mesh::setupMesh()
 	// vertex Positions
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	
 	// vertex texture coords
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+
+	// vertex normal coords
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normals));
 
 
 	glBindVertexArray(0);

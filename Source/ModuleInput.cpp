@@ -152,10 +152,12 @@ update_status ModuleInput::Update()
 				App->scene->camera->SetOrbit(true);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+
 				if (!App->scene->camera->GetSpeeding()) {
 					App->scene->camera->SetSpeeding(true);
-					App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed + App->scene->camera->cameraSpeed);
-					App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed + App->scene->camera->rotationSpeed);
+					App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed * 2);
+					App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed * 2);
+
 				}
 			}
 			break;
@@ -165,10 +167,12 @@ update_status ModuleInput::Update()
 				App->scene->camera->SetOrbit(false);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+
 				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->scene->camera->SetSpeeding(false);
 				
+
 			}
 			break;
 
@@ -235,6 +239,11 @@ bool ModuleInput::CleanUp()
 
 void ModuleInput::DroppedFile(const char* file) const
 {
+	//If the house is BakerHouse.fbx, returns BakerHouse
+	App->model->model_name = App->model->GetFilename(file);
+	App->model->load_once = false;
+	
+
 	if (file == NULL) {
 		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");
 		return;

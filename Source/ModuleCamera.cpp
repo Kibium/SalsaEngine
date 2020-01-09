@@ -2,11 +2,14 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
+#include "ModuleShader.h"
+#include "ModuleMSTimer.h"
 #include "ModuleRender.h"
 #include "Geometry/AABB.h"
 #include "Math/float4x4.h"
 #include "Geometry/AABB.h"
 #include "debugdraw.h"
+
 #include <glew.h>
 #include "SDL.h"
 #include "optick/optick.h"
@@ -42,7 +45,10 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
-	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
+
+  OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "viewPos"), frustum.pos.x, frustum.pos.y, frustum.pos.z);
+	cameraSpeed = CAMERA_SPEED / App->globalTimer->dt;
 	return UPDATE_CONTINUE;
 }
 

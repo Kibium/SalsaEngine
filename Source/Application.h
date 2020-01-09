@@ -13,8 +13,12 @@ class ModuleTexture;
 class ModuleCamera;
 class ModuleModelLoader;
 class ModuleDebugDraw;
+
+class ModuleMSTimer;
+
 class Skybox;
 class ModuleScene;
+
 
 
 class Application
@@ -37,9 +41,15 @@ public:
 	ModuleTexture* texture = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleModelLoader* model = nullptr;
+
+	ModuleMSTimer* mstimer = nullptr;
+	ModuleMSTimer* globalTimer = nullptr;
+
+
 	ModuleDebugDraw* debug = nullptr;
 	Skybox* skybox = nullptr;
 	ModuleScene* scene = nullptr;
+
 
 private:
 
