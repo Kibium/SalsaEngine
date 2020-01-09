@@ -17,17 +17,17 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "ModuleScene.h"
+#include "ComponentCamera.h"
+#include "optick/optick.h"
 
-
-
-ModuleGUI::ModuleGUI()
-{
+ModuleGUI::ModuleGUI() {
 }
 
 
-ModuleGUI::~ModuleGUI()
-{
+ModuleGUI::~ModuleGUI() {
 }
+
 
 static void HelpMarker(const char* desc)
 {
@@ -42,8 +42,8 @@ static void HelpMarker(const char* desc)
 	}
 }
 
-bool ModuleGUI::Init()
-{
+bool ModuleGUI::Init() {
+
 	const char* glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -72,8 +72,7 @@ bool ModuleGUI::Init()
 	return true;
 }
 
-update_status ModuleGUI::PreUpdate()
-{
+update_status ModuleGUI::PreUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
@@ -81,51 +80,64 @@ update_status ModuleGUI::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::Update()
-{
+update_status ModuleGUI::Update() {
+
+	OPTICK_CATEGORY("UpdateUI", Optick::Category::UI);
 
 	MainMenu();
+
 	if (showAppWindow)
 		ShowDefWindow();
+
 	if (showHelpWindow)
 		ShowHelp();
+
+	if (showGame)
+		Game();
+
 	if (showScene)
 		Scene();
-	if (showInspector)
+
+	if (true)
 		GameObjecInfo();
+
 	if (showAboutWindow)
 		ShowAbout();
+  
 	ShowTimeButtons();
 
+	if (showHierarchy)
+		App->scene->DrawHierarchy(&showHierarchy);
+
+	if (showInspector)
+		App->scene->DrawInspector(&showInspector);
+
 	ShowConsole(ICON_FA_TERMINAL " Console");
-	//ImGui::ShowDemoWindow();
+
+	ImGui::ShowDemoWindow();
 
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::PostUpdate()
-{
+update_status ModuleGUI::PostUpdate() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleGUI::CleanUp()
-{
+bool ModuleGUI::CleanUp() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	return true;
 }
 
-void ModuleGUI::EventManager(SDL_Event event)
-{
+void ModuleGUI::EventManager(SDL_Event event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
-{
+void ModuleGUI::ShowConsole(const char * title, bool * p_opened) {
 	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 	ImGui::Begin(title, p_opened);
 	if (ImGui::Button("Clear")) Clear();
@@ -133,20 +145,17 @@ void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
 	ImGui::BeginChild("scrolling");
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
 
-	if (Filter.IsActive())
-	{
+	if (Filter.IsActive()) {
 		const char* buf_begin = logBuffer.begin();
 		const char* line = buf_begin;
-		for (int line_no = 0; line != NULL; line_no++)
-		{
+		for (int line_no = 0; line != NULL; line_no++) {
 			const char* line_end = (line_no < LineOffsets.Size) ? buf_begin + LineOffsets[line_no] : NULL;
 			if (Filter.PassFilter(line, line_end))
 				ImGui::TextUnformatted(line, line_end);
 			line = line_end && line_end[1] ? line_end + 1 : NULL;
 		}
 	}
-	else
-	{
+	else {
 		ImGui::TextUnformatted(logBuffer.begin());
 	}
 
@@ -159,31 +168,22 @@ void ModuleGUI::ShowConsole(const char * title, bool * p_opened)
 }
 void ModuleGUI::MainMenu() {
 
-	if (ImGui::BeginMainMenuBar())
-	{
+	if (ImGui::BeginMainMenuBar()) {
 
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("New Scene"))
-			{
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("New Scene")) {
 			}
-			if (ImGui::MenuItem("Open Scene"))
-			{
+			if (ImGui::MenuItem("Open Scene")) {
 			}
-			if (ImGui::MenuItem("Save"))
-			{
+			if (ImGui::MenuItem("Save")) {
 			}
-			if (ImGui::MenuItem("New Project"))
-			{
+			if (ImGui::MenuItem("New Project")) {
 			}
-			if (ImGui::MenuItem("Open Project"))
-			{
+			if (ImGui::MenuItem("Open Project")) {
 			}
-			if (ImGui::MenuItem("Save Project"))
-			{
+			if (ImGui::MenuItem("Save Project")) {
 			}
-			if (ImGui::MenuItem("Exit"))
-			{
+			if (ImGui::MenuItem("Exit")) {
 				SDL_Event quit_event;
 				quit_event.type = SDL_QUIT;
 				SDL_PushEvent(&quit_event);
@@ -191,11 +191,10 @@ void ModuleGUI::MainMenu() {
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Game Object"))
-		{
-			if (ImGui::MenuItem("Create Empty"))
-			{
+		if (ImGui::BeginMenu("Game Object")) {
+			if (ImGui::MenuItem("Create Empty")) {
 			}
+
 			if (ImGui::MenuItem("Create Sphere"))
 			{
 				App->model->CreateSphere("sphere0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
@@ -232,63 +231,50 @@ void ModuleGUI::MainMenu() {
 				App->model->materials.back().k_diffuse = 0.5f;
 				App->model->materials.back().k_ambient = 1.0f;
 			}
-			if (ImGui::MenuItem("Effects"))
-			{
+			if (ImGui::MenuItem("Effects"){
 			}
-			if (ImGui::MenuItem("Lights"))
-			{
+			if (ImGui::MenuItem("Lights")) {
 			}
-			if (ImGui::MenuItem("Audio"))
-			{
+			if (ImGui::MenuItem("Audio")) {
 			}
-			if (ImGui::MenuItem("Video"))
-			{
+			if (ImGui::MenuItem("Video")) {
 			}
-			if (ImGui::MenuItem("UI"))
-			{
+			if (ImGui::MenuItem("UI")) {
 			}
-			if (ImGui::MenuItem("Camera"))
-			{
+			if (ImGui::MenuItem("Camera")) {
 			}
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Component"))
-		{
-			if (ImGui::MenuItem("Mesh"))
-			{
+		if (ImGui::BeginMenu("Component")) {
+			if (ImGui::MenuItem("Mesh")) {
 			}
-			if (ImGui::MenuItem("Effects"))
-			{
+			if (ImGui::MenuItem("Effects")) {
 			}
-			if (ImGui::MenuItem("Physics"))
-			{
+			if (ImGui::MenuItem("Physics")) {
 			}
-			if (ImGui::MenuItem("Audio"))
-			{
+			if (ImGui::MenuItem("Audio")) {
 			}
-			if (ImGui::MenuItem("Video"))
-			{
+			if (ImGui::MenuItem("Video")) {
 			}
-			if (ImGui::MenuItem("UI"))
-			{
+			if (ImGui::MenuItem("UI")) {
 			}
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Window"))
-		{
+		if (ImGui::BeginMenu("Window")) {
 			ImGui::MenuItem(("Application"), (const char*)0, &showAppWindow);
 			ImGui::MenuItem(("Scene"), (const char*)0, &showScene);
+			ImGui::MenuItem(("Game"), (const char*)0, &showGame);
+			ImGui::MenuItem(("Hierarchy"), (const char*)0, &showHierarchy);
+
 			ImGui::MenuItem(("Inspector"), (const char*)0, &showInspector);
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("About"))
-		{
+		if (ImGui::BeginMenu("About")) {
 			ImGui::MenuItem(("Help"), (const char*)0, &showHelpWindow);
 			ImGui::MenuItem(("About Salsa"), (const char*)0, &showAboutWindow);
-			if (ImGui::MenuItem(ICON_FA_JEDI" Repository"))
-			{
+			if (ImGui::MenuItem(ICON_FA_JEDI" Repository")) {
 				ShellExecuteA(NULL, "open", "https://github.com/JorxSS/SalsaEngine", NULL, NULL, SW_SHOWNORMAL);
 			}
 			ImGui::EndMenu();
@@ -299,6 +285,7 @@ void ModuleGUI::MainMenu() {
 	ImGui::EndMainMenuBar();
 
 }
+
 
 void ModuleGUI::ShowTimeButtons() {
 	if(ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoScrollbar)) {
@@ -322,6 +309,27 @@ void ModuleGUI::ShowTimeButtons() {
 		{
 			//TODO
 		}
+	}
+	ImGui::End();
+}
+
+
+void ModuleGUI::Game() {
+	if (ImGui::Begin(ICON_FA_GAMEPAD " Game"))
+	{
+		//isScene= ImGui::IsWindowFocused();
+		sceneWidthGame = ImGui::GetWindowWidth();
+		sceneHeightGame = ImGui::GetWindowHeight();
+		App->renderer->DrawGame(sceneWidthGame, sceneHeightGame);
+
+		ImGui::GetWindowDrawList()->AddImage(
+			(void *)App->renderer->sceneTex,
+			ImVec2(ImGui::GetCursorScreenPos()),
+			ImVec2(ImGui::GetCursorScreenPos().x + sceneWidthGame, ImGui::GetCursorScreenPos().y + sceneHeightGame),
+			ImVec2(0, 1),
+			ImVec2(1, 0)
+		);
+		
 	}
 	ImGui::End();
 }
@@ -381,8 +389,7 @@ void ModuleGUI::UpdateMaterial(unsigned int& materialID) {
 }
 
 void ModuleGUI::GameObjecInfo() {
-	if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector"))
-	{
+	/*if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
 		float width = ImGui::GetWindowWidth();
 		float height = ImGui::GetWindowHeight();
@@ -410,8 +417,7 @@ void ModuleGUI::GameObjecInfo() {
 
 				static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
 				int node_clicked = -1;                // Temporary storage of what node we have clicked to process selection at the end of the loop. May be a pointer to your own node type, etc.
-				for (unsigned int i = 0; i < App->model->textures_loaded.size(); i++)
-				{
+				for (unsigned int i = 0; i < App->model->textures_loaded.size(); i++) {
 					// Disable the default open on single-click behavior and pass in Selected flag according to our selection state.
 					ImGuiTreeNodeFlags node_flags = base_flags;
 					std::string str = App->model->textures_loaded[i].path;
@@ -419,13 +425,11 @@ void ModuleGUI::GameObjecInfo() {
 					const bool is_selected = (selection_mask & (1 << i)) != 0;
 					if (is_selected)
 						node_flags |= ImGuiTreeNodeFlags_Selected;
-					if (i < App->model->textures_loaded.size())
-					{
+					if (i < App->model->textures_loaded.size()) {
 						bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Texture %d", i);
 						if (ImGui::IsItemClicked())
 							node_clicked = i;
-						if (node_open)
-						{
+						if (node_open) {
 							ImGui::Text("Path:");
 							ImGui::SameLine();
 							ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), path);
@@ -443,8 +447,7 @@ void ModuleGUI::GameObjecInfo() {
 						}
 					}
 				}
-				if (node_clicked != -1)
-				{
+				if (node_clicked != -1) {
 					// Update selection state. Process outside of tree loop to avoid visual inconsistencies during the clicking-frame.
 					if (ImGui::GetIO().KeyCtrl)
 						selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
@@ -612,12 +615,11 @@ void ModuleGUI::GameObjecInfo() {
 		}
 
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 void ModuleGUI::ShowHelp() {
 	bool* p_open = NULL;
-	if (ImGui::Begin("Help", p_open))
-	{
+	if (ImGui::Begin("Help", p_open)) {
 
 		ImGui::Text("USER GUIDE:");
 		ImGui::ShowUserGuide();
@@ -627,8 +629,7 @@ void ModuleGUI::ShowHelp() {
 }
 void ModuleGUI::ShowAbout() {
 	bool* p_open = NULL;
-	if (ImGui::Begin("About", p_open))
-	{
+	if (ImGui::Begin("About", p_open)) {
 
 		ImGui::Text("SALSA ENGINE 0.1");
 		ImGui::Text("This Engine was created as a project for the Master Degree 'Advanced Programming for AAA Video Games' made in the UPC from Barcelona.");
@@ -696,14 +697,12 @@ void ModuleGUI::ShowDefWindow() {
 	static int screen_h = 0;
 	SDL_GetWindowSize(App->window->window, &screen_w, &screen_h);
 	bool* p_open = NULL;
-	if (ImGui::Begin(ICON_FA_COG " Configuration", p_open))
-	{
+	if (ImGui::Begin(ICON_FA_COG " Configuration", p_open)) {
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
 		ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 		ImGui::Spacing();
-		if (ImGui::CollapsingHeader(ICON_FA_TABLET_ALT " Application"))
-		{
+		if (ImGui::CollapsingHeader(ICON_FA_TABLET_ALT " Application")) {
 			ImGui::Text("Engine Version: "); ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "0.1");
 			ImGui::Separator();
@@ -714,14 +713,12 @@ void ModuleGUI::ShowDefWindow() {
 			//Get frames
 			if (frames.size() > 120) //Max seconds to show
 			{
-				for (size_t i = 1; i < frames.size(); i++)
-				{
+				for (size_t i = 1; i < frames.size(); i++) {
 					frames[i - 1] = frames[i];
 				}
 				frames[frames.size() - 1] = fps;
 			}
-			else
-			{
+			else {
 				frames.push_back(fps);
 			}
 			char title[25];
@@ -785,36 +782,41 @@ void ModuleGUI::ShowDefWindow() {
 
 
 		}
-		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera"))
-		{
-			ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Position", &App->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera")) {
+			ImGui::InputFloat3("Front", &App->scene->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Up", &App->scene->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Position", &App->scene->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
 
 			ImGui::Separator();
 
 
-			if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
-				App->camera->SetFOV(App->camera->frustum.horizontalFov);
+			if (ImGui::SliderFloat("FOV", &App->scene->camera->frustum.horizontalFov, 0, 2 * 3.14f))
+				App->scene->camera->SetFOV(App->scene->camera->frustum.horizontalFov);
 
-			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10))
-			{
+
+			if (ImGui::SliderFloat("Aspect Ratio", &App->scene->camera->aspectRatio, 0, 10)) {
 				if (!aspectFixed)
-					App->camera->SetAspectRatio(App->camera->aspectRatio);
+					App->scene->camera->SetAspectRatio(App->scene->camera->aspectRatio);
 			}
-			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
-				App->camera->SetSpeed(App->camera->cameraSpeed);
+			if (ImGui::SliderFloat("Camera Speed", &App->scene->camera->cameraSpeed, 0, 1))
+				App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed);
 
-			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
-				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
+			if (ImGui::SliderFloat("Rotation Speed", &App->scene->camera->rotationSpeed, 0, 1))
+				App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed);
 
+
+			if (ImGui::SliderFloat("Near Plane", &App->scene->camera->frustum.nearPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
+			}
+			if (ImGui::SliderFloat("Far Plane", &App->scene->camera->frustum.farPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
+			}
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
-			if (clicked & 1)
-			{
-				App->camera->SetRotationSpeed(ROTATION_SPEED);
-				App->camera->SetSpeed(CAMERA_SPEED);
+			if (clicked & 1) {
+				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				clicked = 0;
 			}
 			ImGui::SameLine();
@@ -824,7 +826,7 @@ void ModuleGUI::ShowDefWindow() {
 					if (aspectFixed)
 						aspectFixed = false;
 					else {
-						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
+						App->scene->camera->SetAspectRatio(sceneWidth / sceneHeight);
 						aspectFixed = true;
 					}
 
@@ -840,6 +842,8 @@ void ModuleGUI::ShowDefWindow() {
 			if(ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
 					App->model->materials[i].diffuse_color = App->model->color;
+
+
 			}
 			if (ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
@@ -870,6 +874,16 @@ void ModuleGUI::ShowDefWindow() {
 
 		}
 
+		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::DragFloat3("Front C",(float*) &App->renderer->GameCamera->frustum.front, 0.1);
+			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);
+			ImGui::DragFloat3("Position C", (float*)&App->renderer->GameCamera->frustum.pos, 0.1);
+			
+			ImGui::Separator();
+
+
+		}
 	}
 	ImGui::End();
 }

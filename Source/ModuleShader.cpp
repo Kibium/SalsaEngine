@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include "optick/optick.h"
 
 ModuleShader::ModuleShader()
 {
@@ -91,11 +91,12 @@ bool ModuleShader::Init()
 	// ensure ifstream objects can throw exceptions:
 	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
 	try
 	{
 		// open files
-		vShaderFile.open("./Shaders/default.vs");
-		fShaderFile.open("./Shaders/default.fs");
+		vShaderFile.open("./shaders/default.vs");
+		fShaderFile.open("./shaders/default.fs");
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
@@ -134,9 +135,17 @@ bool ModuleShader::Init()
 	glAttachShader(def_program, fragment);
 	glLinkProgram(def_program);
 	checkCompileErrors(def_program, "PROGRAM");
+
+	test_program = glCreateProgram();
+	glAttachShader(test_program, vertex);
+	glAttachShader(test_program, fragment);
+	glLinkProgram(test_program);
+	checkCompileErrors(test_program, "PROGRAM");
+
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+
 
 	//TODO: This has to change
 	//.............PHONG.................//
@@ -146,6 +155,7 @@ bool ModuleShader::Init()
 		// open files
 		vShaderFile.open("./Shaders/Phong.vs");
 		fShaderFile.open("./Shaders/Phong.fs");
+
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
@@ -164,6 +174,7 @@ bool ModuleShader::Init()
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
 	// 2. compile shaders
+
 
 	// vertex shader
 	vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -396,6 +407,56 @@ bool ModuleShader::Init()
 	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
 	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(gouraud_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+  
+  //skybox - not so CUTRE m8
+	unsigned int vertex2, fragment2;
+	try
+	{
+		// open files
+		vShaderFile.open("./shaders/skybox.vs.txt");
+		fShaderFile.open("./shaders/skybox.fs.txt");
+    
+    std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+  }
+    
+    catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+	vShaderCode = vertexCode.c_str();
+	fShaderCode = fragmentCode.c_str();
+  
+	// vertex shader
+	vertex2 = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex2, 1, &vShaderCode, NULL);
+	glCompileShader(vertex2);
+	checkCompileErrors(vertex2, "VERTEX");
+	// fragment Shader
+	fragment2 = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment2, 1, &fShaderCode, NULL);
+	glCompileShader(fragment2);
+	checkCompileErrors(fragment2, "FRAGMENT");
+	// shader Program
+	skybox_program = glCreateProgram();
+	glAttachShader(skybox_program, vertex2);
+	glAttachShader(skybox_program, fragment2);
+	glLinkProgram(skybox_program);
+	checkCompileErrors(skybox_program, "PROGRAM");
+
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex2);
+	glDeleteShader(fragment2);
+
+
 
 	return true;
 
@@ -408,6 +469,7 @@ update_status ModuleShader::PreUpdate()
 
 update_status ModuleShader::Update()
 {
+	OPTICK_CATEGORY("UpdateShader", Optick::Category::None);
 	return UPDATE_CONTINUE;
 
 }
@@ -454,7 +516,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ", type, "\n", infoLog, "\n -- --------------------------------------------------- -- ");
+
+			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- \n" );
+
 		}
 	}
 	else
@@ -463,7 +527,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			LOG("ERROR::PROGRAM_LINKING_ERROR of type: ", "\n", infoLog, "\n -- --------------------------------------------------- -- ");
+
+			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: ", "\n",infoLog, "\n -- --------------------------------------------------- -- \n ");
+
 		}
 	}
 }

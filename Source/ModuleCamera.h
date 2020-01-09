@@ -10,6 +10,13 @@
 #define ROTATION_SPEED 0.02f
 #define MAXIMUM_PITCH 89.f
 #define MINIMUM_PITCH -89.f
+/*
+enum in_out_frustum
+{
+	ABB_OUT = 0,
+	ABB_IN,
+	INTERSECT
+};*/
 
 
 class ModuleCamera : public Module
@@ -30,6 +37,7 @@ public:
 	 void SetAspectRatio(float);
 	 void SetOrbit(bool);
 
+
 	 bool GetSpeeding() { return speeding; };
 	 bool GetOrbit() { return orbit; };
 	 float GetSpeed() { return cameraSpeed; };
@@ -48,12 +56,15 @@ public:
 	 void Rotate(const float, const float );
 	 void Orbit(const float, const float);
 	 void Focus();
+	 void DrawFrustum();
+	 //in_out_frustum ContainsAABOX(const AABB & refBox);
 
 	 Frustum frustum;
 	 float aspectRatio;
 	 math::float4x4 model;
 	 math::float4x4 view;
 	 math::float4x4 proj;
+	 math::float4x4 auxView;
 	 float cameraSpeed = CAMERA_SPEED;
 	 float rotationSpeed = ROTATION_SPEED;
 private:

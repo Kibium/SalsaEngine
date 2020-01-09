@@ -2,6 +2,11 @@
 #include "Application.h"
 #include "ModuleShader.h"
 
+
+//textrues are no longer supported
+#include "ModuleTexture.h"
+#include "ModuleRender.h"
+
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
@@ -14,14 +19,7 @@ using namespace Assimp;
 
 ModuleModelLoader::ModuleModelLoader() {
 }
-ModuleModelLoader::~ModuleModelLoader() {
-}
 
-void ModuleModelLoader::Draw()
-{
-	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].Draw();
-}
 
 void ModuleModelLoader::UpdateFigures() {
 	for (int i = 0; i < figures.size(); ++i) {
@@ -361,30 +359,20 @@ void ModuleModelLoader::SwitchModel(const char *file)
 		npolys = 0;
 		nvertex = 0;
 		model = false;
+
+ModuleModelLoader::~ModuleModelLoader() {
+	if (models.size() > 0) {
+		for (int i = 0; i < models.size(); ++i)
+			delete models[i];
+
 	}
-	LOG("\nNew model added. \n Loading Model %s \n", file);
-	Load(file);
 }
 
-void ModuleModelLoader::SwitchTexture(const char *file)
-{
-	vector<Texture> textures;
-	if (model) {
-		textures_loaded.clear();
-	}
-	LOG("\nNew Texture added. \n Loading Texture %s \n", file);
-	Texture texture;
-	texture.id = App->texture->Load((char*)file);
-	texture.type = "texture_diffuse";
-	texture.path = file;
-	textures.push_back(texture);
-	textures_loaded.push_back(texture);
-
-	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].textures = textures;
-
+void ModuleModelLoader::AddModel(const char *filePath) {
+	Model *model = new Model(filePath);
+	models.push_back(model);
 }
-//
+
 void ModuleModelLoader::Load(const char* path)
 {
 	DefaultLogger::create("", Logger::VERBOSE);
@@ -433,6 +421,19 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
+
+
+Model* ModuleModelLoader::GetModel(const char *filePath) {
+	if (filePath == nullptr || models.size() < 1) return nullptr;
+
+	for (int i = 0; i < models.size(); ++i) {
+		if (filePath == models[i]->filePath) {
+			return models[i];
+		}
+	}
+
+	return nullptr;
+
 }
 bool ModuleModelLoader::item_exists(const char* path) {
 
@@ -635,8 +636,16 @@ string ModuleModelLoader::GetModelDirectory(const char *path)
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string modelDir = dir.substr(0, currentDir + 1);
 
-	return modelDir;
+  
+void ModuleModelLoader::Draw() {
+	if (models.size() > 0) {
+		for (int i = 0; i < models.size(); ++i)
+			models[i]->Draw();
+	}
 }
+
+  
+
 string ModuleModelLoader::GetFilename(const char *path)
 {
 	std::string dir = std::string(path);
@@ -645,9 +654,7 @@ string ModuleModelLoader::GetFilename(const char *path)
 	std::string filename = dir.substr(currentDir + 1);
 	filename = filename.substr(0, filename.find('.'));
 
-	return filename;
-}
-void ModuleModelLoader::RenderAABB()
-{
 
+bool ModuleModelLoader::CleanUp() {
+	return true;
 }

@@ -231,10 +231,28 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Libraries\optick\optick.config.h" />
+    <ClInclude Include="Libraries\optick\optick.h" />
+    <ClInclude Include="Libraries\optick\optick_common.h" />
+    <ClInclude Include="Libraries\optick\optick_core.freebsd.h" />
+    <ClInclude Include="Libraries\optick\optick_core.h" />
+    <ClInclude Include="Libraries\optick\optick_core.linux.h" />
+    <ClInclude Include="Libraries\optick\optick_core.macos.h" />
+    <ClInclude Include="Libraries\optick\optick_core.platform.h" />
+    <ClInclude Include="Libraries\optick\optick_core.win.h" />
+    <ClInclude Include="Libraries\optick\optick_gpu.h" />
+    <ClInclude Include="Libraries\optick\optick_memory.h" />
+    <ClInclude Include="Libraries\optick\optick_message.h" />
+    <ClInclude Include="Libraries\optick\optick_miniz.h" />
+    <ClInclude Include="Libraries\optick\optick_serialization.h" />
+    <ClInclude Include="Libraries\optick\optick_server.h" />
+    <ClInclude Include="Libraries\Util\debug_draw.hpp" />
+    <ClInclude Include="Libraries\Util\par_shapes.h" />
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\DebugDraw.h" />
+
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
     <ClInclude Include="Source\ModuleDebugDraw.h" />
@@ -243,12 +261,13 @@
     <ClInclude Include="Source\ModuleModelLoader.h" />
     <ClInclude Include="Source\ModuleMSTimer.h" />
     <ClInclude Include="Source\ModuleRender.h" />
+    <ClInclude Include="Source\ModuleScene.h" />
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
-    <ClInclude Include="Source\ModuleTriangle.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
-    <ClInclude Include="Source\Util\debug_draw.hpp" />
-    <ClInclude Include="Source\Util\par_shapes.h" />
+
+    <ClInclude Include="Source\Skybox.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
@@ -289,10 +308,24 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="Libraries\optick\optick_core.cpp" />
+    <ClCompile Include="Libraries\optick\optick_gpu.cpp" />
+    <ClCompile Include="Libraries\optick\optick_message.cpp" />
+    <ClCompile Include="Libraries\optick\optick_miniz.cpp" />
+    <ClCompile Include="Libraries\optick\optick_serialization.cpp" />
+    <ClCompile Include="Libraries\optick\optick_server.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentCamera.cpp" />
+    <ClCompile Include="Source\ComponentMaterial.cpp" />
+    <ClCompile Include="Source\ComponentMesh.cpp" />
+    <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleGUI.cpp" />
@@ -300,10 +333,11 @@
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
     <ClCompile Include="Source\ModuleMSTimer.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
+    <ClCompile Include="Source\ModuleScene.cpp" />
     <ClCompile Include="Source\ModuleShader.cpp" />
     <ClCompile Include="Source\ModuleTexture.cpp" />
-    <ClCompile Include="Source\ModuleTriangle.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\shaders\Blinn.fs" />

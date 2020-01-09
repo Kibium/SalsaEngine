@@ -12,6 +12,12 @@
 #include <iostream>
 #pragma comment(lib,"shlwapi.lib")
 
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "ComponentCamera.h"
+
+#include "optick/optick.h"
+
 ModuleInput::ModuleInput()
 {}
 
@@ -113,6 +119,8 @@ bool ModuleInput::Init()
 
 update_status ModuleInput::Update()
 {
+	OPTICK_CATEGORY("UpdateInput", Optick::Category::Input);
+
 	SDL_PumpEvents();
 	SDL_Event sdlEvent;
 
@@ -132,43 +140,48 @@ update_status ModuleInput::Update()
 			break;
 		case SDL_MOUSEWHEEL:
 			if (sdlEvent.wheel.y > 0 && App->gui->isScene)
-				App->camera->MoveFoward();
+				App->scene->camera->MoveFoward();
 			
 			else if (sdlEvent.wheel.y < 0 && App->gui->isScene)
-				App->camera->MoveBackward();
+				App->scene->camera->MoveBackward();
 
 			break;
 		case SDL_KEYDOWN:
 
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
-				App->camera->SetOrbit(true);
+				App->scene->camera->SetOrbit(true);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
-				if (!App->camera->GetSpeeding()) {
-					App->camera->SetSpeeding(true);
-					App->camera->SetSpeed(App->camera->cameraSpeed * 2);
-					App->camera->SetRotationSpeed(App->camera->rotationSpeed * 2);	
+
+				if (!App->scene->camera->GetSpeeding()) {
+					App->scene->camera->SetSpeeding(true);
+					App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed * 2);
+					App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed * 2);
+
 				}
 			}
 			break;
 		case SDL_KEYUP:
 
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LALT) {
-				App->camera->SetOrbit(false);
+				App->scene->camera->SetOrbit(false);
 			}
 			if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
-				App->camera->SetSpeed(App->camera->cameraSpeed);
-				App->camera->SetRotationSpeed(ROTATION_SPEED);
-				App->camera->SetSpeeding(false);
+
+				App->scene->camera->SetSpeed(CAMERA_SPEED);
+				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->scene->camera->SetSpeeding(false);
+				
+
 			}
 			break;
 
 		case SDL_MOUSEMOTION:
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
-				if(App->camera->GetOrbit())
-					App->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+				if(App->scene->camera->GetOrbit())
+					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else
-					App->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+					App->scene->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 			break;
 
 					
@@ -182,37 +195,37 @@ update_status ModuleInput::Update()
 	}
 
 	if (keyboard[SDL_SCANCODE_LEFT] && App->gui->isScene)
-		App->camera->Rotate(0.5, 0);
+		App->scene->camera->Rotate(0.5, 0);
 
 	if (keyboard[SDL_SCANCODE_RIGHT] && App->gui->isScene)
-		App->camera->Rotate(-0.5, 0);
+		App->scene->camera->Rotate(-0.5, 0);
 
 	if (keyboard[SDL_SCANCODE_UP] && App->gui->isScene)
-		App->camera->Rotate(0, 0.5);
+		App->scene->camera->Rotate(0, 0.5);
 
 	if (keyboard[SDL_SCANCODE_DOWN] && App->gui->isScene)
-		App->camera->Rotate(0, -0.5);
+		App->scene->camera->Rotate(0, -0.5);
 
 	if (keyboard[SDL_SCANCODE_Q] && App->gui->isScene)
-		App->camera->MoveUp();
+		App->scene->camera->MoveUp();
 
 	if (keyboard[SDL_SCANCODE_E] && App->gui->isScene)
-		App->camera->MoveDown();
+		App->scene->camera->MoveDown();
 
 	if (keyboard[SDL_SCANCODE_W] && App->gui->isScene)
-		App->camera->MoveFoward();
+		App->scene->camera->MoveFoward();
 
 	if (keyboard[SDL_SCANCODE_S] && App->gui->isScene)
-		App->camera->MoveBackward();
+		App->scene->camera->MoveBackward();
 
 	if (keyboard[SDL_SCANCODE_A] && App->gui->isScene)
-		App->camera->MoveLeft();
+		App->scene->camera->MoveLeft();
 
 	if (keyboard[SDL_SCANCODE_D] && App->gui->isScene)
-		App->camera->MoveRight();
+		App->scene->camera->MoveRight();
 
 	if (keyboard[SDL_SCANCODE_F] && App->gui->isScene)
-		App->camera->Focus();
+		App->scene->camera->Focus();
 
 	return UPDATE_CONTINUE;
 }
@@ -239,11 +252,23 @@ void ModuleInput::DroppedFile(const char* file) const
 	if (assimpMap.find(extension) != assimpMap.end()) {
 
 		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
-		App->model->SwitchModel(file);
+		// Process file and create empty gameobject
+		App->model->AddModel(file);
+		auto obj = App->scene->CreateGameObject();
+		obj->name = App->model->GetModel(file)->name;
+
+		// Process components
+		obj->model = App->model->GetModel(file);
+		obj->DeleteComponent(Type::TRANSFORM);
+		obj->CreateComponent(Type::TRANSFORM);
+		obj->CreateComponent(Type::MESH);
+		obj->CreateComponent(Type::MATERIAL);
+		App->scene->root->children.push_back(obj);
+
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {
 		LOG("TEXTURE FILE FORMAT '%s' ACCEPTED\n ", extension);
-		App->model->SwitchTexture(file);
+		//App->model->SwitchTexture(file);
 	}
 	else {
 		LOG("ERROR:: FILE FORMAT '%s' NOT ACCEPTED\n ", extension);

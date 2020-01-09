@@ -24,6 +24,7 @@ public:
 	void MainMenu();
 	void Clear() { logBuffer.clear(); LineOffsets.clear(); }
 public:
+	void Game();
 	void Scene();
 	void GameObjecInfo();
 	void ShowHelp();
@@ -39,6 +40,8 @@ private:
 	bool showHelpWindow = false;
 	bool showAppWindow = true;
 	bool showScene = true;
+	bool showGame = true;
+	bool showHierarchy = true;
 	bool showInspector = true;
 	std::vector<float> frames;
 	int max_h = 0;
@@ -47,6 +50,8 @@ private:
 	int min_w = 0;
 	float sceneWidth = 0;
 	float sceneHeight = 0;
+	float sceneWidthGame = 0;
+	float sceneHeightGame = 0;
 	bool aspectFixed = false;
 
 	void UpdateMaterial(unsigned int& textureID);

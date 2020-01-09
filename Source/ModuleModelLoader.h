@@ -2,7 +2,9 @@
 #define __MODULEMODELLOADER_H__
 
 #include "Module.h"
-#include "Mesh.h"
+#include "Model.h"
+
+
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -27,8 +29,11 @@ public:
 		LOG("ASSIMP:: %s\n", message);
 	}
 };
+
 class ModuleModelLoader : public Module {
 public:
+	std::vector<Model*> models;
+
 
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
@@ -41,9 +46,15 @@ public:
 
 	update_status Update();
 
+
+	void AddModel(const char* filePath);
+	Model* GetModel(const char* filePath);
+
+
 	void Draw();
 	bool Init();
 	bool CleanUp();
+
 	void SwitchModel(const char*);
 	void SwitchTexture(const char*);
 	void RenderAABB();
@@ -132,8 +143,6 @@ private:
 
 	math::float3          min_v = math::float3(FLT_MAX, FLT_MAX, FLT_MAX);
 	math::float3          max_v = math::float3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-
-
 
 };
 #endif // __MODULEMODELLOADER_H__

@@ -5,9 +5,15 @@
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
+#include "debugdraw.h"
+#include "ModuleDebugDraw.h"
+#include "Skybox.h"
 
 #include "SDL.h"
 #include "MathGeoLib.h"
+#include "optick/optick.h"
+#include "ModuleScene.h"
+#include "ComponentCamera.h"
 
 ModuleRender::ModuleRender()
 {
@@ -33,18 +39,21 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-
-
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glFrontFace(GL_CCW);
-	//glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-
-	glEnable(GL_BLEND);
-
-
+	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
+
+	GameCamera = new ComponentCamera();
+	GameCamera->Init();
+	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
+	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
+	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
+	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
+	GameCamera->CalculateMatrixes();
 
 	return true;
 }
@@ -59,12 +68,75 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-
+	OPTICK_CATEGORY("UpdateRender", Optick::Category::Rendering);
 	//DrawScene();
 	return UPDATE_CONTINUE;
 }
+void ModuleRender::DrawGame(unsigned width, unsigned height)
+{
+	if (gameFBO != 0)
+	{
+		//Generate FrameBuffer if necessary
+		glDeleteFramebuffers(1, &gameFBO);
+	}
+	if (sceneTex != 0)
+	{
+		glDeleteTextures(1, &sceneTex);
+	}
+	glGenTextures(1, &sceneTex);
 
+	if (gameRBO != 0)
+	{
+		glDeleteRenderbuffers(1, &gameRBO);
+	}
+	glGenFramebuffers(1, &gameFBO);
+	glGenRenderbuffers(1, &gameRBO);
+
+
+	glBindRenderbuffer(GL_RENDERBUFFER, gameRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glBindTexture(GL_TEXTURE_2D, sceneTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, gameFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sceneTex, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, gameRBO);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("OPENGL::ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, gameFBO);
+
+	glViewport(0, 0, width, height);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	glUseProgram(App->shader->test_program);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
+	App->scene->camera->DrawFrustum();
+	//dd::axisTriad(App->camera->view.Inverted(),5,8);
+	DrawGrid();
+	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
+		App->model->Draw();
+	//PINTAR AQUI DRAWDEBUG
+	glUseProgram(0);
+	App->skybox->Draw();
+	App->debug->Draw(GameCamera, gameFBO, width, height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 void ModuleRender::DrawScene(const float width, const float height) {
+	if (FBO == 0)
+	{
+		//Generate FrameBuffer if necessary
+		glCreateFramebuffers(1, &FBO);
+	}
 	if (frameTex != 0)
 	{
 		glDeleteTextures(1, &frameTex);
@@ -100,6 +172,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+/* TONI USED THIS TO RENDER FIGURES AND THE GRID
 	//glUseProgram(App->shader->grid_program);
 	DrawGrid();
 
@@ -109,15 +182,20 @@ void ModuleRender::DrawScene(const float width, const float height) {
 		const ModuleModelLoader::Figure& f = App->model->figures[i];
 		App->model->RenderMesh(f, App->model->materials[f.material], f.transform, App->camera->view, App->camera->proj);
 	}
+*/
 
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
+	DrawGrid();
 	App->model->Draw();
-
+	glUseProgram(0);
+	App->skybox->Draw();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 }
 
 
@@ -135,6 +213,7 @@ bool ModuleRender::CleanUp()
 	glDeleteTextures(1, &frameTex);
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
+	delete GameCamera;
 	//Destroy window
 
 	return true;
@@ -199,6 +278,44 @@ void ModuleRender::DrawGrid() {
 
 	glUseProgram(App->shader->def_program);
 
+}
+void ModuleRender::SetAxis() {
+	glLineWidth(2.0F);
+	glBegin(GL_LINES);
+
+	// Red X
+	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(1.0F, 0.0F, 0.0F);
+	glVertex3f(1.0F, 0.1F, 0.0F);
+	glVertex3f(1.1F, -0.1F, 0.0F);
+	glVertex3f(1.1F, 0.1F, 0.0F);
+	glVertex3f(1.0F, -0.1F, 0.0F);
+
+	// Green Y
+	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(0.0F, 1.0F, 0.0F);
+	glVertex3f(-0.05F, 1.25F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.05F, 1.25F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.0F, 1.15F, 0.0F);
+	glVertex3f(0.0F, 1.05F, 0.0F);
+
+	// Blue Z
+	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
+	glVertex3f(0.0F, 0.0F, 0.0F);
+	glVertex3f(0.0F, 0.0F, 1.0F);
+	glVertex3f(-0.05F, 0.1F, 1.05F);
+	glVertex3f(0.05F, 0.1F, 1.05F);
+	glVertex3f(0.05F, 0.1F, 1.05F);
+	glVertex3f(-0.05F, -0.1F, 1.05F);
+	glVertex3f(-0.05F, -0.1F, 1.05F);
+	glVertex3f(0.05F, -0.1F, 1.05F);
+
+	glEnd();
+	glLineWidth(1.0F);
 }
 
 void ModuleRender::SetWireframe(const bool wireframe) {
