@@ -61,7 +61,7 @@ void main()
 
         if(sp > 0.0)
         {
-			//specular
+			//speculars
             spec = pow(sp, material.shininess); 
         }
     }
