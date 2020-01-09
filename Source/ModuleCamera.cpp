@@ -2,11 +2,14 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
+#include "ModuleShader.h"
+#include "ModuleMSTimer.h"
 #include "ModuleRender.h"
 #include "Geometry/AABB.h"
 #include "Math/float4x4.h"
 #include "Geometry/AABB.h"
 #include "debugdraw.h"
+
 #include <glew.h>
 #include "SDL.h"
 #include "optick/optick.h"
@@ -33,7 +36,7 @@ bool ModuleCamera::Init() {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	CalculateMatrixes();
-
+	auxView = view;
 	return true;
 }
 
@@ -42,7 +45,10 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
-	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
+
+  OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "viewPos"), frustum.pos.x, frustum.pos.y, frustum.pos.z);
+	cameraSpeed = CAMERA_SPEED / App->globalTimer->dt;
 	return UPDATE_CONTINUE;
 }
 
@@ -224,7 +230,7 @@ void ModuleCamera::DrawFrustum()
 	
 }
 
-in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
+/*in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
 
 	float3 vCorner[8];
 	int iTotalIn = 0;
@@ -256,4 +262,4 @@ in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
 	// we must be partly in then otherwise
 	return(INTERSECT);
 
-}
+}*/

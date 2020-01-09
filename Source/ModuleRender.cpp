@@ -12,6 +12,8 @@
 #include "SDL.h"
 #include "MathGeoLib.h"
 #include "optick/optick.h"
+#include "ModuleScene.h"
+#include "ComponentCamera.h"
 
 ModuleRender::ModuleRender()
 {
@@ -45,13 +47,14 @@ bool ModuleRender::Init()
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
 
-	GameCamera = new ModuleCamera();
+	GameCamera = new ComponentCamera();
 	GameCamera->Init();
 	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
 	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
 	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
 	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	GameCamera->CalculateMatrixes();
+
 	return true;
 }
 
@@ -114,15 +117,17 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 
 	glUseProgram(App->shader->test_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
-	App->camera->DrawFrustum();
+	App->scene->camera->DrawFrustum();
 	//dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
-	if(App->camera->ContainsAABOX(App->model->modelBox)!= 0)
+	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
+	glUseProgram(0);
+	App->skybox->Draw();
 	App->debug->Draw(GameCamera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -167,16 +172,27 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	
+/* TONI USED THIS TO RENDER FIGURES AND THE GRID
+	//glUseProgram(App->shader->grid_program);
+	DrawGrid();
+
+	glUseProgram(App->shader->phong_program);
+
+	for (int i = 0; i < App->model->figures.size(); ++i) {
+		const ModuleModelLoader::Figure& f = App->model->figures[i];
+		App->model->RenderMesh(f, App->model->materials[f.material], f.transform, App->camera->view, App->camera->proj);
+	}
+*/
+
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
 	DrawGrid();
 	App->model->Draw();
-	App->skybox->Draw();
 	glUseProgram(0);
+	App->skybox->Draw();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -197,6 +213,7 @@ bool ModuleRender::CleanUp()
 	glDeleteTextures(1, &frameTex);
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
+	delete GameCamera;
 	//Destroy window
 
 	return true;
@@ -208,6 +225,8 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 }
 void ModuleRender::DrawGrid() {
 	// Lines white
+	//
+
 	glLineWidth(1.0F);
 	float d = 200.0F;
 	glColor4f(1.F, 1.F, 1.F, 1.F);
@@ -256,6 +275,9 @@ void ModuleRender::DrawGrid() {
 
 	glEnd();
 	glLineWidth(1.0F);
+
+	glUseProgram(App->shader->def_program);
+
 }
 void ModuleRender::SetAxis() {
 	glLineWidth(2.0F);

@@ -4,9 +4,11 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
 
+
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ComponentCamera;
 
 class ModuleRender : public Module
 {
@@ -30,7 +32,8 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ModuleCamera* GameCamera = nullptr;
+	ComponentCamera* GameCamera = nullptr;
+
 private:
 	GLuint FBO;
 	GLuint RBO;

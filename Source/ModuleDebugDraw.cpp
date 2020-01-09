@@ -2,7 +2,9 @@
 #include "ModuleDebugDraw.h"
 #include "Application.h"
 #include "ModuleRender.h"
+
 #include "Camera.h"
+
 
 
 #define DEBUG_DRAW_IMPLEMENTATION
@@ -10,6 +12,7 @@
 
 #include "glew.h"
 #include <assert.h>
+
 #include "optick/optick.h"
 
 class DDRenderInterfaceCoreGL final
@@ -489,6 +492,7 @@ public:
     // The "model-view-projection" matrix for the scene.
     // In this demo, it consists of the camera's view and projection matrices only.
     math::float4x4 mvpMatrix;
+
 	unsigned width, height;
 
 private:
@@ -513,6 +517,7 @@ private:
     static const char * textFragShaderSrc;
 
 
+
 }; // class DDRenderInterfaceCoreGL
 
 // ========================================================
@@ -520,6 +525,7 @@ private:
 // ========================================================
 
 const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
+
     "#version 150\n"
     "\n"
     "in vec3 in_Position;\n"
@@ -587,6 +593,7 @@ const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
 DDRenderInterfaceCoreGL* ModuleDebugDraw::implementation = 0;
 
 ModuleDebugDraw::ModuleDebugDraw() 
+
 {
 }
 
@@ -596,29 +603,34 @@ ModuleDebugDraw::~ModuleDebugDraw()
 
 bool ModuleDebugDraw::Init()
 {
+
     implementation = new DDRenderInterfaceCoreGL;
     dd::initialize(implementation);
     return true;
+
 }
 
 
 bool ModuleDebugDraw::CleanUp()
 {
+
     dd::shutdown();
 
     delete implementation;
     implementation = 0;
 
     return true;
+
 }
 
 update_status  ModuleDebugDraw::Update()
 {
+
 	OPTICK_CATEGORY("UpdateDebugDraw", Optick::Category::Debug);
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebugDraw::Draw(ModuleCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height)
+void ModuleDebugDraw::Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height)
 {
 	math::float4x4 view  = camera->view;
 	math::float4x4 proj = camera->proj;
@@ -630,6 +642,7 @@ void ModuleDebugDraw::Draw(ModuleCamera* camera, unsigned fbo, unsigned fb_width
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     dd::flush();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 

@@ -4,7 +4,9 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleShader.h"
 #include "ModuleModelLoader.h"
+#include "ModuleMSTimer.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "IconsMaterialDesignIcons.h"
@@ -16,6 +18,7 @@
 #include <map>
 #include <vector>
 #include "ModuleScene.h"
+#include "ComponentCamera.h"
 #include "optick/optick.h"
 
 ModuleGUI::ModuleGUI() {
@@ -25,7 +28,22 @@ ModuleGUI::ModuleGUI() {
 ModuleGUI::~ModuleGUI() {
 }
 
+
+static void HelpMarker(const char* desc)
+{
+	ImGui::TextDisabled("(?)");
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
+}
+
 bool ModuleGUI::Init() {
+
 	const char* glsl_version = "#version 130";
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -85,6 +103,8 @@ update_status ModuleGUI::Update() {
 
 	if (showAboutWindow)
 		ShowAbout();
+  
+	ShowTimeButtons();
 
 	if (showHierarchy)
 		App->scene->DrawHierarchy(&showHierarchy);
@@ -174,7 +194,44 @@ void ModuleGUI::MainMenu() {
 		if (ImGui::BeginMenu("Game Object")) {
 			if (ImGui::MenuItem("Create Empty")) {
 			}
-			if (ImGui::MenuItem("Effects")) {
+
+			if (ImGui::MenuItem("Create Sphere"))
+			{
+				App->model->CreateSphere("sphere0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Torus"))
+			{
+				App->model->CreateTorus("torus0", math::float3(10.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 30, App->model->color);
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Cube"))
+			{
+				App->model->CreateCube("cube0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, App->model->color);
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Create Cylinder"))
+			{
+				App->model->CreateCylinder("cylinder0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, App->model->color);
+				App->model->materials.back().k_specular = 0.9f;
+				App->model->materials.back().shininess = 64.0f;
+				App->model->materials.back().k_specular = 0.6f;
+				App->model->materials.back().k_diffuse = 0.5f;
+				App->model->materials.back().k_ambient = 1.0f;
+			}
+			if (ImGui::MenuItem("Effects"){
 			}
 			if (ImGui::MenuItem("Lights")) {
 			}
@@ -229,6 +286,34 @@ void ModuleGUI::MainMenu() {
 
 }
 
+
+void ModuleGUI::ShowTimeButtons() {
+	if(ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoScrollbar)) {
+		
+		ImVec2 time_window_size = ImGui::GetWindowSize();
+
+		ImVec2 play_button_pos((time_window_size.x - 24)*0.5f - 26, (time_window_size.y - 24)*0.5f);
+		ImGui::SetCursorPos(play_button_pos);
+		
+		if (ImGui::Button(ICON_FA_PLAY, ImVec2(24, 24)))
+		{
+			//TODO
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_STOP, ImVec2(24, 24)))
+		{
+			//TODO
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_STEP_FORWARD, ImVec2(24, 24)))
+		{
+			//TODO
+		}
+	}
+	ImGui::End();
+}
+
+
 void ModuleGUI::Game() {
 	if (ImGui::Begin(ICON_FA_GAMEPAD " Game"))
 	{
@@ -248,6 +333,7 @@ void ModuleGUI::Game() {
 	}
 	ImGui::End();
 }
+
 void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
@@ -268,6 +354,40 @@ void ModuleGUI::Scene() {
 	ImGui::End();
 }
 
+char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item
+{
+	OPENFILENAME ofn = { 0 };
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = 0;
+	ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0\0");
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = _T("png");
+
+	if (GetOpenFileName(&ofn))
+	{
+		//MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
+		string temp = szFileName;
+
+		//TODO: ADD HERE ACCEPETD FILETYPES
+		if(temp.substr(temp.size()-4) == ".png" || temp.substr(temp.size() - 4) == ".ttf")
+			return szFileName;
+		else
+			return "Not valid";
+	}
+	else
+		return "Not valid";
+}
+
+void ModuleGUI::UpdateMaterial(unsigned int& materialID) {
+
+	char* dir = GetInputFile();
+	if (dir != "Not valid")
+		materialID = App->texture->Load(dir);
+
+}
+
 void ModuleGUI::GameObjecInfo() {
 	/*if (ImGui::Begin(ICON_FA_INFO_CIRCLE" Old Inspector")) {
 		isInspector = ImGui::IsWindowHovered();
@@ -282,7 +402,7 @@ void ModuleGUI::GameObjecInfo() {
 
 			}
 			if (ImGui::CollapsingHeader(ICON_FA_CUBES " Geometry")) {
-				ImGui::InputInt("Mesh", &App->model->nmeshes, 0, 0, ImGuiInputTextFlags_ReadOnly);
+				ImGui::Text("Meshes: %d", App->model->meshes.size());
 				ImGui::InputInt("Triangles", &App->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				ImGui::InputInt("Vertex", &App->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
 				static bool wireframe = false;
@@ -290,7 +410,8 @@ void ModuleGUI::GameObjecInfo() {
 				App->renderer->SetWireframe(wireframe);
 
 			}
-			if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
+			//Texture - changed to material
+			/*if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Texture")) {
 
 				static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 
@@ -334,7 +455,163 @@ void ModuleGUI::GameObjecInfo() {
 						selection_mask = (1 << node_clicked);           // Click to single-select
 				}
 
+			}*/
+
+			if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Shader")) {
+				if (ImGui::Selectable("Flat Shading")) {
+
+					App->model->shader = App->shader->flat_program;
+
+				}
+				if (ImGui::Selectable("Phong Shading")) {
+
+					App->model->shader = App->shader->phong_program;
+
+				}
+				if (ImGui::Selectable("Blinn Shading")) {
+
+					App->model->shader = App->shader->blinn_program;
+
+				}
+				if (ImGui::Selectable("Gouraud Shading")) {
+
+					App->model->shader = App->shader->gouraud_program;
+
+				}
+
 			}
+
+			//For every mesh, see its material, and allow to update textures
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
+				for (int i = 0; i < App->model->meshes.size(); ++i) {
+					ImGui::Text("Mesh %d", i);
+
+					ImGui::Spacing();
+
+					ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.diffuse_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+
+						UpdateMaterial(App->model->meshes[i].meshMaterial.diffuse_map);
+
+					} ImGui::SameLine();
+					
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.occlusion_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+
+						UpdateMaterial(App->model->meshes[i].meshMaterial.occlusion_map);
+
+					} ImGui::SameLine();
+
+					if (ImGui::ImageButton((void*)(intptr_t)App->model->meshes[i].meshMaterial.specular_map, ImVec2(width*0.1, width*0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+
+						UpdateMaterial(App->model->meshes[i].meshMaterial.specular_map);
+					}
+				}
+
+			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
+				HelpMarker("Now only shows the default mmaterial applied to every mesh");
+				if (ImGui::TreeNodeEx("Diffuse")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+					ImGui::Text(App->model->mat.diff_path.c_str());
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.diffuse_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.diffuse_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color B", &App->model->mat.diffuse_color.z, 0, 1);
+					
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), App->model->mat.diffuse_color.x, App->model->mat.diffuse_color.y, App->model->mat.diffuse_color.z, App->model->mat.diffuse_color.w);
+
+					if (ImGui::SliderFloat("k diffuse", &App->model->mat.k_diffuse, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), App->model->mat.k_diffuse);
+
+					}
+
+					ImGui::TreePop();
+				}
+
+				if (ImGui::TreeNodeEx("Occlusion")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.occlusion_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.occlusion_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.occlusion_color.y, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color B", &App->model->mat.occlusion_color.z, 0, 1);
+					
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), App->model->mat.occlusion_color.x, App->model->mat.occlusion_color.y, App->model->mat.occlusion_color.z, App->model->mat.occlusion_color.w);
+
+					if (ImGui::SliderFloat("k ambient", &App->model->mat.k_ambient, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), App->model->mat.k_ambient);
+
+					}
+
+					ImGui::TreePop();
+				}
+
+				if (ImGui::TreeNodeEx("Specular")) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Texture: ");
+
+					ImGui::Spacing();
+
+					ImGui::Image((void*)(intptr_t)App->model->mat.specular_map, ImVec2(width*0.5, width*0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::PushItemWidth(100);
+					ImGui::SliderFloat("Color R", &App->model->mat.specular_color.x, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color G", &App->model->mat.specular_color.y, 0, 1); ImGui::SameLine();
+					ImGui::SliderFloat("Color B", &App->model->mat.specular_color.z, 0, 1);
+					
+
+					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), App->model->mat.specular_color.x, App->model->mat.specular_color.y, App->model->mat.specular_color.z, App->model->mat.specular_color.w);
+
+					if (ImGui::SliderFloat("k specular", &App->model->mat.k_specular, 0, 1)) {
+						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), App->model->mat.k_specular);
+
+					}
+
+					ImGui::TreePop();
+				}
+
+				if (ImGui::SliderFloat("Shininess", &App->model->mat.shininess, -100, 100)) {
+					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), App->model->mat.shininess);
+
+				}
+
+			}
+
+			if (ImGui::CollapsingHeader(ICON_FA_CLOCK " Timers")) {
+
+				if (ImGui::CollapsingHeader("Time")) {
+					ImGui::SliderFloat("Max FPS", &App->globalTimer->FPS, 10, 100);
+					ImGui::Text("Limiting to %0.1f, mmeans each frame needs %0.1f ms to render", App->globalTimer->FPS, App->globalTimer->frameDelay);
+					ImGui::Text("dt: %0.3f", App->globalTimer->dt);
+
+				}
+
+				if (ImGui::CollapsingHeader("Chrono")) {
+
+					if (ImGui::Button("Play")) {
+						App->mstimer->Start();
+						LOG("STARTING TIMER! \n");
+					}
+
+					if (ImGui::Button("Read")) {
+						LOG("Time elapsed since play was pressed: %0.2f s \n", App->mstimer->Read() / 1000);
+					}
+
+					if (ImGui::Button("Stop") && App->mstimer->isCounting) {
+						LOG("Clock stopped. Final time: %0.2f s \n", App->mstimer->Stop() / 1000);
+					}
+				}
+
+
+			}
+
 		}
 
 	}
@@ -506,38 +783,40 @@ void ModuleGUI::ShowDefWindow() {
 
 		}
 		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Camera")) {
-			ImGui::InputFloat3("Front", &App->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Up", &App->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
-			ImGui::InputFloat3("Position", &App->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Front", &App->scene->camera->frustum.front[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Up", &App->scene->camera->frustum.up[0], 3, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("Position", &App->scene->camera->frustum.pos[0], 3, ImGuiInputTextFlags_ReadOnly);
 
 			ImGui::Separator();
 
 
-			if (ImGui::SliderFloat("FOV", &App->camera->frustum.horizontalFov, 0, 2 * 3.14f))
-				App->camera->SetFOV(App->camera->frustum.horizontalFov);
+			if (ImGui::SliderFloat("FOV", &App->scene->camera->frustum.horizontalFov, 0, 2 * 3.14f))
+				App->scene->camera->SetFOV(App->scene->camera->frustum.horizontalFov);
 
-			if (ImGui::SliderFloat("Aspect Ratio", &App->camera->aspectRatio, 0, 10)) {
+
+			if (ImGui::SliderFloat("Aspect Ratio", &App->scene->camera->aspectRatio, 0, 10)) {
 				if (!aspectFixed)
-					App->camera->SetAspectRatio(App->camera->aspectRatio);
+					App->scene->camera->SetAspectRatio(App->scene->camera->aspectRatio);
 			}
-			if (ImGui::SliderFloat("Camera Speed", &App->camera->cameraSpeed, 0, 1))
-				App->camera->SetSpeed(App->camera->cameraSpeed);
+			if (ImGui::SliderFloat("Camera Speed", &App->scene->camera->cameraSpeed, 0, 1))
+				App->scene->camera->SetSpeed(App->scene->camera->cameraSpeed);
 
-			if (ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0, 1))
-				App->camera->SetRotationSpeed(App->camera->rotationSpeed);
+			if (ImGui::SliderFloat("Rotation Speed", &App->scene->camera->rotationSpeed, 0, 1))
+				App->scene->camera->SetRotationSpeed(App->scene->camera->rotationSpeed);
 
-			if (ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0,1000)) {
-				App->camera->CalculateMatrixes();
+
+			if (ImGui::SliderFloat("Near Plane", &App->scene->camera->frustum.nearPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
 			}
-			if (ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0,1000)) {
-				App->camera->CalculateMatrixes();
+			if (ImGui::SliderFloat("Far Plane", &App->scene->camera->frustum.farPlaneDistance, 0,1000)) {
+				App->scene->camera->CalculateMatrixes();
 			}
 			static int clicked = 0;
 			if (ImGui::Button("Reset Camera"))
 				clicked++;
 			if (clicked & 1) {
-				App->camera->SetRotationSpeed(ROTATION_SPEED);
-				App->camera->SetSpeed(CAMERA_SPEED);
+				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
+				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				clicked = 0;
 			}
 			ImGui::SameLine();
@@ -547,7 +826,7 @@ void ModuleGUI::ShowDefWindow() {
 					if (aspectFixed)
 						aspectFixed = false;
 					else {
-						App->camera->SetAspectRatio(sceneWidth / sceneHeight);
+						App->scene->camera->SetAspectRatio(sceneWidth / sceneHeight);
 						aspectFixed = true;
 					}
 
@@ -555,6 +834,44 @@ void ModuleGUI::ShowDefWindow() {
 				}
 
 			}
+		}
+
+		if (ImGui::CollapsingHeader(ICON_FA_LIGHTBULB" Light"))
+		{
+			/*ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
+			if(ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].diffuse_color = App->model->color;
+
+
+			}
+			if (ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].diffuse_color = App->model->color;
+
+			}
+			if (ImGui::SliderFloat("Color B", &App->model->light.color.z, 0, 1)) {
+				for (int i = 0; i < App->model->materials.size(); ++i)
+					App->model->materials[i].diffuse_color = App->model->color;
+			}
+
+			if (ImGui::SliderFloat("Ambient", &App->model->light.ambient, 0, 1)) {
+
+				glUniform1f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.ambient);
+
+			}*/
+
+			if (ImGui::DragFloat3("Position", &App->model->light.pos[0], 3)) {
+				glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
+
+			}
+			ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1);
+			ImGui::SliderFloat("Color G", &App->model->light.color.y, 0, 1);
+			ImGui::SliderFloat("Color B", &App->model->light.color.z, 0, 1);
+
+			glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), App->model->light.color.x, App->model->light.color.y, App->model->light.color.z);
+
+
 		}
 
 		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))

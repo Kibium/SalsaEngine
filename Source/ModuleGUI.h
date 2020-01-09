@@ -6,6 +6,8 @@
 #include "SDL.h"
 #include <vector>
 #include <time.h>
+#include <tchar.h>
+
 
 class ModuleGUI :public Module
 {
@@ -28,9 +30,12 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
+	void ShowTimeButtons();//Play Pause Stop 
 	bool isScene = false;
 	bool isInspector = false;
 private:
+	char* GetInputFile();
+	char szFileName[MAX_PATH] = _T("");
 	bool showAboutWindow = false;
 	bool showHelpWindow = false;
 	bool showAppWindow = true;
@@ -48,6 +53,12 @@ private:
 	float sceneWidthGame = 0;
 	float sceneHeightGame = 0;
 	bool aspectFixed = false;
+
+	void UpdateMaterial(unsigned int& textureID);
+
+	//Color picker variables
+	ImGuiColorEditFlags misc_flags;
+
 
 };
 #endif // __MODULEMODELLOADER_H__
