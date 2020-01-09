@@ -35,6 +35,7 @@ update_status ComponentTransform::Update() {
 
 void ComponentTransform::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		Component::OnEditor();
 		if (ImGui::Checkbox("Active##ComponentTransform", &active)) {
 			active ? Enable() : Disable();
 		}
@@ -43,5 +44,4 @@ void ComponentTransform::OnEditor() {
 		ImGui::DragFloat3("Scale", &scale[0], 0.5F, -9999.F, 9999.F, "%.1f");
 	}
 	ImGui::Separator();
-	Component::OnEditor();
 }

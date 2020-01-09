@@ -1,7 +1,9 @@
 #include "Component.h"
 #include "GameObject.h"
+#include "pcg/pcg_basic.h"
 
 Component::Component() {
+	UUID = pcg32_random();
 }
 
 Component::~Component() {
@@ -25,4 +27,5 @@ void Component::OnEditor() {
 		myGo->DeleteComponent(type);
 		canBeDeleted = true;
 	}
+	ImGui::Text("UUID: %d", UUID);
 }

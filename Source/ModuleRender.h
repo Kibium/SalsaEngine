@@ -1,6 +1,7 @@
 #ifndef __MODULERENDER_H__
 #define __MODULERENDER_H__
 #include "Module.h"
+#include "ModuleCamera.h"
 #include "Globals.h"
 
 
@@ -31,7 +32,7 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ComponentCamera* GameCamera;
+	ComponentCamera* GameCamera = nullptr;
 
 private:
 	GLuint FBO;

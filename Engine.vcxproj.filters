@@ -46,9 +46,6 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -155,6 +152,37 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Source\Skybox.cpp">
+    <ClCompile Include="Source\ModuleCamera.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleGUI.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleModelLoader.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRender.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleScene.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleShader.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleTexture.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model.cpp">
@@ -207,6 +235,20 @@
     </ClCompile>
     <ClCompile Include="Source\ModuleMSTimer.cpp">
       <Filter>Modules\Added Modules</Filter>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg_basic.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c">
+      <Filter>Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,9 +406,6 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Frustum.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h">
@@ -529,9 +568,6 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h">
@@ -748,6 +784,40 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Source\Skybox.h">
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleCamera.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleGUI.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleModelLoader.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRender.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleShader.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleTexture.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model.h">
@@ -812,6 +882,116 @@
     </ClInclude>
     <ClInclude Include="Source\ModuleMSTimer.h">
       <Filter>Modules\Added Modules</Filter>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\pcg\pcg_basic.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\error\en.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\error\error.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\biginteger.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\diyfp.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\dtoa.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\ieee754.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\itoa.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\meta.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\pow10.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\regex.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\stack.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\strfunc.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\strtod.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\swap.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\msinttypes\stdint.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\allocators.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\document.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\encodedstream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\encodings.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\filereadstream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\filewritestream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\fwd.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\istreamwrapper.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\memorybuffer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\memorystream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\ostreamwrapper.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\pointer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\prettywriter.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\rapidjson.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\reader.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\schema.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\stream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\stringbuffer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\writer.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

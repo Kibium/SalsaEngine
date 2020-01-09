@@ -14,6 +14,8 @@ class ComponentTransform;
 class ComponentMesh;
 class ComponentMaterial;
 
+typedef unsigned int uint32_t;
+
 class GameObject {
 public:
 	GameObject();
@@ -40,6 +42,7 @@ public:
 	Component* GetComponentInChild(const std::string &childName, Type type) const;
 
 public:
+	uint32_t UUID;
 	bool isActive = true;
 	bool isStatic = false;
 	std::string name = "GameObject";
