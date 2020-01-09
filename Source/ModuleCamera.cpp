@@ -9,6 +9,9 @@
 #include "Math/float4x4.h"
 #include "Geometry/AABB.h"
 #include "debugdraw.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "Model.h"
 
 #include <glew.h>
 #include "SDL.h"
@@ -175,8 +178,8 @@ void ModuleCamera::Rotate(const float xpos, const float ypos)
 void ModuleCamera::Orbit(const float xpos, float ypos)
 {
 
-	/*if (orbit) {
-		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+	if (orbit) {
+		float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 		
 		if (xpos != 0.0f)
 		{
@@ -202,14 +205,14 @@ void ModuleCamera::Orbit(const float xpos, float ypos)
 		LookAt(center);
 		CalculateMatrixes();
 	}
-	*/
+	
 	
 }
 
 void ModuleCamera::Focus()
 {
-	/*float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
-	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+	float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
+	float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
 	float3 direction = (center - frustum.pos).Normalized();
 	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
@@ -219,7 +222,7 @@ void ModuleCamera::Focus()
 	frustum.farPlaneDistance = 1000 * (size.Length() / 2);
 	frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
 	frustum.pos.y =  (size.Length() / 4);
-	CalculateMatrixes();*/
+	CalculateMatrixes();
 }
 
 void ModuleCamera::DrawFrustum()

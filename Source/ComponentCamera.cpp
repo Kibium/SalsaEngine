@@ -7,6 +7,9 @@
 #include "Math/float4x4.h"
 #include "Geometry/AABB.h"
 #include "debugdraw.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "Model.h"
 #include <glew.h>
 #include "SDL.h"
 #include "optick/optick.h"
@@ -173,52 +176,57 @@ void ComponentCamera::Rotate(const float xpos, const float ypos)
 
 void ComponentCamera::Orbit(const float xpos, float ypos)
 {
+	if (App->scene->selected != nullptr) {
+		if (orbit) {
+			float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
-	/*if (orbit) {
-		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+			if (xpos != 0.0f)
+			{
+				float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
+				frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+			}
+			if (lastY + ypos < MINIMUM_PITCH) {
+				ypos = 0.0f;
+				lastY = -89;
+			}
 
-		if (xpos != 0.0f)
-		{
-			float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
-			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
-		}
-		if (lastY + ypos < MINIMUM_PITCH) {
-			ypos = 0.0f;
-			lastY = -89;
-		}
+			if (lastY + ypos > MAXIMUM_PITCH) {
+				ypos = 0.0f;
+				lastY = 89;
+			}
+			if (ypos != 0.0f)
+			{
+				lastY += ypos;
+				float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
+				frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+			}
 
-		if (lastY + ypos > MAXIMUM_PITCH) {
-			ypos = 0.0f;
-			lastY = 89;
+			LookAt(center);
+			CalculateMatrixes();
 		}
-		if (ypos != 0.0f)
-		{
-			lastY += ypos;
-			float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
-			frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
-		}
-
-		LookAt(center);
-		CalculateMatrixes();
 	}
-	*/
+
+	
 
 }
 
 void ComponentCamera::Focus()
 {
-	/*float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
-	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+	if (App->scene->selected != nullptr) {
+		float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
+		float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
-	float3 direction = (center - frustum.pos).Normalized();
-	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
-	frustum.front = rotationMatrix * frustum.front;
-	frustum.up = rotationMatrix * frustum.up;
+		float3 direction = (center - frustum.pos).Normalized();
+		float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
+		frustum.front = rotationMatrix * frustum.front;
+		frustum.up = rotationMatrix * frustum.up;
 
-	frustum.farPlaneDistance = 1000 * (size.Length() / 2);
-	frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
-	frustum.pos.y =  (size.Length() / 4);
-	CalculateMatrixes();*/
+		frustum.farPlaneDistance = 1000 * (size.Length() / 2);
+		frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
+		frustum.pos.y = (size.Length() / 4);
+		CalculateMatrixes();
+	}
+
 }
 
 void ComponentCamera::DrawFrustum()

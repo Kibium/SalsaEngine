@@ -10,6 +10,7 @@
 #include "assimp/LogStream.hpp"
 #include "MathGeoLib.h"
 #include "Geometry/AABB.h"
+#include "ModuleTexture.h"
 #include <string>
 using namespace std;
 
@@ -30,7 +31,7 @@ public:
 	string name;
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
-	string directory;
+	string directory, model_name;
 	vector<int> textureWidth;
 	vector<int> textureHeight;
 	Model();
@@ -50,15 +51,19 @@ public:
 	int npolys = 0;
 	int nvertex = 0;
 	int nmeshes = 0;
+	bool load_once = false;
+	Material mat; //The one applied to the model
 
 private:
 
 	void Load(const char*);
+	void LoadTexture(vector<Texture>& v, TextureType type);
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);
 	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
+	bool item_exists(const char* path);
 
 };
 #endif // __MODEL_H__

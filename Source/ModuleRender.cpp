@@ -123,12 +123,12 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	App->scene->camera->DrawFrustum();
 	//dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
-	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
-		App->model->Draw();
+//	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
+		//App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
-	App->debug->Draw(GameCamera, gameFBO, width, height);
+	App->debugdraw->Draw(GameCamera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {

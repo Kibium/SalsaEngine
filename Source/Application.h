@@ -46,7 +46,7 @@ public:
 	ModuleMSTimer* globalTimer = nullptr;
 
 
-	ModuleDebugDraw* debug = nullptr;
+	ModuleDebugDraw* debugdraw = nullptr;
 	Skybox* skybox = nullptr;
 	ModuleScene* scene = nullptr;
 

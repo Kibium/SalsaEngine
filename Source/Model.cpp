@@ -16,8 +16,9 @@ Model::Model() {
 }
 
 Model::Model(const char *filePath) : filePath(filePath) {
-	SwitchModel();
 	ProcessName();
+	SwitchModel();
+	
 }
 
 Model::~Model() {
@@ -102,6 +103,77 @@ void Model::Load(const char* path) {
 
 }
 
+bool Model::item_exists(const char* path) {
+
+
+	FILE *file = nullptr;
+
+	fopen_s(&file, path, "rb");
+	if (file)
+		return true;
+
+	else
+		return false;
+}
+
+void Model::LoadTexture(vector<Texture>& v, TextureType type) {
+	string dir;
+	Texture tex;
+
+
+	switch (type) {
+	case DIFFUSE:
+		dir = directory + name + "_diffuse.png";
+		tex.id = App->texture->Load(dir.c_str());
+		LOG(directory.c_str());
+		LOG("\n");
+		LOG(name.c_str());
+		LOG("\n");
+
+		if (item_exists(dir.c_str())) {
+			tex.type = "diffuse";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+
+			mat.diffuse_map = tex.id;
+			mat.diff_path = dir;
+		}
+
+		break;
+
+
+	case SPECULAR:
+		dir = directory + model_name + "_specular.tif";
+		tex.id = App->texture->Load(dir.c_str());
+		cout << tex.id;
+		if (item_exists(dir.c_str())) {
+			tex.type = "specular";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+
+			mat.specular_map = tex.id;
+			mat.spec_path = dir;
+		}
+		break;
+
+	case OCCLUSION:
+		dir = directory + model_name + "_occlusion.png";
+		tex.id = App->texture->Load(dir.c_str());
+		if (item_exists(dir.c_str())) {
+			tex.type = "occlusion";
+			tex.path = dir;
+			textures_loaded.push_back(tex);
+			v.push_back(tex);
+
+			mat.occlusion_map = tex.id;
+		}
+		break;
+	}
+
+}
+
 void Model::processNode(aiNode *node, const aiScene *scene) {
 	// process each mesh located at the current node
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
@@ -157,7 +229,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 	// specular: texture_specularN
 	// normal: texture_normalN
 
-	// 1. diffuse maps
+	/* 1. diffuse maps
 	vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 	// 2. specular maps
@@ -169,8 +241,17 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 	// 4. height maps
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	// return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures);
+	// return a mesh object created from the extracted mesh data*/
+
+	if (!load_once) {
+		LoadTexture(textures, DIFFUSE);
+		LoadTexture(textures, SPECULAR);
+		LoadTexture(textures, OCCLUSION);
+
+		load_once = true;
+	}
+
+	return Mesh(vertices, indices, mat);
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {

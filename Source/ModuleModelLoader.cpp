@@ -344,21 +344,7 @@ bool ModuleModelLoader::Init() {
 	return true;
 }
 
-bool ModuleModelLoader::CleanUp() {
 
-	return true;
-}
-
-void ModuleModelLoader::SwitchModel(const char *file)
-{
-	if (model) {
-		textures_loaded.clear();
-		meshes.clear();
-		directory.clear();
-		nmeshes = 0;
-		npolys = 0;
-		nvertex = 0;
-		model = false;
 
 ModuleModelLoader::~ModuleModelLoader() {
 	if (models.size() > 0) {
@@ -387,12 +373,12 @@ void ModuleModelLoader::Load(const char* path)
 		LOG("ERROR::ASSIMP:: %s \n", importer.GetErrorString());
 		return;
 	}
-	modelBox.SetNegativeInfinity();
+
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
 
-	model = true;
+
 	DefaultLogger::kill();
 
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
@@ -409,8 +395,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
-		nmeshes += 1;
+
 	}
 
 	node->mTransformation.Decompose(modelScale, modelRotation, modelPosition);
@@ -421,6 +406,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 		processNode(node->mChildren[i], scene);
 	}
 	App->camera->Focus();
+}
 
 
 Model* ModuleModelLoader::GetModel(const char *filePath) {
@@ -435,6 +421,7 @@ Model* ModuleModelLoader::GetModel(const char *filePath) {
 	return nullptr;
 
 }
+
 bool ModuleModelLoader::item_exists(const char* path) {
 
 
@@ -452,62 +439,9 @@ SPECULAR IN TIF
 OCCLUSSION IN PNG*/
 
 
-void ModuleModelLoader::LoadTexture(vector<Texture>& v, TextureType type) {
-	string dir;
-	Texture tex;
 
 
-	switch (type) {
-	case DIFFUSE:
-		dir = directory + model_name + "_diffuse.png";
-		tex.id = App->texture->Load(dir.c_str());
-
-
-		if (item_exists(dir.c_str())) {
-			tex.type = "diffuse";
-			tex.path = dir;
-			textures_loaded.push_back(tex);
-			v.push_back(tex);
-
-			mat.diffuse_map = tex.id;
-			mat.diff_path = dir;
-		}
-
-		break;
-
-
-	case SPECULAR:
-		dir = directory + model_name + "_specular.tif";
-		tex.id = App->texture->Load(dir.c_str());
-		cout << tex.id;
-		if (item_exists(dir.c_str())) {
-			tex.type = "specular";
-			tex.path = dir;
-			textures_loaded.push_back(tex);
-			v.push_back(tex);
-
-			mat.specular_map = tex.id;
-			mat.spec_path = dir;
-		}
-		break;
-
-	case OCCLUSION:
-		dir = directory + model_name + "_occlusion.png";
-		tex.id = App->texture->Load(dir.c_str());
-		if (item_exists(dir.c_str())) {
-			tex.type = "occlusion";
-			tex.path = dir;
-			textures_loaded.push_back(tex);
-			v.push_back(tex);
-
-			mat.occlusion_map = tex.id;
-		}
-		break;
-	}
-
-}
-
-Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
+/*Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	// data to fill
 	vector<Vertex> vertices;
@@ -524,7 +458,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
 	}
-	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -534,11 +468,10 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
-	npolys += mesh->mNumFaces;
-	nvertex += indices.size();
+
 
 	// process materials
-/*	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
 	// Same applies to other texture as the following list summarizes:
@@ -563,17 +496,9 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 
 
 /*should load the texture based on the mesh*/
-/*now loads a texture and applies it to all  meshes*/
-	if (!load_once) {
-		LoadTexture(textures, DIFFUSE);
-		LoadTexture(textures, SPECULAR);
-		LoadTexture(textures, OCCLUSION);
+/*now loads a texture and applies it to all  meshes
 
-		load_once = true;
-	}
-
-	return Mesh(vertices, indices, mat);
-}
+}*/
 
 vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
 {
@@ -635,8 +560,10 @@ string ModuleModelLoader::GetModelDirectory(const char *path)
 
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string modelDir = dir.substr(0, currentDir + 1);
+	return path;
 
-  
+}
+
 void ModuleModelLoader::Draw() {
 	if (models.size() > 0) {
 		for (int i = 0; i < models.size(); ++i)
@@ -654,6 +581,8 @@ string ModuleModelLoader::GetFilename(const char *path)
 	std::string filename = dir.substr(currentDir + 1);
 	filename = filename.substr(0, filename.find('.'));
 
+	return filename;
+}
 
 bool ModuleModelLoader::CleanUp() {
 	return true;

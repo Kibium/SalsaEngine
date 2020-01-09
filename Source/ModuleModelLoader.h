@@ -19,16 +19,7 @@ struct aiScene;
 struct par_shapes_mesh_s;
 
 using namespace std;
-class myStream : public Assimp::LogStream
-{
-public:
-	myStream(){}
-	~myStream(){}
-	void write(const char* message)
-	{
-		LOG("ASSIMP:: %s\n", message);
-	}
-};
+
 
 class ModuleModelLoader : public Module {
 public:
@@ -36,10 +27,8 @@ public:
 
 
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	vector<Mesh> meshes;
+
 	string directory, model_name;
-	vector<int> textureWidth;
-	vector<int> textureHeight;
 	
 	ModuleModelLoader();
 	~ModuleModelLoader();
@@ -55,21 +44,9 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void SwitchModel(const char*);
-	void SwitchTexture(const char*);
-	void RenderAABB();
 	aiVector3D modelPosition;
 	aiVector3D modelScale;
 	aiVector3D modelRotation;
-	bool model = false;
-	AABB modelBox;
-	int npolys = 0;
-	int nvertex = 0;
-	int nmeshes= 0;
-
-
-	Material mat; //The one applied to the model
-
 
 	struct Figure
 	{
@@ -88,7 +65,7 @@ public:
 
 	
 private:
-	BOOL GetOpenFileNameA(LPOPENFILENAMEA Arg1);
+	
 	struct Sphere
 	{
 		math::float3 center = math::float3::zero;
@@ -116,10 +93,9 @@ public:
 	string GetFilename(const char*);
 private:	
 	void GenerateVAO(Figure& mesh);
-	void LoadTexture(vector<Texture>& v, TextureType type);
+	
 	void GenerateMesh(const char* name, const math::float3& pos, const math::Quat& rot, par_shapes_mesh_s* shape);
-	void GenerateMeshes(const aiScene* scene);
-	void GenerateMaterials(const aiScene* scene);
+
 	bool item_exists(const char* path);
 	void UpdateFigures();
 	void Load(const char*);

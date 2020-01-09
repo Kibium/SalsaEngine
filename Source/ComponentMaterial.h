@@ -10,6 +10,7 @@ public:
 	~ComponentMaterial();
 
 	update_status Update() override;
+	void UpdateMaterial(unsigned int& materialID);
 	void OnEditor() override;
 };
 

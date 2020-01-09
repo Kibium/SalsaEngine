@@ -30,11 +30,15 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
+	void oldinspector();
 	void ShowTimeButtons();//Play Pause Stop 
 	bool isScene = false;
 	bool isInspector = false;
-private:
+	void HelpMarker(const char* desc);
 	char* GetInputFile();
+
+private:
+	
 	char szFileName[MAX_PATH] = _T("");
 	bool showAboutWindow = false;
 	bool showHelpWindow = false;
@@ -54,7 +58,7 @@ private:
 	float sceneHeightGame = 0;
 	bool aspectFixed = false;
 
-	void UpdateMaterial(unsigned int& textureID);
+	
 
 	//Color picker variables
 	ImGuiColorEditFlags misc_flags;
