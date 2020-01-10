@@ -480,7 +480,6 @@ void ModuleGUI::oldinspector() {
 		}
 
 		
-
 		if (ImGui::CollapsingHeader(ICON_FA_CLOCK " Timers")) {
 
 			if (ImGui::CollapsingHeader("Time")) {

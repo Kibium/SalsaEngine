@@ -324,7 +324,7 @@ bool ModuleModelLoader::Init() {
 
 
 	//Light stuff
-	light.pos = math::float3(100.0f, 0.0f, 0.0f);
+	light.pos = math::float3(0.0f, 0.0f, 0.0f);
 
 	App->model->CreateSphere("sphere1", light.pos, math::Quat::identity, 0.5f, 30, 30, float4(204, 204, 0, 1));
 	App->model->materials.back().k_specular = 0.9f;
@@ -381,10 +381,7 @@ void ModuleModelLoader::Load(const char* path)
 
 	DefaultLogger::kill();
 
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 0.5f, 0.5f, 0.5f);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
+	
 }
 
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)

@@ -42,19 +42,19 @@ void ComponentMaterial::OnEditor() {
 					ImGui::Spacing();
 
 					ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.diffuse_map, ImVec2(100 * 0.1, 100 * 0.1), ImVec2(0, 1), ImVec2(1, 0))) {
-
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.diffuse_map);
-
-					} ImGui::SameLine();
-
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.occlusion_map, ImVec2(100 * 0.1, 100 * 0.1), ImVec2(0, 1), ImVec2(1, 0))) {
-
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.occlusion_map);
-
-					} ImGui::SameLine();
-
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.specular_map, ImVec2(100 * 0.1, 100 * 0.1), ImVec2(0, 1), ImVec2(1, 0))) {
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.diffuse_map,   ImVec2(75,75 ), ImVec2(0, 1), ImVec2(1, 0))) {
+																													 
+						UpdateMaterial(myGo->model->meshes[i].meshMaterial.diffuse_map);							 
+																													 
+					} ImGui::SameLine();																			 
+																													 
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.occlusion_map, ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
+																													  
+						UpdateMaterial(myGo->model->meshes[i].meshMaterial.occlusion_map);							  
+																													  
+					} ImGui::SameLine();																			  
+																													  
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.specular_map,  ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
 
 						UpdateMaterial(myGo->model->meshes[i].meshMaterial.specular_map);
 					}
@@ -69,8 +69,9 @@ void ComponentMaterial::OnEditor() {
 					ImGui::Text(myGo->model->mat.diff_path.c_str());
 					ImGui::Spacing();
 
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(100 * 0.5, 100 * 0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
 					ImGui::PushItemWidth(100);
+
 					ImGui::SliderFloat("Color R", &myGo->model->mat.diffuse_color.x, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color G", &myGo->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color B", &myGo->model->mat.diffuse_color.z, 0, 1);
@@ -88,10 +89,10 @@ void ComponentMaterial::OnEditor() {
 
 				if (ImGui::TreeNodeEx("Occlusion")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
-
+					ImGui::Text(myGo->model->mat.occ_path.c_str());
 					ImGui::Spacing();
 
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.occlusion_map, ImVec2(100 * 0.5, 100 * 0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((void*)(intptr_t)myGo->model->mat.occlusion_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
 					ImGui::PushItemWidth(100);
 					ImGui::SliderFloat("Color R", &myGo->model->mat.occlusion_color.x, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color G", &myGo->model->mat.occlusion_color.y, 0, 1); ImGui::SameLine();
@@ -109,11 +110,11 @@ void ComponentMaterial::OnEditor() {
 				}
 
 				if (ImGui::TreeNodeEx("Specular")) {
-					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Texture: ");
-
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+					ImGui::Text(myGo->model->mat.spec_path.c_str());
 					ImGui::Spacing();
 
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.specular_map, ImVec2(100 * 0.5, 100 * 0.5), ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image((void*)(intptr_t)myGo->model->mat.specular_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
 					ImGui::PushItemWidth(100);
 					ImGui::SliderFloat("Color R", &myGo->model->mat.specular_color.x, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color G", &myGo->model->mat.specular_color.y, 0, 1); ImGui::SameLine();

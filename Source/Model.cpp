@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleShader.h"
 #include "ModuleTexture.h"
+#include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
 #include "ComponentCamera.h"
 #include "ModuleScene.h"
@@ -46,6 +47,22 @@ void Model::Draw() {
 		for (int i = 0; i < meshes.size(); ++i)
 			meshes[i].Draw();
 	}
+
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1,1,1);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
+
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x,   mat.diffuse_color.y,   mat.diffuse_color.z,   mat.diffuse_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x,  mat.specular_color.y,  mat.specular_color.z,  mat.specular_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"),  mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"),  mat.emissive_color.x,  mat.emissive_color.y,  mat.emissive_color.z,  mat.emissive_color.w);
+
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), mat.shininess);
+
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), mat.k_specular);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), mat.k_diffuse);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), mat.k_ambient);
 }
 
 void Model::SwitchModel() {
@@ -138,13 +155,14 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 
 			mat.diffuse_map = tex.id;
 			mat.diff_path = dir;
+			
 		}
 
 		break;
 
 
 	case SPECULAR:
-		dir = directory + model_name + "_specular.tif";
+		dir = directory +name + "_specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
 		cout << tex.id;
 		if (item_exists(dir.c_str())) {
@@ -159,7 +177,7 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 		break;
 
 	case OCCLUSION:
-		dir = directory + model_name + "_occlusion.png";
+		dir = directory + name + "_occlusion.png";
 		tex.id = App->texture->Load(dir.c_str());
 		if (item_exists(dir.c_str())) {
 			tex.type = "occlusion";
@@ -171,7 +189,7 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 		}
 		break;
 	}
-
+	
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {

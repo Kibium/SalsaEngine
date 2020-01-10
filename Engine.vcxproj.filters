@@ -7,8 +7,8 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Math\BitOps.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Other</Filter>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Capsule.cpp">
       <Filter>Other</Filter>
@@ -17,6 +17,24 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentMaterial.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentMesh.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentTransform.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Cone.cpp">
@@ -44,6 +62,9 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
@@ -76,6 +97,9 @@
     <ClCompile Include="Source\log.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Math\MathFunc.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -86,12 +110,75 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Other</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleGUI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleModelLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleMSTimer.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleRender.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleScene.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleShader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleTexture.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Other</Filter>
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_core.cpp">
+      <Filter>Optick</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_gpu.cpp">
+      <Filter>Optick</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_message.cpp">
+      <Filter>Optick</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_miniz.cpp">
+      <Filter>Optick</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_serialization.cpp">
+      <Filter>Optick</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\optick\optick_server.cpp">
+      <Filter>Optick</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\OBB.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg_basic.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c">
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Plane.cpp">
@@ -112,6 +199,9 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Ray.cpp">
       <Filter>Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Skybox.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Sphere.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -125,129 +215,6 @@
       <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_core.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_gpu.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_message.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_miniz.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_serialization.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\optick\optick_server.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Skybox.cpp">
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGUI.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleModelLoader.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRender.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleScene.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleShader.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTexture.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Model.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component.cpp">
-      <Filter>Main\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentMaterial.cpp">
-      <Filter>Main\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentMesh.cpp">
-      <Filter>Main\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentTransform.cpp">
-      <Filter>Main\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGUI.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleModelLoader.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRender.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleScene.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleShader.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTexture.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Main\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ComponentCamera.cpp">
-      <Filter>Main\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleMSTimer.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\pcg\pcg_basic.c">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\pcg\pcg32-demo.c">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c">
       <Filter>Other</Filter>
     </ClCompile>
   </ItemGroup>
@@ -264,6 +231,9 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\allocators.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -273,25 +243,25 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\assume.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\BitOps.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\BaseImporter.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\Bitmap.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\BitOps.h">
+    <ClInclude Include="Libraries\rapidjson\internal\biginteger.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\BlobIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\ByteSwapper.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\camera.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Capsule.h">
@@ -318,6 +288,9 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\Complex.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\Assimp\include\assimp\camera.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Cone.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -334,9 +307,6 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Util\debug_draw.hpp">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\debugdraw.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOStream.h">
@@ -360,6 +330,27 @@
     <ClInclude Include="Libraries\DevIL\include\IL\devil_internal_exports.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\diyfp.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\document.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\dtoa.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\error\en.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\encodedstream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\encodings.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\error\error.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\Exceptional.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -367,6 +358,12 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\fast_atof.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\filereadstream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\filewritestream.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\FixedPoint.h">
@@ -408,6 +405,9 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Frustum.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\fwd.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -430,6 +430,9 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\ieee754.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\DevIL\include\IL\il.h">
@@ -480,6 +483,9 @@
     <ClInclude Include="Libraries\Imgui\imstb_truetype.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\IOStream.hpp">
       <Filter>Other</Filter>
     </ClInclude>
@@ -490,6 +496,12 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\irrXMLWrapper.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\istreamwrapper.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\itoa.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\KDTree.h">
@@ -564,16 +576,109 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\MatrixProxy.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\memorybuffer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\MemoryIOWrapper.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\memorystream.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleGUI.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleInput.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleMSTimer.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRender.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleShader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleTexture.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleWindow.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick.config.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_common.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.freebsd.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.linux.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.macos.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.platform.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_core.win.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_gpu.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_memory.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_message.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_miniz.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_serialization.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\optick\optick_server.h">
+      <Filter>Optick</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\meta.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleDebugDraw.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\myassert.h">
@@ -583,6 +688,9 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\OBB.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\ostreamwrapper.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Util\par_shapes.h">
@@ -597,7 +705,13 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\PBVolume.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\pcg\pcg_basic.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Plane.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\pointer.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Polygon.h">
@@ -613,6 +727,12 @@
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\postprocess.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\pow10.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\prettywriter.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\Profiler.h">
@@ -642,10 +762,19 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\quaternion.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\rapidjson.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Ray.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\reader.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\Rect.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\regex.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\MathGeoLib\include\Math\Reinterpret.h">
@@ -660,10 +789,16 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\SceneCombiner.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\schema.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\SGSpatialSort.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\SkeletonMeshBuilder.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Skybox.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\SmoothingGroups.h">
@@ -681,7 +816,16 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\SSEMath.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\stack.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\StandardShapes.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\msinttypes\stdint.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\stream.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\StreamReader.h">
@@ -690,13 +834,25 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\StreamWriter.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\strfunc.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\stringbuffer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\StringComparison.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\StringUtils.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\strtod.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\Subdivision.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\internal\swap.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\texture.h">
@@ -729,285 +885,56 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\Vertex.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\rapidjson\writer.h">
+      <Filter>Other</Filter>
+    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\XMLTools.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick.config.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_common.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.freebsd.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.linux.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.macos.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.platform.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_core.win.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_gpu.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_memory.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_message.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_miniz.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_serialization.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\optick\optick_server.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Skybox.h">
-    <ClInclude Include="Source\ModuleWindow.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleDebugDraw.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGUI.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleModelLoader.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleShader.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Model.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component.h">
-      <Filter>Main\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMaterial.h">
-      <Filter>Main\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentMesh.h">
-      <Filter>Main\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentTransform.h">
-      <Filter>Main\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGUI.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleModelLoader.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleShader.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Main\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentCamera.h">
-      <Filter>Main\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleDebugDraw.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\debug_draw.hpp">
-      <Filter>Addons\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\par_shapes.h">
-      <Filter>Addons\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DebugDraw.h">
-      <Filter>Addons\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleMSTimer.h">
-      <Filter>Modules\Added Modules</Filter>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\pcg\pcg_basic.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\error\en.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\error\error.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\biginteger.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\diyfp.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\dtoa.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\ieee754.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\itoa.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\meta.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\pow10.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\regex.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\stack.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\strfunc.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\strtod.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\internal\swap.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\msinttypes\stdint.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\allocators.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\document.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\encodedstream.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\encodings.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\filereadstream.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\filewritestream.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\fwd.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\istreamwrapper.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\memorybuffer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\memorystream.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\ostreamwrapper.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\pointer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\prettywriter.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\rapidjson.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\reader.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\schema.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\stream.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\stringbuffer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\rapidjson\writer.h">
-      <Filter>Other</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-
-    <None Include="Libraries\Assimp\include\assimp\.editorconfig">
-      <Filter>Other</Filter>
-
+    <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
+    <None Include="Game\shaders\Blinn.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Blinn.vs">
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Libraries\Assimp\include\assimp\color4.inl">
       <Filter>Other</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\default.fs">
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Libraries\DevIL\include\IL\config.h.win">
       <Filter>Other</Filter>
     </None>
     <None Include="Libraries\DevIL\include\IL\DevIL.i">
       <Filter>Other</Filter>
+    </None>
+    <None Include="Game\shaders\flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\shaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
     </None>
     <None Include="Libraries\MathGeoLib\include\Geometry\KDTree.inl">
       <Filter>Other</Filter>
@@ -1051,55 +978,31 @@
     <None Include="Libraries\Assimp\include\assimp\vector3.inl">
       <Filter>Other</Filter>
     </None>
-    <None Include="Game\shaders\default.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\default.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\Phong.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\Phong.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Game\shaders\lines.fs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Game\shaders\lines.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\shaders\Blinn.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\Blinn.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\flat.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\flat.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\Gouraud.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Game\shaders\Gouraud.vs">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Other">
-      <UniqueIdentifier>{80168d91-3ccb-4375-bee3-d1ea2b87fbdb}</UniqueIdentifier>
+      <UniqueIdentifier>{aadf6e8c-5225-496b-86bc-af2526e7cd89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{c73c7670-a906-4dfc-a6a2-a49f9d36280b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
-      <UniqueIdentifier>{10f02be4-ecf7-40f3-8aa4-98bdf7a7066c}</UniqueIdentifier>
+      <UniqueIdentifier>{64f1b2da-67bf-4dab-b319-5ca2adf1cf0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Components">
-      <UniqueIdentifier>{68a7a6a3-21f2-4d0e-85f2-42813e06dea4}</UniqueIdentifier>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{d822a0eb-ae79-4481-9bd6-8b23a4cd861b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Modules">
-      <UniqueIdentifier>{43d8f7b2-472f-47c3-b599-969386a02815}</UniqueIdentifier>
+    <Filter Include="Components">
+      <UniqueIdentifier>{c8ac43ff-d177-40fd-8f46-0aa8196adfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Optick">
+      <UniqueIdentifier>{bf4eef41-2355-4b4c-b485-04840ca28395}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,21 +15,6 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 	this->vertices = vertices;
 	this->indices = indices;
 	this->meshMaterial = m;
-
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), meshMaterial.diffuse_color.x, meshMaterial.diffuse_color.y, meshMaterial.diffuse_color.z, meshMaterial.diffuse_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), meshMaterial.specular_color.x, meshMaterial.specular_color.y, meshMaterial.specular_color.z, meshMaterial.specular_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), meshMaterial.occlusion_color.x, meshMaterial.occlusion_color.y, meshMaterial.occlusion_color.z, meshMaterial.occlusion_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), meshMaterial.emissive_color.x, meshMaterial.emissive_color.y, meshMaterial.emissive_color.z, meshMaterial.emissive_color.w);
-	
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), meshMaterial.shininess);
-
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), meshMaterial.k_specular);
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), meshMaterial.k_diffuse);
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), meshMaterial.k_ambient);
-	
-
-
-
 	setupMesh();
 
 
@@ -37,6 +22,8 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 
 void Mesh::Draw()
 {
+
+	
 
 	//Assigning "ids" to textures
 	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.diff_map"), 0);
