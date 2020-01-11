@@ -61,7 +61,7 @@ update_status ComponentCamera::Update() {
 bool ComponentCamera::PickingHit() {
 	bool intersec;
 
-	picking = frustum.UnProjectLineSegment(App->input->mouseX, App->input->mouseY);
+	picking = frustum.UnProjectLineSegment(App->input->pickX, App->input->pickY);
 
 	for (int i = 0; i < App->model->models.size(); ++i) {
 		intersec = picking.Intersects(App->model->models[i]->modelBox);

@@ -226,12 +226,13 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 }
 void ModuleRender::DrawGrid() {
 	// Lines white
-	//
+
 	for (int i = 0; i < App->model->models.size(); ++i) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		App->model->models[i]->RenderAABB();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
+
 	glLineWidth(1.0F);
 	float d = 200.0F;
 	glColor4f(1.F, 1.F, 1.F, 1.F);
