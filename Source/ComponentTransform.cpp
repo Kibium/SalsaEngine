@@ -39,9 +39,9 @@ void ComponentTransform::OnEditor() {
 		if (ImGui::Checkbox("Active##ComponentTransform", &active)) {
 			active ? Enable() : Disable();
 		}
-		ImGui::DragFloat3("Position", &position[0], 0.5F, -9999.F, 9999.F, "%.1f");
-		ImGui::DragFloat3("Rotation", &rotation[0], 0.5F, -9999.F, 9999.F, "%.1f");
-		ImGui::DragFloat3("Scale", &scale[0], 0.5F, -9999.F, 9999.F, "%.1f");
+		ImGui::DragFloat3("Position", &myGo->model->modelPosition[0], 0.5F, -9999.F, 9999.F, "%.1f");
+		ImGui::DragFloat3("Rotation", &myGo->model->modelRotation[0], 0.5F, -9999.F, 9999.F, "%.1f");
+		ImGui::DragFloat3("Scale", &myGo->model->modelScale[0], 0.5F, -9999.F, 9999.F, "%.1f");
 	}
 	ImGui::Separator();
 }

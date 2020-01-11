@@ -27,5 +27,5 @@ void Component::OnEditor() {
 		myGo->DeleteComponent(type);
 		canBeDeleted = true;
 	}
-	ImGui::Text("UUID: %d", UUID);
+	//ImGui::Text("UUID: %d", UUID);
 }

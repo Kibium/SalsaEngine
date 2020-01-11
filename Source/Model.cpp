@@ -113,7 +113,11 @@ void Model::Load(const char* path) {
 	modelBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
+	//scene->mRootNode->mTransformation.a4 = 12;
+
 	processNode(scene->mRootNode, scene);
+
+
 
 	model = true;
 	DefaultLogger::kill();
@@ -142,10 +146,6 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 	case DIFFUSE:
 		dir = directory + name + "_diffuse.png";
 		tex.id = App->texture->Load(dir.c_str());
-		LOG(directory.c_str());
-		LOG("\n");
-		LOG(name.c_str());
-		LOG("\n");
 
 		if (item_exists(dir.c_str())) {
 			tex.type = "diffuse";

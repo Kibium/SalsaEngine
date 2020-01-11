@@ -81,7 +81,7 @@ Component* GameObject::CreateComponent(Type type) {
 }
 
 void GameObject::DrawComponents() {
-	ImGui::Text("UUID: %d", UUID);
+	//ImGui::Text("UUID: %d", UUID);
 	if (ImGui::Checkbox("Active##ObjectActive", &isActive)) {
 		if (isActive) {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
@@ -103,6 +103,9 @@ void GameObject::DrawComponents() {
 	for (int i = 0; i < components.size(); ++i) {
 		components[i]->OnEditor();
 	}
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	if (ImGui::Button("Add Component")) {
 		ImGui::OpenPopup("Add Component Popup");
 	}

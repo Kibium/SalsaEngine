@@ -30,12 +30,13 @@ void ComponentMaterial::UpdateMaterial(unsigned int& materialID) {
 
 void ComponentMaterial::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		Component::OnEditor();
 		if (ImGui::Checkbox("Active##ComponentMaterial", &active)) {
 			active ? Enable() : Disable();
 		}
 		if (myGo != nullptr) {
 			//For every mesh, see its material, and allow to update textures
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
+			if (ImGui::TreeNode(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
 				for (int i = 0; i < myGo->model->meshes.size(); ++i) {
 					ImGui::Text("Mesh %d", i);
 
@@ -59,10 +60,10 @@ void ComponentMaterial::OnEditor() {
 						UpdateMaterial(myGo->model->meshes[i].meshMaterial.specular_map);
 					}
 				}
-
+				ImGui::TreePop();
 			}
 
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
+			if (ImGui::TreeNode(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
 				App->gui->HelpMarker("Now only shows the default mmaterial applied to every mesh");
 				if (ImGui::TreeNodeEx("Diffuse")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
@@ -135,10 +136,9 @@ void ComponentMaterial::OnEditor() {
 					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), myGo->model->mat.shininess);
 
 				}
-
+				ImGui::TreePop();
 			}
 		}
 	}
 	ImGui::Separator();
-	Component::OnEditor();
 }
