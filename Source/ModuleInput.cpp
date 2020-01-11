@@ -265,6 +265,8 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MATERIAL);
 		App->scene->root->children.push_back(obj);
 		App->scene->selected = obj;
+		App->scene->camera->Focus();
+		App->scene->camera->Focus();
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {

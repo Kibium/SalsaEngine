@@ -165,8 +165,8 @@ void ModuleScene::DrawHierarchy(bool *showHierarchy) {
 	ImGui::End();
 }
 
-void ModuleScene::DrawInspector(bool *showInspector) {
-	if (showInspector && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", showInspector)) {
+void ModuleScene::DrawInspector(bool *show) {
+	if (show && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", show)) {
 		if (root->children.size() > 0 && selected != nullptr) {
 			selected->DrawComponents();
 		}

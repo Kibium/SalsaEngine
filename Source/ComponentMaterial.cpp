@@ -34,7 +34,7 @@ void ComponentMaterial::OnEditor() {
 		if (ImGui::Checkbox("Active##ComponentMaterial", &active)) {
 			active ? Enable() : Disable();
 		}
-		if (myGo != nullptr) {
+		if (myGo != nullptr && myGo->model != nullptr) {
 			//For every mesh, see its material, and allow to update textures
 			if (ImGui::TreeNode(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
 				for (int i = 0; i < myGo->model->meshes.size(); ++i) {

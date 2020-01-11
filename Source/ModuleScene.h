@@ -23,7 +23,7 @@ public:
 
 	void DrawGameObjects(const std::vector<GameObject*>& objects);
 	void DrawHierarchy(bool *showHierarchy);
-	void DrawInspector(bool *showInspector);
+	void DrawInspector(bool *show);
 	void DrawPopup(GameObject *gameObject);
 
 	void SortGameObjects(std::vector<GameObject*> &objects);

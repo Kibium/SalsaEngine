@@ -82,7 +82,7 @@ Component* GameObject::CreateComponent(Type type) {
 
 void GameObject::DrawComponents() {
 	//ImGui::Text("UUID: %d", UUID);
-	if (ImGui::Checkbox("Active##ObjectActive", &isActive)) {
+	if (ImGui::Checkbox("Active##ObjectActive1", &isActive)) {
 		if (isActive) {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = true;

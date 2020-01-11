@@ -25,7 +25,7 @@ void ComponentMesh::OnEditor() {
 		if (ImGui::Checkbox("Active##ComponentMesh", &active)) {
 			active ? Enable() : Disable();
 		}
-		if (myGo != nullptr) {
+		if (myGo != nullptr && myGo->model != nullptr) {
 			ImGui::InputInt("Meshes", &myGo->model->nmeshes, 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Polygons", &myGo->model->npolys, 0, 0, ImGuiInputTextFlags_ReadOnly);
 			ImGui::InputInt("Vertices", &myGo->model->nvertex, 0, 0, ImGuiInputTextFlags_ReadOnly);
