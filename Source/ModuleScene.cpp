@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "optick/optick.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -133,7 +134,8 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 						dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
 						dragged->parent = objects[i];
 						objects[i]->children.push_back(dragged);
-						SortGameObjects(objects[i]->children);
+						dragged->components[0]->position += dragged->parent->components[0]->position;
+						//SortGameObjects(objects[i]->children);
 						dragged = nullptr;
 					}
 					ImGui::EndDragDropTarget();
