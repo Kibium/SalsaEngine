@@ -9,6 +9,7 @@
 #include "debugdraw.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "ModuleInput.h"
 #include "Model.h"
 #include <glew.h>
 #include "SDL.h"
@@ -55,6 +56,18 @@ bool ComponentCamera::Init() {
 update_status ComponentCamera::Update() {
 	OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
 	return UPDATE_CONTINUE;
+}
+
+bool ComponentCamera::PickingHit() {
+	bool intersec;
+
+	picking = frustum.UnProjectLineSegment(App->input->mouseX, App->input->mouseY);
+
+	for (int i = 0; i < App->model->models.size(); ++i) {
+		intersec = picking.Intersects(App->model->models[i]->modelBox);
+	}
+
+	return intersec;
 }
 
 

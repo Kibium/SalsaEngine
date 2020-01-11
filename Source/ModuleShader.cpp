@@ -146,6 +146,53 @@ bool ModuleShader::Init()
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 
+	//............Lines.................//
+	try
+	{
+		// open files
+		vShaderFile.open("./shaders/lines.vs");
+		fShaderFile.open("./shaders/lines.fs");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+	}
+
+	// 2. compile shaders
+	
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	lines_program = glCreateProgram();
+	glAttachShader(lines_program, vertex);
+	glAttachShader(lines_program, fragment);
+	glLinkProgram(lines_program);
+	checkCompileErrors(lines_program, "PROGRAM");
+
+	
+
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
 
 	//TODO: This has to change
 	//.............PHONG.................//

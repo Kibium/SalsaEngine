@@ -22,9 +22,11 @@ public:
 	bool CleanUp();
 	void DroppedFile(const char *)const;
 
+	int mouseX, mouseY;
 private:
 	std::map<std::string, int> assimpMap;
 	std::map<std::string, int> devilMap;
 	const Uint8 *keyboard = NULL;
+	
 };
 #endif // __MODULEINPUT_H__

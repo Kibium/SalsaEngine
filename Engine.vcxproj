@@ -285,7 +285,11 @@
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
     <ClInclude Include="Source\Application.h" />
-
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentCamera.h" />
+    <ClInclude Include="Source\ComponentMaterial.h" />
+    <ClInclude Include="Source\ComponentMesh.h" />
+    <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Model.h" />
@@ -301,9 +305,7 @@
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
-
     <ClInclude Include="Source\Skybox.h" />
-
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />

@@ -177,11 +177,19 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEMOTION:
+			mouseX = sdlEvent.motion.x;
+			mouseY = sdlEvent.motion.y;
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
 				if(App->scene->camera->GetOrbit())
 					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else
 					App->scene->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+				LOG("%d\n", App->scene->camera->PickingHit());
+			}
 			break;
 
 					

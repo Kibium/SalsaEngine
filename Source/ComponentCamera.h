@@ -59,6 +59,7 @@ public:
 	void Orbit(const float, const float);
 	void Focus();
 	void DrawFrustum();
+	bool PickingHit();
 	in_out_frustum ContainsAABOX(const AABB & refBox);
 
 	Frustum frustum;
@@ -74,6 +75,8 @@ private:
 	float lastY = 0;
 	bool orbit = false;
 	bool speeding = false;
+	LineSegment picking;
+	
 };
 #endif // __COMPONENTCAMERA_H__
 

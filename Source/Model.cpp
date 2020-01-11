@@ -339,4 +339,42 @@ string Model::GetFilename(const char *path) {
 }
 void Model::RenderAABB() {
 
+	
+
+	glLineWidth(2.0F);
+	glBegin(GL_QUADS);
+
+	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+											
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+											
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+											
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+											 
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+											 
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+
+	glEnd();
 }

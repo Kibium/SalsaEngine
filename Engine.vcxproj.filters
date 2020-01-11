@@ -894,6 +894,21 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMaterial.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMesh.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentTransform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
