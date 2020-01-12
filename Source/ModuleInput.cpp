@@ -15,6 +15,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 #include "optick/optick.h"
 
@@ -272,6 +273,7 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MESH);
 		obj->CreateComponent(Type::MATERIAL);
 		App->scene->root->children.push_back(obj);
+
 		//App->scene->selected = obj;
 
 	}

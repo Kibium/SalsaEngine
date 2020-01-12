@@ -16,6 +16,7 @@
 #include "optick/optick.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 ModuleRender::ModuleRender()
 {
@@ -127,6 +128,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
 			DrawAABB(gameObject);
+			App->scene->DrawTree();
 		}
 
 	}
@@ -201,6 +203,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 		if (gameObject->model != nullptr) {
 			gameObject->model->Draw();
 			DrawAABB(gameObject);
+			App->scene->DrawTree();
 		}
 			
 			
@@ -240,18 +243,12 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	glViewport(0, 0, width, height);
 }
 void ModuleRender::DrawGrid() {
-	// Lines white
-	//
-	/*for (int i = 0; i < App->model->models.size(); ++i) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		App->model->models[i]->RenderAABB();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}*/
-	
+
 	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
 void ModuleRender::DrawAABB(GameObject* go) {
+
 	dd::aabb(go->model->modelBox.minPoint, go->model->modelBox.maxPoint, math::float3(0.0f, 0.0f, 0.0f));
 }
 

@@ -148,12 +148,6 @@ void GameObject::DeleteComponent(Type type) {
 	}
 }
 
-void GameObject::DrawGO()
-{
-	if (mesh != nullptr) {
-		
-	}
-}
 
 GameObject* GameObject::GetChild(unsigned childIndex) const {
 	GameObject* child = nullptr;

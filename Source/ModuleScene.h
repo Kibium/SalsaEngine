@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include <vector>
 
+class AABBTree;
 class GameObject;
 class ComponentCamera;
 
@@ -27,6 +28,7 @@ public:
 	void DrawPopup(GameObject *gameObject);
 
 	void SortGameObjects(std::vector<GameObject*> &objects);
+	void DrawTree();
 	ComponentCamera* camera = nullptr;
 
 public:
@@ -34,6 +36,7 @@ public:
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
+	AABBTree* abbTree = nullptr;
 
 };
 

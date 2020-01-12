@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "optick/optick.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -23,7 +24,7 @@ bool ModuleScene::Init() {
 	bool ret = true;
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
-	
+	abbTree = new AABBTree(5);
 	/*GameObject* obj1 = new GameObject("Pepito");
 	obj1->parent = root;
 	root->children.push_back(obj1);
@@ -233,4 +234,17 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 
 void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
+}
+
+void ModuleScene::DrawTree() {
+	abbTree = new AABBTree(5);
+	for (auto gameObject : allGo) {
+
+		if (gameObject->model != nullptr) 
+			abbTree->insertObject(gameObject);
+		
+	}
+
+	abbTree->DrawTree();
+	abbTree = nullptr;
 }
