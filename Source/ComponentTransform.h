@@ -7,20 +7,20 @@
 class ComponentTransform : public Component {
 public:
 	ComponentTransform();
-	ComponentTransform(math::float3 &position, math::float3 &rotation, math::float3 &scale);
-	ComponentTransform(const ComponentTransform &transform);
 	~ComponentTransform();
 
-	ComponentTransform operator+(const ComponentTransform &transform) const;
-	ComponentTransform operator-(const ComponentTransform &transform) const;
-
 	update_status Update() override;
+	void UpdateMatrix();
+	void SetWorldMatrix(const float4x4 &);
+	void UpdateAABBBox(GameObject * go);
 	void OnEditor() override;
 
 public:
-	math::float3 position;
-	math::float3 rotation;
-	math::float3 scale;
+	float3 position = float3(0.0f, 0.0f, 0.0f);
+	float3 rotation = float3(0.0f, 0.0f, 0.0f);
+	float3 scale = float3(1.0f, 1.0f, 1.0f);
+	float4x4 localMatrix = float4x4::identity;
+	float4x4 worldMatrix = float4x4::identity;
 
 	// local and world transform and dirty flag to know if needs to be recalculated
 };

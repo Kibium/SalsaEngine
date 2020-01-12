@@ -8,6 +8,7 @@
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class GameObject;
 class ComponentCamera;
 
 class ModuleRender : public Module
@@ -25,6 +26,7 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 	void DrawGrid();
+	void DrawAABB(GameObject * go);
 	void SetAxis();
 	void SetWireframe(const bool wireframe);
 
