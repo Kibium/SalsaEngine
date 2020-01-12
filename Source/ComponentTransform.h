@@ -7,12 +7,7 @@
 class ComponentTransform : public Component {
 public:
 	ComponentTransform();
-	ComponentTransform(math::float3 &, math::float3 &, math::float3 &);
-	ComponentTransform(const ComponentTransform &);
 	~ComponentTransform();
-
-	ComponentTransform operator+(const ComponentTransform &) const;
-	ComponentTransform operator-(const ComponentTransform &) const;
 
 	update_status Update() override;
 	void UpdateMatrix();

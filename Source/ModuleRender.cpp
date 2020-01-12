@@ -124,7 +124,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
 	App->scene->camera->DrawFrustum();
-	//dd::axisTriad(App->camera->view.Inverted(),5,8);
 	DrawGrid();
 //	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		//App->model->Draw();
@@ -189,14 +188,13 @@ void ModuleRender::DrawScene(const float width, const float height) {
 
 	glUseProgram(App->shader->def_program);
 
-	//glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->selected);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
-	for (auto gameObject : App->scene->allGo) {
+	for (auto gameObject : App->scene->root->children) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
-
+		if (gameObject->model != nullptr)
+			gameObject->model->Draw();
 	}
-	App->model->Draw();
 	glUseProgram(0);
 	App->skybox->Draw();
 

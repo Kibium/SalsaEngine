@@ -24,7 +24,7 @@ bool ModuleScene::Init() {
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
 	
-	GameObject* obj1 = new GameObject("Pepito");
+	/*GameObject* obj1 = new GameObject("Pepito");
 	obj1->parent = root;
 	root->children.push_back(obj1);
 
@@ -41,7 +41,7 @@ bool ModuleScene::Init() {
 	root->children.push_back(obj2);
 
 	SortGameObjects(root->children);
-	SortGameObjects(obj1->children);
+	SortGameObjects(obj1->children);*/
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
