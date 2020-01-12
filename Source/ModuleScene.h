@@ -30,6 +30,7 @@ public:
 	ComponentCamera* camera = nullptr;
 
 public:
+	std::vector<GameObject*> allGo;
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;

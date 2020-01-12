@@ -187,9 +187,9 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+		/*	if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
 				LOG("%d\n", App->scene->camera->PickingHit());
-			}
+			}*/
 			break;
 
 					
@@ -272,7 +272,7 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MESH);
 		obj->CreateComponent(Type::MATERIAL);
 		App->scene->root->children.push_back(obj);
-		App->scene->selected = obj;
+		//App->scene->selected = obj;
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {

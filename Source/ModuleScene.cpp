@@ -90,6 +90,7 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
+	allGo.push_back(gameObject);
 	return gameObject;
 }
 

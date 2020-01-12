@@ -64,9 +64,6 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\Imgui\imgui.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -216,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -672,9 +672,6 @@
     <ClInclude Include="Libraries\optick\optick_server.h">
       <Filter>Optick</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\rapidjson\internal\meta.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -908,6 +905,9 @@
     </ClInclude>
     <ClInclude Include="Source\ComponentTransform.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

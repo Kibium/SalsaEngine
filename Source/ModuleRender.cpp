@@ -8,6 +8,8 @@
 #include "debugdraw.h"
 #include "ModuleDebugDraw.h"
 #include "Skybox.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 #include "SDL.h"
 #include "MathGeoLib.h"
@@ -129,7 +131,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
-	App->debugdraw->Draw(GameCamera, gameFBO, width, height);
+	App->debugdraw->Draw(GameCamera, gameFBO, width, height); 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {
@@ -187,13 +189,19 @@ void ModuleRender::DrawScene(const float width, const float height) {
 
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->selected);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
-	DrawGrid();
+	for (auto gameObject : App->scene->allGo) {
+		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
+
+	}
 	App->model->Draw();
 	glUseProgram(0);
 	App->skybox->Draw();
+
+	DrawGrid();
+	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -232,56 +240,8 @@ void ModuleRender::DrawGrid() {
 		App->model->models[i]->RenderAABB();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	glLineWidth(1.0F);
-	float d = 200.0F;
-	glColor4f(1.F, 1.F, 1.F, 1.F);
-	glBegin(GL_LINES);
-	for (float i = -d; i <= d; i += 1.0F) {
-		glVertex3f(i, 0.0F, -d);
-		glVertex3f(i, 0.0F, d);
-		glVertex3f(-d, 0.0F, i);
-		glVertex3f(d, 0.0F, i);
-	}
-	glEnd();
-
-	glLineWidth(2.0F);
-	glBegin(GL_LINES);
-
-	// Red X
-	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.1F, 0.0F);
-	glVertex3f(1.1F, -0.1F, 0.0F);
-	glVertex3f(1.1F, 0.1F, 0.0F);
-	glVertex3f(1.0F, -0.1F, 0.0F);
-
-	// Green Y
-	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 1.0F, 0.0F);
-	glVertex3f(-0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.05F, 0.0F);
-
-	// Blue Z
-	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 0.0F, 1.0F);
-	glVertex3f(-0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(0.05F, -0.1F, 1.05F);
-
-	glEnd();
-	glLineWidth(1.0F);
-
-	glUseProgram(App->shader->def_program);
+	
+	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
 void ModuleRender::SetAxis() {
