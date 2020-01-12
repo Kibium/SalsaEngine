@@ -12,6 +12,7 @@ public:
 	update_status Update() override;
 	void UpdateMatrix();
 	void SetWorldMatrix(const float4x4 &);
+	void UpdateAABBBox(GameObject * go);
 	void OnEditor() override;
 
 public:

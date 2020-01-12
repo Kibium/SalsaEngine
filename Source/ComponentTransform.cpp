@@ -41,6 +41,13 @@ void ComponentTransform::SetWorldMatrix(const float4x4 &newWorld)
 {
 	worldMatrix = newWorld * localMatrix;
 }
+void ComponentTransform::UpdateAABBBox(GameObject* go)
+{
+	if (go->model != nullptr) {
+		go->model->modelBox.TransformAsAABB(go->transform->worldMatrix);
+	}
+}
+
 
 
 void ComponentTransform::OnEditor() {
@@ -53,10 +60,12 @@ void ComponentTransform::OnEditor() {
 		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			LOG("moving");
 			App->scene->selected->transform->UpdateMatrix();
+			UpdateAABBBox(App->scene->selected);
 		}
 		//ImGui::DragFloat3("Rotation", &rotation[0], 0.5F, -9999.F, 9999.F, "%.1f");
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
+			UpdateAABBBox(App->scene->selected);
 		}
 	}
 	ImGui::Separator();

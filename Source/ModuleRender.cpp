@@ -124,6 +124,12 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
 	App->scene->camera->DrawFrustum();
+	for (auto gameObject : App->scene->root->children) {
+		if (gameObject->model != nullptr) {
+			DrawAABB(gameObject);
+		}
+
+	}
 	DrawGrid();
 //	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		//App->model->Draw();
@@ -192,12 +198,15 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
 	for (auto gameObject : App->scene->root->children) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
-		if (gameObject->model != nullptr)
+		if (gameObject->model != nullptr) {
 			gameObject->model->Draw();
+			DrawAABB(gameObject);
+		}
+			
+			
 	}
 	glUseProgram(0);
 	App->skybox->Draw();
-
 	DrawGrid();
 	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -233,15 +242,19 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 void ModuleRender::DrawGrid() {
 	// Lines white
 	//
-	for (int i = 0; i < App->model->models.size(); ++i) {
+	/*for (int i = 0; i < App->model->models.size(); ++i) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		App->model->models[i]->RenderAABB();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
+	}*/
 	
 	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
+void ModuleRender::DrawAABB(GameObject* go) {
+	dd::aabb(go->model->modelBox.minPoint, go->model->modelBox.maxPoint, math::float3(0.0f, 0.0f, 0.0f));
+}
+
 void ModuleRender::SetAxis() {
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);

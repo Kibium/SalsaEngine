@@ -217,6 +217,9 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AABBTree.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -908,6 +911,9 @@
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AABBTree.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
