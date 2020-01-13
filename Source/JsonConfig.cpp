@@ -127,7 +127,37 @@ void JsonConfig::LoadJson(const char *fileName) {
 		LOG("Game Object %d:\n", i);
 
 		for (rapidjson::Value::ConstMemberIterator itr = a[i].MemberBegin(); itr != a[i].MemberEnd(); ++itr) {
-			LOG("%s : %s\n", itr->name.GetString(), kTypeNames[itr->value.GetType()]);
+			LOG("%s : ", itr->name.GetString());
+
+			std::string memberType = kTypeNames[itr->value.GetType()];
+			const char *member = memberType.c_str();
+			
+			if (memberType == "Null") {
+				LOG("Null");
+
+			}
+			else if (memberType == "False" || memberType == "True") {
+				LOG("%d", itr->value.GetBool());
+
+			}
+			else if (memberType == "Object") {
+				LOG("Object");
+
+			}
+			else if (memberType == "Array") {
+				LOG("Array");
+
+			}
+			else if (memberType == "String") {
+				LOG("%s", itr->value.GetString());
+
+			}
+			else if (memberType == "Number") {
+				LOG("%f", itr->value.GetFloat());
+
+			}
+
+			LOG("\n");
 		}
 
 		LOG("\n");
