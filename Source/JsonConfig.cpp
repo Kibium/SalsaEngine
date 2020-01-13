@@ -113,23 +113,27 @@ void JsonConfig::LoadJson(const char *fileName) {
 	json[size] = 0;
 	fclose(file);
 
+	// parse
 	document.Parse(json);
 	assert(document.IsObject());
-	assert(document.HasMember("Game Objects"));
 
-	// Using a reference for consecutive access is handy and faster.
-	//const rapidjson::Value& a = document["Game Objects"];
-	//assert(a.IsArray());
-	//for (rapidjson::Value::ConstValueIterator itr = a.Begin(); itr != a.End(); ++itr) {
-	//	LOG("%d ", itr->GetInt());
+	const rapidjson::Value& a = document["Game Objects"];
+	assert(a.IsArray());
+	rapidjson::SizeType i;
+	static const char* kTypeNames[] = { "Null", "False", "True", "Object", "Array", "String", "Number" };
 
-	//	for (rapidjson::Value::ConstMemberIterator it = *itr.MemberBegin();
-	//		itr != document.MemberEnd(); ++itr) {
-	//		printf("Type of member %s is %s\n",
-	//			itr->name.GetString(), kTypeNames[itr->value.GetType()]);
-	//	}
-	//}
+	// loop game objects
+	for (i = 0; i < a.Size(); i++) {
+		LOG("Game Object %d:\n", i);
+
+		for (rapidjson::Value::ConstMemberIterator itr = a[i].MemberBegin(); itr != a[i].MemberEnd(); ++itr) {
+			LOG("%s : %s\n", itr->name.GetString(), kTypeNames[itr->value.GetType()]);
+		}
+
+		LOG("\n");
+	}
 		
+	LOG("Game Objects Count: %d\n", i);
 
 	delete json;
 	LOG("Loaded scene data!\n");
