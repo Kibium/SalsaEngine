@@ -189,13 +189,13 @@ update_status ModuleInput::Update()
 
 		case SDL_MOUSEBUTTONDOWN:
 
-			SDL_GetMouseState(&mouseX, &mouseY);
+			/*SDL_GetMouseState(&mouseX, &mouseY);
 			pickX = -2 + 2.0 *(mouseX / App->gui->GetSceneWidth());
 			pickY = 1.0 - 2.0 * (mouseY / App->gui->GetSceneHeight());
 			if (sdlEvent.button.button == SDL_BUTTON_LEFT && App->model>models.size() >= 1) {
 				if (App->model->models.size() >= 1)
 					LOG("%0.1f %0.1f %d\n", pickX, pickY, App->scene->camera->PickingHit());
-			}
+			}*/
 
 			break;
 

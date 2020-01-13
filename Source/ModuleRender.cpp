@@ -246,7 +246,7 @@ void ModuleRender::DrawGrid() {
 
 	// Lines white
 
-	for (int i = 0; i < App->model->models.size(); ++i) {
+	/*for (int i = 0; i < App->model->models.size(); ++i) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		App->model->models[i]->RenderAABB();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -266,7 +266,7 @@ void ModuleRender::DrawGrid() {
 
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);
-
+	*/
 
 	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
