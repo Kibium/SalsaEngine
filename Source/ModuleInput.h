@@ -23,6 +23,7 @@ public:
 	void DroppedFile(const char *)const;
 
 	int mouseX, mouseY;
+	float pickX, pickY;
 private:
 	std::map<std::string, int> assimpMap;
 	std::map<std::string, int> devilMap;

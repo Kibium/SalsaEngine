@@ -31,7 +31,7 @@ bool ModuleInput::Init()
 	bool ret = true;
 	SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -114,7 +114,7 @@ bool ModuleInput::Init()
 	devilMap[".sgi"] = 69;
 	devilMap[".tga"] = 70;
 	devilMap[".tif"] = 71;
-	
+
 	return ret;
 }
 
@@ -142,7 +142,7 @@ update_status ModuleInput::Update()
 		case SDL_MOUSEWHEEL:
 			if (sdlEvent.wheel.y > 0 && App->gui->isScene)
 				App->scene->camera->MoveFoward();
-			
+
 			else if (sdlEvent.wheel.y < 0 && App->gui->isScene)
 				App->scene->camera->MoveBackward();
 
@@ -172,34 +172,40 @@ update_status ModuleInput::Update()
 				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->scene->camera->SetSpeeding(false);
-				
+
 
 			}
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouseX = sdlEvent.motion.x;
-			mouseY = sdlEvent.motion.y;
+			
+			
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
-				if(App->scene->camera->GetOrbit())
+				if (App->scene->camera->GetOrbit())
 					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else
 					App->scene->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-		/*	if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-				LOG("%d\n", App->scene->camera->PickingHit());
-			}*/
+
+			SDL_GetMouseState(&mouseX, &mouseY);
+			pickX = -2 + 2.0 *(mouseX / App->gui->GetSceneWidth());
+			pickY = 1.0 - 2.0 * (mouseY / App->gui->GetSceneHeight());
+			if (sdlEvent.button.button == SDL_BUTTON_LEFT && App->model>models.size() >= 1) {
+				if (App->model->models.size() >= 1)
+					LOG("%0.1f %0.1f %d\n", pickX, pickY, App->scene->camera->PickingHit());
+			}
+
 			break;
 
-					
+
 		case SDL_DROPFILE:
 			char* newFile = sdlEvent.drop.file;
 			DroppedFile(newFile);
 			SDL_free(newFile);
 			break;
-		
+
 		}
 	}
 
@@ -251,7 +257,7 @@ void ModuleInput::DroppedFile(const char* file) const
 	//If the house is BakerHouse.fbx, returns BakerHouse
 	App->model->model_name = App->model->GetFilename(file);
 	App->model->load_once = false;
-	
+
 
 	if (file == NULL) {
 		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");
@@ -284,5 +290,5 @@ void ModuleInput::DroppedFile(const char* file) const
 	else {
 		LOG("ERROR:: FILE FORMAT '%s' NOT ACCEPTED\n ", extension);
 	}
-	
+
 }

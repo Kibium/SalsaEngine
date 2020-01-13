@@ -334,6 +334,9 @@ void ModuleGUI::Game() {
 	ImGui::End();
 }
 
+float ModuleGUI::GetSceneWidth() { return sceneWidth; }
+float ModuleGUI::GetSceneHeight() { return sceneHeight; }
+
 void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
@@ -341,7 +344,7 @@ void ModuleGUI::Scene() {
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
-
+		//LOG("Scene width: %0.1f, Scene Height: %0.1f", sceneWidth, sceneHeight);
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),

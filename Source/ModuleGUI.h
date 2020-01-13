@@ -36,6 +36,8 @@ public:
 	bool isInspector = false;
 	void HelpMarker(const char* desc);
 	char* GetInputFile();
+	float GetSceneWidth();
+	float GetSceneHeight();
 
 private:
 	
