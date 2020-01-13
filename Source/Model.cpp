@@ -340,7 +340,7 @@ string Model::GetFilename(const char *path) {
 void Model::RenderAABB() {
 
 	
-
+/*
 	glLineWidth(2.0F);
 	glBegin(GL_QUADS);
 
@@ -376,5 +376,7 @@ void Model::RenderAABB() {
 	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
 	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
 
-	glEnd();
+	glEnd();*/
+	
+
 }

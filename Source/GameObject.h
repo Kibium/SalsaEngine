@@ -29,10 +29,11 @@ public:
 	virtual bool CleanUp();
 
 public:
-	Component* CreateComponent(Type type);
+	void CreateComponent(Type type);
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
 	void DeleteComponent(Type type);
+	void DrawGO();
 
 	GameObject* GetChild(unsigned childIndex) const;
 	GameObject* GetChild(const std::string &childName) const;
@@ -40,6 +41,7 @@ public:
 	Component* GetComponentInParent(Type type) const;
 	Component* GetComponentInChild(unsigned childIndex, Type type) const;
 	Component* GetComponentInChild(const std::string &childName, Type type) const;
+
 
 public:
 	uint32_t UUID;
@@ -49,6 +51,9 @@ public:
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
+	ComponentTransform* transform = nullptr;
+	ComponentMesh* mesh = nullptr;
+	ComponentMaterial* material = nullptr;
 	std::vector<Mesh> meshes;
 	Model* model = nullptr;
 };

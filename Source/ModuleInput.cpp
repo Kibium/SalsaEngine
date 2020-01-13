@@ -15,6 +15,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 #include "optick/optick.h"
 
@@ -187,13 +188,15 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
+
 			SDL_GetMouseState(&mouseX, &mouseY);
 			pickX = -2 + 2.0 *(mouseX / App->gui->GetSceneWidth());
 			pickY = 1.0 - 2.0 * (mouseY / App->gui->GetSceneHeight());
-			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+			if (sdlEvent.button.button == SDL_BUTTON_LEFT && App->model>models.size() >= 1) {
 				if (App->model->models.size() >= 1)
 					LOG("%0.1f %0.1f %d\n", pickX, pickY, App->scene->camera->PickingHit());
 			}
+
 			break;
 
 
@@ -276,7 +279,8 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MESH);
 		obj->CreateComponent(Type::MATERIAL);
 		App->scene->root->children.push_back(obj);
-		App->scene->selected = obj;
+
+		//App->scene->selected = obj;
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {

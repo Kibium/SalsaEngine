@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "optick/optick.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -23,8 +24,8 @@ bool ModuleScene::Init() {
 	bool ret = true;
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
-	
-	GameObject* obj1 = new GameObject("Pepito");
+	abbTree = new AABBTree(5);
+	/*GameObject* obj1 = new GameObject("Pepito");
 	obj1->parent = root;
 	root->children.push_back(obj1);
 
@@ -41,7 +42,7 @@ bool ModuleScene::Init() {
 	root->children.push_back(obj2);
 
 	SortGameObjects(root->children);
-	SortGameObjects(obj1->children);
+	SortGameObjects(obj1->children);*/
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
@@ -90,6 +91,7 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
+	allGo.push_back(gameObject);
 	return gameObject;
 }
 
@@ -232,4 +234,17 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 
 void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
+}
+
+void ModuleScene::DrawTree() {
+	abbTree = new AABBTree(5);
+	for (auto gameObject : allGo) {
+
+		if (gameObject->model != nullptr) 
+			abbTree->insertObject(gameObject);
+		
+	}
+
+	abbTree->DrawTree();
+	abbTree = nullptr;
 }

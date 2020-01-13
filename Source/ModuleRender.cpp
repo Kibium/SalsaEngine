@@ -8,12 +8,15 @@
 #include "debugdraw.h"
 #include "ModuleDebugDraw.h"
 #include "Skybox.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 #include "SDL.h"
 #include "MathGeoLib.h"
 #include "optick/optick.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 ModuleRender::ModuleRender()
 {
@@ -122,14 +125,20 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
 	App->scene->camera->DrawFrustum();
-	//dd::axisTriad(App->camera->view.Inverted(),5,8);
+	for (auto gameObject : App->scene->root->children) {
+		if (gameObject->model != nullptr) {
+			DrawAABB(gameObject);
+			App->scene->DrawTree();
+		}
+
+	}
 	DrawGrid();
 //	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		//App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
-	App->debugdraw->Draw(GameCamera, gameFBO, width, height);
+	App->debugdraw->Draw(GameCamera, gameFBO, width, height); 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {
@@ -187,13 +196,22 @@ void ModuleRender::DrawScene(const float width, const float height) {
 
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
-	DrawGrid();
-	App->model->Draw();
+	for (auto gameObject : App->scene->root->children) {
+		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
+		if (gameObject->model != nullptr) {
+			gameObject->model->Draw();
+			DrawAABB(gameObject);
+			App->scene->DrawTree();
+		}
+			
+			
+	}
 	glUseProgram(0);
 	App->skybox->Draw();
+	DrawGrid();
+	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -225,6 +243,7 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	glViewport(0, 0, width, height);
 }
 void ModuleRender::DrawGrid() {
+
 	// Lines white
 
 	for (int i = 0; i < App->model->models.size(); ++i) {
@@ -248,43 +267,15 @@ void ModuleRender::DrawGrid() {
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);
 
-	// Red X
-	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.1F, 0.0F);
-	glVertex3f(1.1F, -0.1F, 0.0F);
-	glVertex3f(1.1F, 0.1F, 0.0F);
-	glVertex3f(1.0F, -0.1F, 0.0F);
 
-	// Green Y
-	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 1.0F, 0.0F);
-	glVertex3f(-0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.05F, 0.0F);
-
-	// Blue Z
-	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 0.0F, 1.0F);
-	glVertex3f(-0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(0.05F, -0.1F, 1.05F);
-
-	glEnd();
-	glLineWidth(1.0F);
-
-	glUseProgram(App->shader->def_program);
+	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
+void ModuleRender::DrawAABB(GameObject* go) {
+
+	dd::aabb(go->model->modelBox.minPoint, go->model->modelBox.maxPoint, math::float3(0.0f, 0.0f, 0.0f));
+}
+
 void ModuleRender::SetAxis() {
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);
