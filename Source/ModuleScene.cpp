@@ -103,6 +103,10 @@ void ModuleScene::DeleteGameObject(GameObject *gameObject) {
 	}
 }
 
+void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
+	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
+}
+
 void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 	if (objects.size() > 0) {
 
@@ -230,8 +234,4 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		}
 		ImGui::EndPopup();
 	}
-}
-
-void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
-	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
 }

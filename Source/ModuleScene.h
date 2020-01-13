@@ -20,20 +20,18 @@ public:
 public:
 	GameObject* CreateGameObject();
 	void DeleteGameObject(GameObject *gameObject);
+	void SortGameObjects(std::vector<GameObject*> &objects);
 
 	void DrawGameObjects(const std::vector<GameObject*>& objects);
 	void DrawHierarchy(bool *showHierarchy);
 	void DrawInspector(bool *show);
 	void DrawPopup(GameObject *gameObject);
 
-	void SortGameObjects(std::vector<GameObject*> &objects);
-	ComponentCamera* camera = nullptr;
-
 public:
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
-
+	ComponentCamera* camera = nullptr;
 };
 
 #endif // __MODULESCENE_H__

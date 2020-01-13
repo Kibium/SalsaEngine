@@ -15,7 +15,7 @@
 
 #include <windows.h>
 #include "ModuleScene.h"
-
+#include "JsonConfig.h"
 using namespace std;
 
 Application::Application()
@@ -36,7 +36,8 @@ Application::Application()
 	modules.push_back(debugdraw = new ModuleDebugDraw());
 
 
-	//modules.push_back(scene = new ModuleScene());
+	JsonConfig config;
+	config.SaveJson("sceneData");
 	
 }
 

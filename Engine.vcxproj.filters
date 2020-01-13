@@ -217,6 +217,9 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Source\JsonConfig.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -899,6 +902,9 @@
     </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\JsonConfig.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
