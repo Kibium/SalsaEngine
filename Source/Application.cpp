@@ -9,13 +9,10 @@
 #include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleDebugDraw.h"
-
 #include "ModuleMSTimer.h"
 #include "Skybox.h"
-
 #include <windows.h>
 #include "ModuleScene.h"
-#include "JsonConfig.h"
 using namespace std;
 
 Application::Application()
@@ -34,11 +31,6 @@ Application::Application()
 
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugdraw = new ModuleDebugDraw());
-
-
-	JsonConfig config;
-	config.SaveJson("sceneData");
-	
 }
 
 Application::~Application()

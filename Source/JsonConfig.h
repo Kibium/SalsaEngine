@@ -3,6 +3,7 @@
 
 #include "rapidjson/document.h"
 #include "MathGeoLib.h"
+#include "GameObject.h"
 
 class JsonConfig {
 public:
@@ -28,11 +29,13 @@ public:
 	std::string& GetString(const char *name, std::string& value);
 
 private:
-	// document is the root of a json message
-	rapidjson::Document document;
+	rapidjson::Document document; // document is the root of a json message
+	rapidjson::Document::AllocatorType *allocator = nullptr; // must pass an allocator when the object may need to allocate memory
 
 public:
 	void SaveJson(const char *fileName);
+	void SaveJsonTest(const char *fileName);
+	void SaveGameObject(const GameObject& obj);
 	void LoadJson(const char *fileName);
 };
 

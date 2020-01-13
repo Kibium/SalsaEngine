@@ -9,6 +9,7 @@
 #include "optick/optick.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "JsonConfig.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -24,8 +25,10 @@ bool ModuleScene::Init() {
 	bool ret = true;
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
-	
+
 	GameObject* obj1 = new GameObject("Pepito");
+	obj1->CreateComponent(Type::MESH);
+	obj1->CreateComponent(Type::MATERIAL);
 	obj1->parent = root;
 	root->children.push_back(obj1);
 
@@ -48,7 +51,11 @@ bool ModuleScene::Init() {
 		if ((*it)->isActive)
 			ret = (*it)->Init();
 	}
-	
+
+	JsonConfig config;
+	config.SaveGameObject(*obj1);
+	config.SaveJson("SceneData");
+
 	return ret;
 }
 
@@ -134,7 +141,7 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 					if (ImGui::AcceptDragDropPayload("GameObject")) {
 						if (dragged->name < objects[i]->name && objects[i]->parent == root)
 							--i;
-						
+
 						dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
 						dragged->parent = objects[i];
 						objects[i]->children.push_back(dragged);
@@ -185,7 +192,7 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		ImGui::OpenPopup("GameObject Popup");
 		selected = gameObject;
 	}
-	if (ImGui::BeginPopup("GameObject Popup")) { 
+	if (ImGui::BeginPopup("GameObject Popup")) {
 		ImGui::Separator();
 		ImGui::TextDisabled("Copy");
 		ImGui::TextDisabled("Paste");

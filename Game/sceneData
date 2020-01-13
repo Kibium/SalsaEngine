@@ -1,1 +1,1 @@
-{"Name":"XYZ","Rollnumer":2,"array":["hello","world"],"Marks":{"Math":"50","Science":"70","English":"50","Social Science":"70"}}
+{"Game Objects":{"UID":483882979,"ParentUID":3406281715,"Name":"Pepito","Translation":[0,0,0],"Scale":[1,1,1],"Rotation":[0,0,0],"Components":{"UID":4186697710,"ParentUID":483882979,"Type":0,"Active":true,"UID":2766312848,"ParentUID":483882979,"Type":1,"Active":true,"UID":1713261421,"ParentUID":483882979,"Type":2,"Active":true}}}
