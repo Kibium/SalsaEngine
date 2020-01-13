@@ -27,11 +27,14 @@ public:
 	void DrawInspector(bool *show);
 	void DrawPopup(GameObject *gameObject);
 
+	void SaveScene();
+
 public:
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
 	ComponentCamera* camera = nullptr;
+	std::vector<GameObject*> gameObjects;
 };
 
 #endif // __MODULESCENE_H__

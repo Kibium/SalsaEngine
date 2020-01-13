@@ -253,6 +253,7 @@ void ModuleInput::DroppedFile(const char* file) const
 
 		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
 		// Process file and create empty gameobject
+		App->scene->selected = nullptr;
 		App->model->AddModel(file);
 		auto obj = App->scene->CreateGameObject();
 		obj->name = App->model->GetModel(file)->name;

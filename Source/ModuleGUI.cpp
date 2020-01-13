@@ -171,18 +171,20 @@ void ModuleGUI::MainMenu() {
 	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("New Scene")) {
-			}
+			//if (ImGui::MenuItem("New Scene")) {
+			//}
 			if (ImGui::MenuItem("Open Scene")) {
+
 			}
-			if (ImGui::MenuItem("Save")) {
+			if (ImGui::MenuItem("Save Scene")) {
+				App->scene->SaveScene();
 			}
-			if (ImGui::MenuItem("New Project")) {
-			}
-			if (ImGui::MenuItem("Open Project")) {
-			}
-			if (ImGui::MenuItem("Save Project")) {
-			}
+			//if (ImGui::MenuItem("New Project")) {
+			//}
+			//if (ImGui::MenuItem("Open Project")) {
+			//}
+			//if (ImGui::MenuItem("Save Project")) {
+			//}
 			if (ImGui::MenuItem("Exit")) {
 				SDL_Event quit_event;
 				quit_event.type = SDL_QUIT;

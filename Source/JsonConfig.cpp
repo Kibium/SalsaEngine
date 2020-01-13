@@ -1,31 +1,25 @@
 #include "JsonConfig.h"
 #include "Globals.h"
-#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include <string>
 #include "Component.h"
 
 JsonConfig::JsonConfig() {
-	// define the document as an object rather than an array
 	document.SetObject();
 	allocator = &document.GetAllocator();
+	gameObjects = rapidjson::Value(rapidjson::kArrayType);
 }
 
 JsonConfig::~JsonConfig() {
 }
 
-void JsonConfig::AddInt(const char *name, const int value) {
-}
-
-int JsonConfig::GetInt(const char *name, int value) {
-	return 0;
-}
-
 void JsonConfig::SaveJson(const char *fileName) {
+	document.AddMember("Game Objects", gameObjects, *allocator);
 
 	// create and log json result
 	rapidjson::StringBuffer strbuf;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(strbuf);
 	document.Accept(writer);
 	LOG(strbuf.GetString());
 
@@ -38,48 +32,6 @@ void JsonConfig::SaveJson(const char *fileName) {
 
 	fwrite(strbuf.GetString(), sizeof(char), strlen(strbuf.GetString()), file);
 	fclose(file);
-
-}
-
-void JsonConfig::SaveJsonTest(const char *fileName) {
-	
-	// create a rapidjson array type with similar syntax to std::vector
-	rapidjson::Value array(rapidjson::kArrayType);
-
-	// must pass an allocator when the object may need to allocate memory
-	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
-
-	// chain methods as rapidjson provides a fluent interface when modifying its objects
-	array.PushBack("hello", allocator).PushBack("world", allocator);//"array":["hello","world"]
-
-	document.AddMember("Name", "XYZ", allocator);
-	document.AddMember("Rollnumer", 2, allocator);
-	document.AddMember("array", array, allocator);
-
-	// create a rapidjson object type
-	rapidjson::Value object(rapidjson::kObjectType);
-	object.AddMember("Math", "50", allocator);
-	object.AddMember("Science", "70", allocator);
-	object.AddMember("English", "50", allocator);
-	object.AddMember("Social Science", "70", allocator);
-	document.AddMember("Marks", object, allocator);
-	//	fromScratch["object"]["hello"] = "Yourname";
-
-	// create and log json result
-	rapidjson::StringBuffer strbuf;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
-	document.Accept(writer);
-	LOG(strbuf.GetString());
-
-	// save json to file
-	FILE* file = nullptr;
-	fopen_s(&file, fileName, "wt");
-	if (!file) {
-		LOG("Error saving scene. Can not create %s file.", fileName);
-		return;
-	}
-	fwrite(strbuf.GetString(), sizeof(char), strlen(strbuf.GetString()), file);
-	fclose(file);
 }
 
 void JsonConfig::SaveGameObject(const GameObject& obj) {
@@ -89,47 +41,54 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	object.AddMember("UID", obj.UUID, *allocator);
 	object.AddMember("ParentUID", obj.parent->UUID, *allocator);
 	object.AddMember("Name", rapidjson::Value(obj.name.c_str(), *allocator), *allocator);
-
-	rapidjson::Value trans(rapidjson::kArrayType);
-	trans.PushBack((int)obj.components[0]->position.x, *allocator).PushBack((int)obj.components[0]->position.y, *allocator).PushBack((int)obj.components[0]->position.z, *allocator);
-	object.AddMember("Translation", trans, *allocator);
-
-	rapidjson::Value scale(rapidjson::kArrayType);
-	scale.PushBack((int)obj.components[0]->scale.x, *allocator).PushBack((int)obj.components[0]->scale.y, *allocator).PushBack((int)obj.components[0]->scale.z, *allocator);
-	object.AddMember("Scale", scale, *allocator);
-
-	rapidjson::Value rot(rapidjson::kArrayType);
-	rot.PushBack((int)obj.components[0]->rotation.x, *allocator).PushBack((int)obj.components[0]->rotation.y, *allocator).PushBack((int)obj.components[0]->rotation.z, *allocator);
-	object.AddMember("Rotation", rot, *allocator);
+	object.AddMember("Active", obj.isActive, *allocator);
+	object.AddMember("Static", obj.isStatic, *allocator);
+	if (obj.model != nullptr) object.AddMember("Model", *obj.model->filePath, *allocator);
+	else object.AddMember("Model", "None", *allocator);
 
 	// object's components properties
-	rapidjson::Value components(rapidjson::kObjectType);
+	rapidjson::Value components(rapidjson::kArrayType);
+	rapidjson::Value transform(rapidjson::kObjectType);
+	rapidjson::Value mesh(rapidjson::kObjectType);
+	rapidjson::Value material(rapidjson::kObjectType);
+
 	if (obj.components.size() > 0) {
-		components.AddMember("UID", obj.components[0]->UUID, *allocator);
-		components.AddMember("ParentUID", obj.components[0]->myGo->UUID, *allocator);
-		components.AddMember("Type", (int)obj.components[0]->type, *allocator);
-		components.AddMember("Active", obj.components[0]->active, *allocator);
+		transform.AddMember("UID", obj.components[0]->UUID, *allocator);
+		transform.AddMember("ParentUID", obj.components[0]->myGo->UUID, *allocator);
+		transform.AddMember("Type", (int)obj.components[0]->type, *allocator);
+		transform.AddMember("Active", obj.components[0]->active, *allocator);
+		rapidjson::Value trans(rapidjson::kArrayType);
+		trans.PushBack(obj.components[0]->position.x, *allocator).PushBack(obj.components[0]->position.y, *allocator).PushBack(obj.components[0]->position.z, *allocator);
+		transform.AddMember("Translation", trans, *allocator);
+		rapidjson::Value rot(rapidjson::kArrayType);
+		rot.PushBack(obj.components[0]->rotation.x, *allocator).PushBack(obj.components[0]->rotation.y, *allocator).PushBack(obj.components[0]->rotation.z, *allocator);
+		transform.AddMember("Rotation", rot, *allocator);
+		rapidjson::Value scale(rapidjson::kArrayType);
+		scale.PushBack(obj.components[0]->scale.x, *allocator).PushBack(obj.components[0]->scale.y, *allocator).PushBack(obj.components[0]->scale.z, *allocator);
+		transform.AddMember("Scale", scale, *allocator);
+		components.PushBack(transform, *allocator);
 
 		if (obj.components.size() > 1) {
-			components.AddMember("UID", obj.components[1]->UUID, *allocator);
-			components.AddMember("ParentUID", obj.components[1]->myGo->UUID, *allocator);
-			components.AddMember("Type", (int)obj.components[1]->type, *allocator);
-			components.AddMember("Active", obj.components[1]->active, *allocator);
+			mesh.AddMember("UID", obj.components[1]->UUID, *allocator);
+			mesh.AddMember("ParentUID", obj.components[1]->myGo->UUID, *allocator);
+			mesh.AddMember("Type", (int)obj.components[1]->type, *allocator);
+			mesh.AddMember("Active", obj.components[1]->active, *allocator);
+			components.PushBack(mesh, *allocator);
 
 			if (obj.components.size() > 2) {
-				components.AddMember("UID", obj.components[2]->UUID, *allocator);
-				components.AddMember("ParentUID", obj.components[2]->myGo->UUID, *allocator);
-				components.AddMember("Type", (int)obj.components[2]->type, *allocator);
-				components.AddMember("Active", obj.components[2]->active, *allocator);
+				material.AddMember("UID", obj.components[2]->UUID, *allocator);
+				material.AddMember("ParentUID", obj.components[2]->myGo->UUID, *allocator);
+				material.AddMember("Type", (int)obj.components[2]->type, *allocator);
+				material.AddMember("Active", obj.components[2]->active, *allocator);
+				components.PushBack(material, *allocator);
 			}
 		}
 	}
 
 	object.AddMember("Components", components, *allocator);
-
-	document.AddMember("Game Objects", object, *allocator);
-
+	gameObjects.PushBack(object, *allocator);
 }
 
 void JsonConfig::LoadJson(const char *fileName) {
+
 }

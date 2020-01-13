@@ -26,23 +26,27 @@ bool ModuleScene::Init() {
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
 
-	GameObject* obj1 = new GameObject("Pepito");
+	GameObject* obj1 = new GameObject("Jorgito");
 	obj1->CreateComponent(Type::MESH);
 	obj1->CreateComponent(Type::MATERIAL);
 	obj1->parent = root;
 	root->children.push_back(obj1);
+	gameObjects.push_back(obj1);
 
 	GameObject* obj1C = new GameObject("Pepa");
 	obj1C->parent = obj1;
 	obj1->children.push_back(obj1C);
+	gameObjects.push_back(obj1C);
 
 	GameObject* obj1C2 = new GameObject("Jorge");
 	obj1C2->parent = obj1;
 	obj1->children.push_back(obj1C2);
+	gameObjects.push_back(obj1C2);
 
 	GameObject* obj2 = new GameObject("Marta");
 	obj2->parent = root;
 	root->children.push_back(obj2);
+	gameObjects.push_back(obj2);
 
 	SortGameObjects(root->children);
 	SortGameObjects(obj1->children);
@@ -51,10 +55,6 @@ bool ModuleScene::Init() {
 		if ((*it)->isActive)
 			ret = (*it)->Init();
 	}
-
-	JsonConfig config;
-	config.SaveGameObject(*obj1);
-	config.SaveJson("SceneData");
 
 	return ret;
 }
@@ -98,6 +98,7 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
+	gameObjects.push_back(gameObject);
 	return gameObject;
 }
 
@@ -241,4 +242,11 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		}
 		ImGui::EndPopup();
 	}
+}
+
+void ModuleScene::SaveScene() {
+	JsonConfig config;
+	for (auto &obj : gameObjects)
+		config.SaveGameObject(*obj);
+	config.SaveJson("SceneData");
 }
