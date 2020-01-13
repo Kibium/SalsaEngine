@@ -28,6 +28,7 @@ public:
 	void DrawPopup(GameObject *gameObject);
 
 	void SaveScene();
+	void LoadScene(const char *fileName);
 
 public:
 	GameObject* root = nullptr;

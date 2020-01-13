@@ -996,6 +996,9 @@
     <None Include="Game\shaders\lines.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Game\SceneData.json">
+      <Filter>Main</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Other">

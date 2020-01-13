@@ -174,7 +174,7 @@ void ModuleGUI::MainMenu() {
 			//if (ImGui::MenuItem("New Scene")) {
 			//}
 			if (ImGui::MenuItem("Open Scene")) {
-
+				App->scene->LoadScene(GetInputFileJson());
 			}
 			if (ImGui::MenuItem("Save Scene")) {
 				App->scene->SaveScene();
@@ -382,6 +382,21 @@ char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every it
 		return "Not valid";
 }
 
+char* ModuleGUI::GetInputFileJson() {
+
+	OPENFILENAME ofn = { 0 };
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = 0;
+	ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0\0");
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+	if (GetOpenFileName(&ofn)) {
+		string temp = szFileName;
+		return szFileName;
+	}
+}
 
 
 void ModuleGUI::GameObjecInfo() {

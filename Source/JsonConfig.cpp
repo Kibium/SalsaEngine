@@ -1,6 +1,7 @@
 #include "JsonConfig.h"
 #include "Globals.h"
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include <string>
 #include "Component.h"
@@ -15,13 +16,16 @@ JsonConfig::~JsonConfig() {
 }
 
 void JsonConfig::SaveJson(const char *fileName) {
+
 	document.AddMember("Game Objects", gameObjects, *allocator);
 
 	// create and log json result
 	rapidjson::StringBuffer strbuf;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(strbuf);
+	strbuf.Clear();
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 	document.Accept(writer);
-	LOG(strbuf.GetString());
+	//LOG(strbuf.GetString());
+	LOG("Saved scene data!\n");
 
 	// save json to file
 	FILE* file = nullptr;
@@ -30,7 +34,9 @@ void JsonConfig::SaveJson(const char *fileName) {
 	if (!file) 
 		LOG("Error saving scene. Can not create %s file.", fileName);
 
-	fwrite(strbuf.GetString(), sizeof(char), strlen(strbuf.GetString()), file);
+	char *jsonFile = _strdup(strbuf.GetString());
+
+	fwrite(jsonFile, sizeof(char), strlen(jsonFile), file);
 	fclose(file);
 }
 
@@ -91,4 +97,40 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 
 void JsonConfig::LoadJson(const char *fileName) {
 
+	// load json from file
+	FILE* file = nullptr;
+	fopen_s(&file, fileName, "rt");
+
+	if (!file)
+		LOG("Error loasing scene. Can not read %s file.", fileName);
+
+	fseek(file, 0, SEEK_END);
+	int size = ftell(file);
+	rewind(file);
+
+	char *json = new char[size + 1];
+	fread(json, 1, size, file);
+	json[size] = 0;
+	fclose(file);
+
+	document.Parse(json);
+	assert(document.IsObject());
+	assert(document.HasMember("Game Objects"));
+
+	// Using a reference for consecutive access is handy and faster.
+	//const rapidjson::Value& a = document["Game Objects"];
+	//assert(a.IsArray());
+	//for (rapidjson::Value::ConstValueIterator itr = a.Begin(); itr != a.End(); ++itr) {
+	//	LOG("%d ", itr->GetInt());
+
+	//	for (rapidjson::Value::ConstMemberIterator it = *itr.MemberBegin();
+	//		itr != document.MemberEnd(); ++itr) {
+	//		printf("Type of member %s is %s\n",
+	//			itr->name.GetString(), kTypeNames[itr->value.GetType()]);
+	//	}
+	//}
+		
+
+	delete json;
+	LOG("Loaded scene data!\n");
 }

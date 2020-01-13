@@ -248,5 +248,10 @@ void ModuleScene::SaveScene() {
 	JsonConfig config;
 	for (auto &obj : gameObjects)
 		config.SaveGameObject(*obj);
-	config.SaveJson("SceneData");
+	config.SaveJson("SceneData.json");
+}
+
+void ModuleScene::LoadScene(const char *fileName) {
+	JsonConfig config;
+	config.LoadJson(fileName);
 }

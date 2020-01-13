@@ -12,8 +12,9 @@ public:
 
 public:
 	void SaveJson(const char *fileName);
-	void LoadJson(const char *fileName);
 	void SaveGameObject(const GameObject& obj);
+
+	void LoadJson(const char *fileName);
 
 private:
 	rapidjson::Document document; 

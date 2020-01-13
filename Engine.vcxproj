@@ -381,6 +381,7 @@
     <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\SceneData.json" />
     <None Include="Game\shaders\Blinn.fs" />
     <None Include="Game\shaders\Blinn.vs" />
     <None Include="Game\shaders\default.fs" />
