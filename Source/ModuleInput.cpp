@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleTexture.h"
 #include "ModuleModelLoader.h"
+#include "GameObject.h"
 #include "SDL.h"
 #include <assert.h>
 #include <shlwapi.h>
@@ -13,7 +14,7 @@
 #pragma comment(lib,"shlwapi.lib")
 
 #include "ModuleScene.h"
-#include "GameObject.h"
+
 #include "ComponentCamera.h"
 #include "AABBTree.h"
 
@@ -188,14 +189,37 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
+			SDL_GetMouseState(&mouseX, &mouseY);
 
-			/*SDL_GetMouseState(&mouseX, &mouseY);
-			pickX = -2 + 2.0 *(mouseX / App->gui->GetSceneWidth());
-			pickY = 1.0 - 2.0 * (mouseY / App->gui->GetSceneHeight());
-			if (sdlEvent.button.button == SDL_BUTTON_LEFT && App->model>models.size() >= 1) {
-				if (App->model->models.size() >= 1)
-					LOG("%0.1f %0.1f %d\n", pickX, pickY, App->scene->camera->PickingHit());
-			}*/
+			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+				
+				//If the mouse is inside the scene tab, do all the stuff to cast a ray
+				if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
+					mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
+
+					//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
+					pickX = ((2 * (mouseX - App->gui->GetScenePos().x)) / App->gui->GetSceneWidth()) - 1;
+					pickY = 1 - (2 * (mouseY - App->gui->GetScenePos().y)) / App->gui->GetSceneHeight();
+					mousepos = float2(pickX, pickY);
+					ray_clip = float4(mousepos.x, mousepos.y, 1, 1);
+
+					ray_eye = App->scene->camera->proj.Inverted() * ray_clip;
+
+					temp = App->scene->camera->view.Inverted() * ray_eye;
+					ray_world = temp.xyz();
+
+					ray_world = ray_world.Normalized();		
+				}
+
+				//If there are models in the scene and the ray collided with an AABB
+				if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
+					
+					//Detect Triangle collisions
+					App->scene->camera->PickingTriangleHit();
+					
+				}
+			}
+
 
 			break;
 
