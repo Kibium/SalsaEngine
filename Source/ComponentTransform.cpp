@@ -12,11 +12,12 @@
 #include "Geometry/AABB.h"
 
 
-ComponentTransform::ComponentTransform() : position(math::float3::zero), rotation(math::float3::zero), scale(math::float3::one) {
+ComponentTransform::ComponentTransform() : position(math::float3::zero), rotationFloat(math::float3::zero), scale(math::float3::one) {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
 		position = float3(myGo->model->modelPosition.x, myGo->model->modelPosition.y, myGo->model->modelPosition.z);
-		rotation = float3(myGo->model->modelRotation.x, myGo->model->modelRotation.y, myGo->model->modelRotation.z);
+		rotationFloat = float3(myGo->model->modelRotation.x, myGo->model->modelRotation.y, myGo->model->modelRotation.z);
+		RotToQuat();
 		scale = float3(myGo->model->modelScale.x, myGo->model->modelScale.y, myGo->model->modelScale.z);
 	}
 }
@@ -30,13 +31,20 @@ update_status ComponentTransform::Update() {
 	return UPDATE_CONTINUE;
 }
 
+void ComponentTransform::RotToQuat() {
+	
+	float3 auxRot = rotationFloat;
+	auxRot.x = DegToRad(auxRot.x);
+	auxRot.y = DegToRad(auxRot.y);
+	auxRot.z = DegToRad(auxRot.z);
+	rotationQuat = rotationQuat.FromEulerXYZ(auxRot.x, auxRot.y, auxRot.z);
+}
 void ComponentTransform::UpdateMatrix()
 {
 	worldMatrix = worldMatrix * localMatrix.Inverted();
-	localMatrix = float4x4::FromTRS(position, Quat::identity, scale);
+	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
 	worldMatrix = worldMatrix * localMatrix;
 	
-
 }
 
 void ComponentTransform::UpdateAABBBox()
@@ -69,7 +77,12 @@ void ComponentTransform::OnEditor() {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox();
 		}
-		//ImGui::DragFloat3("Rotation", &rotation[0], 0.5F, -9999.F, 9999.F, "%.1f");
+		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
+			LOG("Rotating");
+			App->scene->selected->transform->RotToQuat();
+			App->scene->selected->transform->UpdateMatrix();
+			UpdateAABBBox();
+		}
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox();

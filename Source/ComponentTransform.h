@@ -10,15 +10,16 @@ public:
 	~ComponentTransform();
 
 	update_status Update() override;
+	void RotToQuat();
 	void UpdateMatrix();
 	void UpdateAABBBox();
 	void OnEditor() override;
 
 public:
 	float3 position = float3::zero;
-	float3 rotationQuat = float3::zero;
+	float3 rotationFloat = float3::zero;
 	float3 scale = float3(1.0f, 1.0f, 1.0f);
-	Quat rotationEuler = Quat::identity;
+	Quat rotationQuat = Quat::identity;
 
 	float4x4 localMatrix = float4x4::identity;
 	float4x4 worldMatrix = float4x4::identity;
