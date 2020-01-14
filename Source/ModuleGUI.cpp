@@ -341,8 +341,26 @@ void ModuleGUI::Scene() {
 	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
 	{
 		isScene = ImGui::IsWindowFocused();
-		sceneWidth = ImGui::GetWindowWidth();
-		sceneHeight = ImGui::GetWindowHeight();
+
+		ImVec2 vMin = ImGui::GetWindowContentRegionMin();
+		ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+
+		sceneWidth = vMax.x - vMin.x;
+		sceneHeight = vMax.y - vMin.y;
+
+		//LOG("%0.1f %0.1f\n", sceneWidth, sceneHeight);
+
+		scenePos.x = ImGui::GetWindowPos().x;
+		scenePos.y = ImGui::GetWindowPos().y;
+
+		vMin.x += ImGui::GetWindowPos().x;
+		vMin.y += ImGui::GetWindowPos().y;
+		vMax.x += ImGui::GetWindowPos().x;
+		vMax.y += ImGui::GetWindowPos().y;
+		//ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
+
+
+		
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
 		//LOG("Scene width: %0.1f, Scene Height: %0.1f", sceneWidth, sceneHeight);
 		ImGui::GetWindowDrawList()->AddImage(
@@ -355,6 +373,10 @@ void ModuleGUI::Scene() {
 
 	}
 	ImGui::End();
+}
+
+ImVec2 ModuleGUI::GetScenePos() {
+	return scenePos;
 }
 
 char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item

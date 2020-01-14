@@ -19,7 +19,7 @@ Model::Model() {
 Model::Model(const char *filePath) : filePath(filePath) {
 	ProcessName();
 	SwitchModel();
-	
+
 }
 
 Model::~Model() {
@@ -42,6 +42,8 @@ void Model::ProcessName() {
 	name.pop_back();
 }
 
+
+
 void Model::Draw() {
 	if (isActive) {
 		for (int i = 0; i < meshes.size(); ++i)
@@ -50,13 +52,13 @@ void Model::Draw() {
 
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1,1,1);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1, 1, 1);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
 
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x,   mat.diffuse_color.y,   mat.diffuse_color.z,   mat.diffuse_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x,  mat.specular_color.y,  mat.specular_color.z,  mat.specular_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"),  mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"),  mat.emissive_color.x,  mat.emissive_color.y,  mat.emissive_color.z,  mat.emissive_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z, mat.diffuse_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x, mat.specular_color.y, mat.specular_color.z, mat.specular_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), mat.emissive_color.x, mat.emissive_color.y, mat.emissive_color.z, mat.emissive_color.w);
 
 	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), mat.shininess);
 
@@ -155,14 +157,14 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 
 			mat.diffuse_map = tex.id;
 			mat.diff_path = dir;
-			
+
 		}
 
 		break;
 
 
 	case SPECULAR:
-		dir = directory +name + "_specular.tif";
+		dir = directory + name + "_specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
 		cout << tex.id;
 		if (item_exists(dir.c_str())) {
@@ -189,7 +191,7 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 		}
 		break;
 	}
-	
+
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
@@ -208,6 +210,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
 		processNode(node->mChildren[i], scene);
 	}
+	
 	App->scene->camera->Focus();
 }
 
@@ -221,16 +224,20 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 
+
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
 	}
+
+
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 		aiFace face = mesh->mFaces[i];
+
 		// retrieve all indices of the face and store them in the indices vector
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
@@ -339,44 +346,44 @@ string Model::GetFilename(const char *path) {
 }
 void Model::RenderAABB() {
 
-	
-/*
-	glLineWidth(2.0F);
-	glBegin(GL_QUADS);
 
-	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+	/*
+		glLineWidth(2.0F);
+		glBegin(GL_QUADS);
 
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-											
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-											
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
-											
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-											 
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-	glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-											 
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-	glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-	glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+		glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
 
-	glEnd();*/
-	
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
+		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
+		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
+		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
+
+		glEnd();*/
+
 
 }

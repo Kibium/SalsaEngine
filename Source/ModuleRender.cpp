@@ -246,28 +246,7 @@ void ModuleRender::DrawGrid() {
 
 	// Lines white
 
-	for (int i = 0; i < App->model->models.size(); ++i) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		App->model->models[i]->RenderAABB();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
-	glLineWidth(1.0F);
-	float d = 200.0F;
-	glColor4f(1.F, 1.F, 1.F, 1.F);
-	glBegin(GL_LINES);
-	for (float i = -d; i <= d; i += 1.0F) {
-		glVertex3f(i, 0.0F, -d);
-		glVertex3f(i, 0.0F, d);
-		glVertex3f(-d, 0.0F, i);
-		glVertex3f(d, 0.0F, i);
-	}
-	glEnd();
-
-	glLineWidth(2.0F);
-	glBegin(GL_LINES);
-
-
+	
 	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }

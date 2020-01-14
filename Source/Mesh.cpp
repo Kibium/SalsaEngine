@@ -15,9 +15,24 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 	this->vertices = vertices;
 	this->indices = indices;
 	this->meshMaterial = m;
+
+	//Creating triangle data
+	for (int i = 0; i < vertices.size(); ++i) {
+		if (i>=2) {
+			Triangle t = Triangle(vertices[i - 2].Position, vertices[i - 1].Position, vertices[i].Position);
+			triangles.push_back(t);
+			
+		}
+
+	}
+	
 	setupMesh();
 
 
+}
+
+vector<Vertex> Mesh::GetVertices() {
+	return vertices;
 }
 
 void Mesh::Draw()
