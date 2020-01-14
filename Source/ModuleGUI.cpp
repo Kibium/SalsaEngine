@@ -176,6 +176,8 @@ void ModuleGUI::MainMenu() {
 			if (ImGui::MenuItem("Open Scene")) {
 				App->scene->LoadScene(GetInputFileJson());
 			}
+			ImGui::SameLine();
+			HelpMarker("Open file in $(SolutionDir)/Game/SceneData.json");
 			if (ImGui::MenuItem("Save Scene")) {
 				App->scene->SaveScene();
 			}
