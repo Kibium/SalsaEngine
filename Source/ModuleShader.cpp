@@ -76,7 +76,7 @@ std::string ModuleShader::getShadertext(char* source) {
 
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 		return "error";
 	}
 }
@@ -165,7 +165,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 
 	// 2. compile shaders
@@ -216,7 +216,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -274,7 +274,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -326,7 +326,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -375,7 +375,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -564,7 +564,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 
+
 			LOG("ERROR::SHADER_COMPILATION_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}
@@ -575,7 +577,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
 
+
 			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}

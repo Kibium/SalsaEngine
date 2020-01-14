@@ -191,10 +191,6 @@ update_status ModuleInput::Update()
 		case SDL_MOUSEBUTTONDOWN:
 			SDL_GetMouseState(&mouseX, &mouseY);
 
-			
-			
-
-			
 			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
 				
 				//If the mouse is inside the scene tab, do all the stuff to cast a ray
@@ -223,6 +219,7 @@ update_status ModuleInput::Update()
 					
 				}
 			}
+
 
 			break;
 

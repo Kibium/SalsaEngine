@@ -245,8 +245,6 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 void ModuleRender::DrawGrid() {
 
 	// Lines white
-
-	
 	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
