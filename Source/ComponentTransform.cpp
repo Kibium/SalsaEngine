@@ -9,6 +9,7 @@
 #include "Math/float3x3.h"
 #include "ModuleScene.h"
 #include "Application.h"
+#include "Geometry/AABB.h"
 
 
 ComponentTransform::ComponentTransform() : position(math::float3::zero), rotation(math::float3::zero), scale(math::float3::one) {
@@ -34,17 +35,23 @@ void ComponentTransform::UpdateMatrix()
 	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, Quat::identity, scale);
 	worldMatrix = worldMatrix * localMatrix;
+	
 
 }
 
-void ComponentTransform::SetWorldMatrix(const float4x4 &newWorld)
+void ComponentTransform::UpdateAABBBox()
 {
-	worldMatrix = newWorld * localMatrix;
-}
-void ComponentTransform::UpdateAABBBox(GameObject* go)
-{
-	if (go->model != nullptr) {
-		go->model->modelBox.TransformAsAABB(go->transform->worldMatrix);
+	if (myGo->model != nullptr) {
+		AABB auxBox;
+		auxBox.SetNegativeInfinity();
+		for (auto vertex : myGo->model->meshes) {
+			for (auto vertices : vertex.vertices) {
+				auxBox.Enclose(vertices.Position);
+			}
+		}
+		auxBox.TransformAsAABB(worldMatrix);
+		myGo->model->modelBox = auxBox;
+
 	}
 }
 
@@ -57,15 +64,15 @@ void ComponentTransform::OnEditor() {
 			active ? Enable() : Disable();
 		}
 
-		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
+		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0],0.1f)) {
 			LOG("moving");
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox(App->scene->selected);
+			UpdateAABBBox();
 		}
 		//ImGui::DragFloat3("Rotation", &rotation[0], 0.5F, -9999.F, 9999.F, "%.1f");
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox(App->scene->selected);
+			UpdateAABBBox();
 		}
 	}
 	ImGui::Separator();

@@ -11,14 +11,15 @@ public:
 
 	update_status Update() override;
 	void UpdateMatrix();
-	void SetWorldMatrix(const float4x4 &);
-	void UpdateAABBBox(GameObject * go);
+	void UpdateAABBBox();
 	void OnEditor() override;
 
 public:
-	float3 position = float3(0.0f, 0.0f, 0.0f);
-	float3 rotation = float3(0.0f, 0.0f, 0.0f);
+	float3 position = float3::zero;
+	float3 rotationQuat = float3::zero;
 	float3 scale = float3(1.0f, 1.0f, 1.0f);
+	Quat rotationEuler = Quat::identity;
+
 	float4x4 localMatrix = float4x4::identity;
 	float4x4 worldMatrix = float4x4::identity;
 
