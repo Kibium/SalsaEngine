@@ -238,7 +238,7 @@ void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 
 void ModuleScene::DrawTree() {
 	abbTree = new AABBTree(5);
-	for (auto gameObject : allGo) {
+	for (auto gameObject : root->children) {
 
 		if (gameObject->model != nullptr) 
 			abbTree->insertObject(gameObject);
