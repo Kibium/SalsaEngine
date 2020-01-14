@@ -19,6 +19,7 @@ public:
 
 public:
 	GameObject* CreateGameObject();
+	GameObject* CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile = nullptr);
 	void DeleteGameObject(GameObject *gameObject);
 	void SortGameObjects(std::vector<GameObject*> &objects);
 

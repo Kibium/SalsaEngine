@@ -24,32 +24,37 @@ bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
 	camera = new ComponentCamera();
-	root = new GameObject("RootNode");
+	root = new GameObject();
+	root->name = "RootNode";
 
-	GameObject* obj1 = new GameObject("Jorgito");
-	obj1->CreateComponent(Type::MESH);
-	obj1->CreateComponent(Type::MATERIAL);
-	obj1->parent = root;
-	root->children.push_back(obj1);
-	gameObjects.push_back(obj1);
+	//GameObject* obj1 = new GameObject();
+	//obj1->name = "Jorgito";
+	//obj1->CreateComponent(Type::MESH);
+	//obj1->CreateComponent(Type::MATERIAL);
+	//obj1->parent = root;
+	//root->children.push_back(obj1);
+	//gameObjects.push_back(obj1);
 
-	GameObject* obj1C = new GameObject("Pepa");
-	obj1C->parent = obj1;
-	obj1->children.push_back(obj1C);
-	gameObjects.push_back(obj1C);
+	//GameObject* obj1C = new GameObject();
+	//obj1C->name = "Pepa";
+	//obj1C->parent = obj1;
+	//obj1->children.push_back(obj1C);
+	//gameObjects.push_back(obj1C);
 
-	GameObject* obj1C2 = new GameObject("Jorge");
-	obj1C2->parent = obj1;
-	obj1->children.push_back(obj1C2);
-	gameObjects.push_back(obj1C2);
+	//GameObject* obj1C2 = new GameObject();
+	//obj1C2->name = "Jorge";
+	//obj1C2->parent = obj1;
+	//obj1->children.push_back(obj1C2);
+	//gameObjects.push_back(obj1C2);
 
-	GameObject* obj2 = new GameObject("Marta");
-	obj2->parent = root;
-	root->children.push_back(obj2);
-	gameObjects.push_back(obj2);
+	//GameObject* obj2 = new GameObject();
+	//obj2->name = "Marta";
+	//obj2->parent = root;
+	//root->children.push_back(obj2);
+	//gameObjects.push_back(obj2);
 
-	SortGameObjects(root->children);
-	SortGameObjects(obj1->children);
+	//SortGameObjects(root->children);
+	//SortGameObjects(obj1->children);
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
@@ -98,7 +103,14 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
-	gameObjects.push_back(gameObject);
+	root->children.push_back(gameObject);
+	return gameObject;
+}
+
+GameObject* ModuleScene::CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile) {
+	GameObject* gameObject = new GameObject(UID, ParentUID, name, Active, Static, modelFile);
+	gameObject->parent = root;
+	root->children.push_back(gameObject);
 	return gameObject;
 }
 
@@ -246,7 +258,7 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 
 void ModuleScene::SaveScene() {
 	JsonConfig config;
-	for (auto &obj : gameObjects)
+	for (auto &obj : root->children)
 		config.SaveGameObject(*obj);
 	config.SaveJson("SceneData.json");
 }

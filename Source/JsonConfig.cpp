@@ -5,6 +5,9 @@
 #include "rapidjson/stringbuffer.h"
 #include <string>
 #include "Component.h"
+#include "ModuleScene.h"
+#include "Application.h"
+#include "GameObject.h"
 
 JsonConfig::JsonConfig() {
 	document.SetObject();
@@ -49,8 +52,13 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	object.AddMember("Name", rapidjson::Value(obj.name.c_str(), *allocator), *allocator);
 	object.AddMember("Active", obj.isActive, *allocator);
 	object.AddMember("Static", obj.isStatic, *allocator);
-	if (obj.model != nullptr) object.AddMember("Model", *obj.model->filePath, *allocator);
-	else object.AddMember("Model", "None", *allocator);
+	if (obj.model != nullptr) {
+		LOG("MODEL FILE PATH: %s\n", obj.model->fileName);
+		object.AddMember("Model", rapidjson::Value(obj.model->fileName.c_str(), *allocator), *allocator);
+	}
+	else {
+		object.AddMember("Model", "None", *allocator);
+	}
 
 	// object's components properties
 	rapidjson::Value components(rapidjson::kArrayType);
@@ -123,11 +131,37 @@ void JsonConfig::LoadJson(const char *fileName) {
 	static const char* kTypeNames[] = { "Null", "False", "True", "Object", "Array", "String", "Number" };
 
 	// loop game objects
-	for (i = 0; i < a.Size(); i++) {
+	for (i = 0; i < a.Size(); ++i) {
 		LOG("Game Object %d:\n", i);
+		GameObject *gameObject = App->scene->CreateGameObject();
 
 		for (rapidjson::Value::ConstMemberIterator itr = a[i].MemberBegin(); itr != a[i].MemberEnd(); ++itr) {
 			LOG("%s : ", itr->name.GetString());
+
+			if (std::string(itr->name.GetString()) == std::string("UID")) {
+				gameObject->UUID = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("ParentUID")) {
+				gameObject->parentUUID = itr->value.GetFloat();
+			}
+			if (std::string(itr->name.GetString()) == std::string("Name")) {
+				gameObject->name = itr->value.GetString();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("Active")) {
+				gameObject->isActive = itr->value.GetBool();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("Static")) {
+				gameObject->isStatic = itr->value.GetBool();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("Model")) {
+				gameObject->modelPath = itr->value.GetString();
+				App->model->AddModel(gameObject->modelPath.c_str());
+				gameObject->model = App->model->GetModel(gameObject->modelPath.c_str());
+				gameObject->DeleteComponent(Type::TRANSFORM);
+				gameObject->CreateComponent(Type::TRANSFORM);
+				gameObject->CreateComponent(Type::MESH);
+				gameObject->CreateComponent(Type::MATERIAL);
+			}
 
 			std::string memberType = kTypeNames[itr->value.GetType()];
 			const char *member = memberType.c_str();
@@ -162,7 +196,7 @@ void JsonConfig::LoadJson(const char *fileName) {
 
 		LOG("\n");
 	}
-		
+	
 	LOG("Game Objects Count: %d\n", i);
 
 	delete json;

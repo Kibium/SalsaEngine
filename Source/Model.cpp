@@ -16,7 +16,8 @@ using namespace Assimp;
 Model::Model() {
 }
 
-Model::Model(const char *filePath) : filePath(filePath) {
+Model::Model(const char *filePath) : filePath(filePath), fileName(filePath) {
+	LOG("FILEPATH: %s\n", filePath);
 	ProcessName();
 	SwitchModel();
 	

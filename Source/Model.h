@@ -26,6 +26,7 @@ public:
 class Model {
 
 public:
+	std::string fileName;
 	bool isActive = true;
 	const char *filePath = nullptr;
 	string name;

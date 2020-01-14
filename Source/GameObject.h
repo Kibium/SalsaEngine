@@ -19,7 +19,7 @@ typedef unsigned int uint32_t;
 class GameObject {
 public:
 	GameObject();
-	GameObject(const std::string &name);
+	GameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile = nullptr);
 	~GameObject();
 
 	virtual bool Init();
@@ -43,6 +43,7 @@ public:
 
 public:
 	uint32_t UUID;
+	uint32_t parentUUID;
 	bool isActive = true;
 	bool isStatic = false;
 	std::string name = "GameObject";
@@ -51,6 +52,7 @@ public:
 	std::vector<Component*> components;
 	std::vector<Mesh> meshes;
 	Model* model = nullptr;
+	std::string modelPath;
 };
 
 #endif // __GAMEOBJECT_H__

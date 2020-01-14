@@ -12,9 +12,9 @@ GameObject::GameObject() {
 	UUID = pcg32_random();
 }
 
-GameObject::GameObject(const std::string &name) : name(name) {
-	CreateComponent(Type::TRANSFORM);
-	UUID = pcg32_random();
+GameObject::GameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile) : 
+UUID(UID), parentUUID(ParentUID), name(name), isActive(Active), isStatic(Static) {
+
 }
 
 GameObject::~GameObject() {
