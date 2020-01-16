@@ -42,7 +42,15 @@ void Model::ProcessName() {
 	name.pop_back();
 }
 
-
+void Model::UpdateTris(float3 &f) {
+	for (int i = 0; i < meshes.size(); ++i) {
+		for (int j = 0; j < meshes[i].triangles.size(); ++j) {
+			meshes[i].triangles[j].a += f;
+			meshes[i].triangles[j].b += f;
+			meshes[i].triangles[j].c += f;
+		}
+	}
+}
 
 void Model::Draw() {
 	if (isActive) {

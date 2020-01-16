@@ -17,15 +17,11 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 	this->meshMaterial = m;
 
 	//Creating triangle data
-	for (int i = 0; i < vertices.size(); ++i) {
-		if (i>=2) {
-			Triangle t = Triangle(vertices[i - 2].Position, vertices[i - 1].Position, vertices[i].Position);
+	for (int i = 0; i < indices.size(); i+= 3) {		
+			Triangle t = Triangle(vertices[indices[i]].Position, vertices[indices[i+1]].Position, vertices[indices[i + 2]].Position);
 			triangles.push_back(t);
-			
-		}
-
 	}
-	
+	LOG("Tris: %d\n", triangles.size());
 	setupMesh();
 
 

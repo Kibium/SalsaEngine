@@ -179,8 +179,8 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEMOTION:
-			
-			
+
+
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
 				if (App->scene->camera->GetOrbit())
 					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
@@ -192,7 +192,7 @@ update_status ModuleInput::Update()
 			SDL_GetMouseState(&mouseX, &mouseY);
 
 			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-				
+
 				//If the mouse is inside the scene tab, do all the stuff to cast a ray
 				if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
 					mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
@@ -208,16 +208,22 @@ update_status ModuleInput::Update()
 					temp = App->scene->camera->view.Inverted() * ray_eye;
 					ray_world = temp.xyz();
 
-					ray_world = ray_world.Normalized();		
+					ray_world = ray_world.Normalized();
+
+					//If there are models in the scene and the ray collided with an AABB
+					if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
+
+						//Detect Triangle collisions
+						App->scene->camera->PickingTriangleHit();
+					}
+
+					//No collissions detected
+					else {
+						App->scene->selected = nullptr;
+					}
 				}
 
-				//If there are models in the scene and the ray collided with an AABB
-				if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
-					
-					//Detect Triangle collisions
-					App->scene->camera->PickingTriangleHit();
-					
-				}
+
 			}
 
 

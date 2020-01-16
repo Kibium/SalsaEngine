@@ -29,6 +29,7 @@ public:
 	bool isActive = true;
 	const char *filePath = nullptr;
 	string name;
+	void UpdateTris(float3 &f);
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory, model_name;
