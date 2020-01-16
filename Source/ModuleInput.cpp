@@ -252,6 +252,9 @@ void ModuleInput::DroppedFile(const char* file) const
 	if (assimpMap.find(extension) != assimpMap.end()) {
 
 		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
+		LOG(file);
+		LOG("\n");
+
 		// Process file and create empty gameobject
 		App->scene->selected = nullptr;
 		App->model->AddModel(file);
@@ -265,7 +268,7 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MESH);
 		obj->CreateComponent(Type::MATERIAL);
 
-		//App->scene->selected = obj;
+		App->scene->selected = obj;
 		App->scene->camera->Focus();
 		App->scene->camera->Focus();
 
