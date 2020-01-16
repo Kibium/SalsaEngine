@@ -96,7 +96,7 @@ void ComponentCamera::SortByDistance() {
 }
 
 bool ComponentCamera::PickingAABBHit() {
-	bool intersec;
+	bool intersec = false;
 	objectsHit.clear();
 
 	picking = frustum.UnProjectLineSegment(App->input->mousepos.x, App->input->mousepos.y);
@@ -143,15 +143,20 @@ bool ComponentCamera::PickingTriangleHit() {
 				//If there is a hit, mark it as selected on the hierarchy
 				if (intersec) {
 
-					LOG("Triangle hit!");
+					
+
+					LOG("Returning model %s\n", objectsHit[i]->model->model_name.c_str());
 					App->scene->selected = objectsHit[i];
+					return intersec;
 					break;
 					//Enable gizmos and manipulate it from there
 
 
 				}
 			}
+			
 		}
+		
 
 	}
 

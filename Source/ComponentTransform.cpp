@@ -32,7 +32,7 @@ update_status ComponentTransform::Update() {
 }
 
 void ComponentTransform::RotToQuat() {
-	
+
 	float3 auxRot = rotationFloat;
 	auxRot.x = DegToRad(auxRot.x);
 	auxRot.y = DegToRad(auxRot.y);
@@ -44,7 +44,7 @@ void ComponentTransform::UpdateMatrix()
 	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
 	worldMatrix = worldMatrix * localMatrix;
-	
+
 }
 
 void ComponentTransform::UpdateAABBBox()
@@ -72,11 +72,32 @@ void ComponentTransform::OnEditor() {
 			active ? Enable() : Disable();
 		}
 
-		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0],0.1f)) {
-			LOG("moving");
+
+
+		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.1f)) {
+
+			if (!updateOnce) {
+				lastPosition = App->scene->selected->transform->position;
+				updateOnce = true;
+				updateOnce2 = false;
+			}
+
 			App->scene->selected->transform->UpdateMatrix();
+
 			UpdateAABBBox();
 		}
+
+		else {
+			if (!updateOnce2) {
+				updateOnce = false;
+				float3 offset = App->scene->selected->transform->position - lastPosition;
+				LOG("offset: %0.1f 0.1f 0.1f\n", offset.x, offset.y, offset.z);
+				App->scene->selected->model->UpdateTris(offset);
+				updateOnce2 = true;
+			}
+
+		}
+
 		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
 			LOG("Rotating");
 			App->scene->selected->transform->RotToQuat();
