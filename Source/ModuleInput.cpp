@@ -122,7 +122,7 @@ update_status ModuleInput::Update()
 	OPTICK_CATEGORY("UpdateInput", Optick::Category::Input);
 
 	SDL_PumpEvents();
-	SDL_Event sdlEvent;
+	static SDL_Event sdlEvent;
 
 	while (SDL_PollEvent(&sdlEvent) != 0)
 	{
@@ -265,7 +265,7 @@ void ModuleInput::DroppedFile(const char* file) const
 		obj->CreateComponent(Type::MESH);
 		obj->CreateComponent(Type::MATERIAL);
 
-		App->scene->selected = obj;
+		//App->scene->selected = obj;
 		App->scene->camera->Focus();
 		App->scene->camera->Focus();
 
