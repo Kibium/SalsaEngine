@@ -111,6 +111,7 @@ void Model::Load(const char* path) {
 		return;
 	}
 	modelBox.SetNegativeInfinity();
+	boundingBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
@@ -227,7 +228,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		vertices.push_back(vertex);
 	}
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-
+	boundingBox = modelBox;
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 		aiFace face = mesh->mFaces[i];

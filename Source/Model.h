@@ -48,6 +48,7 @@ public:
 	aiVector3D modelRotation;
 	bool model = false;
 	AABB modelBox;
+	AABB boundingBox;
 	int npolys = 0;
 	int nvertex = 0;
 	int nmeshes = 0;

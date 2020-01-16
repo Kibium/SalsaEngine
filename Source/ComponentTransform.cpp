@@ -52,11 +52,7 @@ void ComponentTransform::UpdateAABBBox()
 	if (myGo->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
-		for (auto vertex : myGo->model->meshes) {
-			for (auto vertices : vertex.vertices) {
-				auxBox.Enclose(vertices.Position);
-			}
-		}
+		auxBox.Enclose(myGo->model->boundingBox);
 		auxBox.TransformAsAABB(worldMatrix);
 		myGo->model->modelBox = auxBox;
 
