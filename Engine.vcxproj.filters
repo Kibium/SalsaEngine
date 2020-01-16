@@ -298,6 +298,9 @@
     <ClCompile Include="Libraries\PhysFS\include\physfsrwops.c">
       <Filter>PhysFS</Filter>
     </ClCompile>
+    <ClCompile Include="Libraries\FileDialog\ImGuiFileDialog.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -1025,6 +1028,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\PhysFS\include\physfsrwops.h">
       <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\FileDialog\ImGuiFileDialog.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\FileDialog\dirent.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

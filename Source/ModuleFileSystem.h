@@ -1,11 +1,19 @@
 #pragma once
 #include "Module.h"
-#include "PhysFS/include/physfs.h"
+#include "Globals.h"
+
+
 
 class ModuleFileSystem : public Module
 {
 public:
 	ModuleFileSystem();
-	virtual ~ModuleFileSystem();
+	~ModuleFileSystem();
+	bool Init();
+	bool Exists(const char*);
+	bool CleanUp();
+
+
+
 };
 

@@ -30,6 +30,7 @@ public:
 	void ShowHelp();
 	void ShowAbout();
 	void ShowDefWindow();
+	void showExplorer();
 	void oldinspector();
 	void ShowTimeButtons();//Play Pause Stop 
 	ImVec2 GetScenePos();

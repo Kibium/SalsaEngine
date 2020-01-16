@@ -161,6 +161,8 @@
     <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\ilu_region.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h" />
+    <ClInclude Include="Libraries\FileDialog\dirent.h" />
+    <ClInclude Include="Libraries\FileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h" />
     <ClInclude Include="Libraries\Imgui\imconfig.h" />
@@ -320,6 +322,7 @@
     <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\FileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_draw.cpp" />
