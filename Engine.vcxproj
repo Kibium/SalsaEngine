@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;./Libraries</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;./Libaries/PhysFS/include;./Libraries</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -247,6 +247,16 @@
     <ClInclude Include="Libraries\optick\optick_serialization.h" />
     <ClInclude Include="Libraries\optick\optick_server.h" />
     <ClInclude Include="Libraries\pcg\pcg_basic.h" />
+    <ClInclude Include="Libraries\PhysFS\include\abs-file.h" />
+    <ClInclude Include="Libraries\PhysFS\include\globbing.h" />
+    <ClInclude Include="Libraries\PhysFS\include\ignorecase.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfsrwops.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_casefolding.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_internal.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_lzmasdk.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_miniz.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_platforms.h" />
     <ClInclude Include="Libraries\rapidjson\allocators.h" />
     <ClInclude Include="Libraries\rapidjson\document.h" />
     <ClInclude Include="Libraries\rapidjson\encodedstream.h" />
@@ -297,6 +307,7 @@
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
     <ClInclude Include="Source\ModuleDebugDraw.h" />
+    <ClInclude Include="Source\ModuleFileSystem.h" />
     <ClInclude Include="Source\ModuleGUI.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleModelLoader.h" />
@@ -357,6 +368,31 @@
     <ClCompile Include="Libraries\pcg\pcg32-global-demo.c" />
     <ClCompile Include="Libraries\pcg\pcg32x2-demo.c" />
     <ClCompile Include="Libraries\pcg\pcg_basic.c" />
+    <ClCompile Include="Libraries\PhysFS\include\globbing.c" />
+    <ClCompile Include="Libraries\PhysFS\include\ignorecase.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfsrwops.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_7z.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_dir.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_grp.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_hog.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_iso9660.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_mvl.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_qpak.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_slb.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_unpacked.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_vdf.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_wad.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_zip.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_byteorder.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_haiku.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_os2.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_posix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_qnx.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_unix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
     <ClCompile Include="Source\AABBTree.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -372,6 +408,7 @@
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
+    <ClCompile Include="Source\ModuleFileSystem.cpp" />
     <ClCompile Include="Source\ModuleGUI.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
@@ -414,6 +451,7 @@
     <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Libraries\MathGeoLib\include\Math\Matrix.inl" />
+    <None Include="Libraries\PhysFS\include\physfs_platform_apple.m" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
