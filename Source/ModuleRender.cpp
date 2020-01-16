@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
@@ -211,7 +212,9 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();
+	
 	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
+	DrawLine(App->input->ray_world);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -300,4 +303,12 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	
+}
+
+void ModuleRender::DrawLine(float3 so) {
+
+
+	
+	dd::line(App->scene->camera->frustum.pos, so, math::float3(1.0f, 0.0f, 1.0f));
+
 }

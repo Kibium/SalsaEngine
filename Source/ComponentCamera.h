@@ -81,7 +81,7 @@ private:
 	bool speeding = false;
 	LineSegment picking;
 	vector<GameObject*> objectsHit, sorted;
-
+	float a, b;
 	float3 hit_point;
 	float distance;
 

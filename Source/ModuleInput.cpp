@@ -20,6 +20,8 @@
 
 #include "optick/optick.h"
 
+#include "debugdraw.h"
+
 ModuleInput::ModuleInput()
 {}
 
@@ -192,36 +194,53 @@ update_status ModuleInput::Update()
 			SDL_GetMouseState(&mouseX, &mouseY);
 
 			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+				if (App->gui->isScene) {
+					//If the mouse is inside the scene tab, do all the stuff to cast a ray
 
-				//If the mouse is inside the scene tab, do all the stuff to cast a ray
-				if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
-					mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
+					if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
+						mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
+						
+						//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
 
-					//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
-					pickX = ((2 * (mouseX - App->gui->GetScenePos().x)) / App->gui->GetSceneWidth()) - 1;
-					pickY = 1 - (2 * (mouseY - App->gui->GetScenePos().y)) / App->gui->GetSceneHeight();
-					mousepos = float2(pickX, pickY);
-					ray_clip = float4(mousepos.x, mousepos.y, 1, 1);
+						float x = (2 * (mouseX - App->gui->GetScenePos().x)) / App->gui->GetSceneWidth() - 1;
+						float y = 1 - (2 * (mouseY - App->gui->GetScenePos().y)) / App->gui->GetSceneHeight();
+						float z = 1;
 
-					ray_eye = App->scene->camera->proj.Inverted() * ray_clip;
+						float3 ray_nds = float3(x, y, z);
 
-					temp = App->scene->camera->view.Inverted() * ray_eye;
-					ray_world = temp.xyz();
+						//We use 'mousepos' to give mouse position to the ray collidiion checker (ComponentCamera.cpp)
+						mousepos = float2(x, y);
+						
+						ray_clip = float4(ray_nds.x, ray_nds.y, -1, 1);
 
-					ray_world = ray_world.Normalized();
+						ray_eye = App->scene->camera->proj.Inverted() * ray_clip;
 
-					//If there are models in the scene and the ray collided with an AABB
-					if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
+						ray_eye = float4(ray_eye.x, ray_eye.y, -1, 1);
 
-						//Detect Triangle collisions
-						App->scene->camera->PickingTriangleHit();
-					}
+						temp = App->scene->camera->view.Inverted() * ray_eye;
 
-					//No collissions detected
-					else {
-						App->scene->selected = nullptr;
+						ray_world = temp.xyz();
+
+						//ray_world = ray_world.Normalized();
+
+						//LOG("Ray: %0.1f, 0.1f, 0.1f", ray_world.x, ray_world.y, ray_world.z)
+						
+
+						//If there are models in the scene and the ray collided with an AABB
+						if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
+
+							//Detect Triangle collisions
+							App->scene->camera->PickingTriangleHit();
+						}
+
+						//No collissions detected
+						else {
+							App->scene->selected = nullptr;
+						}
 					}
 				}
+				//If the mouse is inside the scene tab, do all the stuff to cast a ray
+				
 
 
 			}

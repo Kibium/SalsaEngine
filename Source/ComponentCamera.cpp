@@ -95,13 +95,14 @@ void ComponentCamera::SortByDistance() {
 
 }
 
+//Seems to work properly
 bool ComponentCamera::PickingAABBHit() {
 	bool intersec = false;
 	objectsHit.clear();
 
 	picking = frustum.UnProjectLineSegment(App->input->mousepos.x, App->input->mousepos.y);
 	
-	//0. Vheck for AABB intersections
+	//0. Check for AABB intersections
 	for (int i = 0; i < App->scene->root->children.size(); ++i) {
 		intersec = false;
 		intersec = picking.Intersects(App->scene->root->children[i]->model->modelBox);
@@ -121,7 +122,7 @@ bool ComponentCamera::PickingAABBHit() {
 	}
 
 	//2.3 Sort them - or try it
-	SortByDistance();
+	//SortByDistance();
 	return intersec;
 }
 
@@ -129,28 +130,29 @@ bool ComponentCamera::PickingTriangleHit() {
 
 	bool intersec = false;
 
+	//For every game object
 	for (int i = 0; i < objectsHit.size(); ++i) {
 
 		//3. Convert ray to object space
-		picking.Transform(objectsHit[i]->transform->localMatrix.Inverted());
+		picking.Transform(objectsHit[i]->transform->worldMatrix);
+
+		//For every mesh in every game object
 		for (int j = 0; j < objectsHit[i]->model->meshes.size(); ++j) {
-			//Check if any triangles were hit for every game object, in order
+
+			//For every triangle in every mesh
 			for (int x = 0; x < objectsHit[i]->model->meshes[j].triangles.size(); ++x) {
 
-				//If not, move to the next one
+				//Check if any triangles were hit for every game object, in order
 				intersec = objectsHit[i]->model->meshes[j].triangles[x].Intersects(picking, &distance, &hit_point);
 
 				//If there is a hit, mark it as selected on the hierarchy
 				if (intersec) {
 
-					
-
-					LOG("Returning model %s\n", objectsHit[i]->model->model_name.c_str());
+					LOG(" + Triangle hit\n");
 					App->scene->selected = objectsHit[i];
 					return intersec;
 					break;
 					//Enable gizmos and manipulate it from there
-
 
 				}
 			}
