@@ -242,7 +242,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
 
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
-	boundingBox.Enclose(modelBox);
+	boundingBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {

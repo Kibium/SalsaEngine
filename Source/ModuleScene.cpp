@@ -238,14 +238,16 @@ void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 }
 
 void ModuleScene::DrawTree() {
-	abbTree = new AABBTree(5);
+	AABBTree* aux = nullptr;
+	aux = new AABBTree(5);
 	for (auto gameObject : root->children) {
 
 		if (gameObject->model != nullptr) 
-			abbTree->insertObject(gameObject);
+			aux->insertObject(gameObject);
 		
 	}
 
-	abbTree->DrawTree();
-	abbTree = nullptr;
+	aux->DrawTree();
+	abbTree = aux;
+	aux = nullptr;
 }
