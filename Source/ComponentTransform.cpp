@@ -11,7 +11,6 @@
 #include "Application.h"
 #include "Geometry/AABB.h"
 
-
 ComponentTransform::ComponentTransform() {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
@@ -36,7 +35,7 @@ void ComponentTransform::RotToQuat() {
 	auxRot.y = DegToRad(auxRot.y);
 	auxRot.z = DegToRad(auxRot.z);
 	rotationQuat = rotationQuat.FromEulerXYZ(auxRot.x, auxRot.y, auxRot.z);
-  
+
 }
 
 void ComponentTransform::QuatToFloat() {
@@ -48,22 +47,20 @@ void ComponentTransform::QuatToFloat() {
 
 }
 
-void ComponentTransform::UpdateMatrix()
-{
+void ComponentTransform::UpdateMatrix() {
 	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
 	worldMatrix = worldMatrix * localMatrix;
 }
 
-void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal)
-{
-	worldMatrix = newGlobal*localMatrix;
+void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal) {
+	worldMatrix = newGlobal * localMatrix;
 	worldMatrix.Decompose(position, rotationQuat, scale);
 	QuatToFloat();
 	UpdateAABBBox(App->scene->selected);
+}
 
-void ComponentTransform::UpdateAABBBox(GameObject* go)
-{
+void ComponentTransform::UpdateAABBBox(GameObject* go) {
 	if (go->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
@@ -91,11 +88,12 @@ void ComponentTransform::OnEditor() {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox(App->scene->selected);
 		}
-    
+
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox(App->scene->selected);
-    }
-	
-	ImGui::Separator();
+		}
+
+		ImGui::Separator();
+	}
 }

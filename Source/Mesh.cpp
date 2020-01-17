@@ -9,7 +9,7 @@
 
 
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices) : npolys(polygons), nvertex(totalVertices)
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb) : npolys(polygons), nvertex(totalVertices), boundingBox(bb), modelBox(mb)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -27,6 +27,16 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, in
 
 vector<Vertex> Mesh::GetVertices() {
 	return vertices;
+}
+
+void Mesh::UpdateTris(float3 & f) {
+	//for (int i = 0; i < meshes.size(); ++i) {
+	for (int j = 0; j < triangles.size(); ++j) {
+		triangles[j].a += f;
+		triangles[j].b += f;
+		triangles[j].c += f;
+	}
+	//}
 }
 
 void Mesh::Draw()

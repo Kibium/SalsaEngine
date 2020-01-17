@@ -137,13 +137,13 @@ bool ComponentCamera::PickingTriangleHit() {
 		picking.Transform(objectsHit[i]->transform->worldMatrix);
 
 		//For every mesh in every game object
-		for (int j = 0; j < objectsHit[i]->model->meshes.size(); ++j) {
+		//for (int j = 0; j < objectsHit[i]->model->meshes.size(); ++j) {
 
 			//For every triangle in every mesh
-			for (int x = 0; x < objectsHit[i]->model->meshes[j].triangles.size(); ++x) {
+			for (int x = 0; x < objectsHit[i]->model->triangles.size(); ++x) {
 
 				//Check if any triangles were hit for every game object, in order
-				intersec = objectsHit[i]->model->meshes[j].triangles[x].Intersects(picking, &distance, &hit_point);
+				intersec = objectsHit[i]->model->triangles[x].Intersects(picking, &distance, &hit_point);
 
 				//If there is a hit, mark it as selected on the hierarchy
 				if (intersec) {
@@ -157,7 +157,7 @@ bool ComponentCamera::PickingTriangleHit() {
 				}
 			}
 			
-		}
+		//}
 		
 
 	}

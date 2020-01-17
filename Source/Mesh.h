@@ -52,8 +52,9 @@ struct Material
 
 class Mesh {
 public:
-	Material mat;
+	AABB boundingBox;
 	AABB modelBox;
+	Material mat;
 	int npolys = 0;
 	int nvertex = 0;
 	bool isActive = true;
@@ -66,10 +67,10 @@ public:
 	vector<Triangle> triangles;
 	Material meshMaterial;
 	unsigned int VAO;
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices);
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb);
 	void Draw();
 	vector<Vertex> GetVertices();
-	
+	void UpdateTris(float3 &f);
 
 private:
 	unsigned int VBO, EBO;

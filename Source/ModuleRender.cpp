@@ -320,11 +320,11 @@ void ModuleRender::MousePicking(float2 mouse) {
 				LineSegment localRay(ray);
 				localRay.Transform(go->transform->worldMatrix.Inverted());
 				Triangle triangle;
-				for (int j = 0; j < go->model->meshes.size(); j++) {
-					for (int i = 0; i < go->model->meshes[j].indices.size()-2; i++) {
-						triangle.a = go->model->meshes[j].vertices[go->model->meshes[j].indices[i]].Position;
-						triangle.b = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+1]].Position;
-						triangle.c = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+2]].Position;
+				//for (int j = 0; j < go->model->meshes.size(); j++) {
+					for (int i = 0; i < go->model->indices.size()-2; i++) {
+						triangle.a = go->model->vertices[go->model->indices[i]].Position;
+						triangle.b = go->model->vertices[go->model->indices[i+1]].Position;
+						triangle.c = go->model->vertices[go->model->indices[i+2]].Position;
 						
 						float distance;
 						bool hit = triangle.Intersects(localRay, &distance);
@@ -336,7 +336,7 @@ void ModuleRender::MousePicking(float2 mouse) {
 							}
 						}
 					}
-				}
+				//}
 			}
 		}
 		App->scene->selected = aux;

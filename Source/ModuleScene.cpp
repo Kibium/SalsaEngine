@@ -24,12 +24,12 @@ ModuleScene::~ModuleScene() {
 bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
-  
+
 	camera = new ComponentCamera();
-  
-	root = new GameObject("RootNode");
-  root->name = "RootNode";
-  
+
+	root = new GameObject();
+	root->name = "RootNode";
+
 	abbTree = new AABBTree(5);
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
@@ -79,7 +79,6 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
-	allGo.push_back(gameObject);
 	root->children.push_back(gameObject);
 	return gameObject;
 }
@@ -151,7 +150,7 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 				}
 
 				// Process each gameobject's childs
-				if(objects.size() > 0) //Toni super fix, it crashed when you'd delete the last one
+				if (objects.size() > 0) //Toni super fix, it crashed when you'd delete the last one
 					DrawGameObjects(objects[i]->children);
 				ImGui::TreePop();
 			}
@@ -251,9 +250,9 @@ void ModuleScene::DrawTree() {
 	aux = new AABBTree(5);
 	for (auto gameObject : root->children) {
 
-		if (gameObject->model != nullptr) 
+		if (gameObject->model != nullptr)
 			aux->insertObject(gameObject);
-		
+
 	}
 
 	aux->DrawTree();

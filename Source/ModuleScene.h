@@ -34,8 +34,7 @@ public:
 	void LoadScene(const char *fileName);
 
 public:
-  ComponentCamera* camera = nullptr;
-	std::vector<GameObject*> allGo;
+	ComponentCamera* camera = nullptr;
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
