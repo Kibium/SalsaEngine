@@ -321,23 +321,23 @@ void ModuleRender::MousePicking(float2 mouse) {
 	if (hits.size() > 0) {
 		GameObject* aux = nullptr;
 		for (std::map<float, GameObject*>::const_iterator it = hits.begin(); it != hits.end(); ++it) {
-			GameObject* gameObject = it->second;
-			if (gameObject->model != nullptr) {
+			GameObject* go = it->second;
+			if (go->model != nullptr) {
 				LineSegment localRay(ray);
-				localRay.Transform(gameObject->transform->worldMatrix.Inverted());
+				localRay.Transform(go->transform->worldMatrix.Inverted());
 				Triangle triangle;
-				for (int j = 0; j < gameObject->model->meshes.size(); j++) {
-					for (int i = 0; i < gameObject->model->meshes[j].indices.size();) {
-						triangle.a = gameObject->model->meshes[j].vertices[gameObject->model->meshes[j].indices[i++]].Position;
-						triangle.b = gameObject->model->meshes[j].vertices[gameObject->model->meshes[j].indices[i++]].Position;
-						triangle.c = gameObject->model->meshes[j].vertices[gameObject->model->meshes[j].indices[i++]].Position;
+				for (int j = 0; j < go->model->meshes.size(); j++) {
+					for (int i = 0; i < go->model->meshes[j].indices.size()-2; i++) {
+						triangle.a = go->model->meshes[j].vertices[go->model->meshes[j].indices[i]].Position;
+						triangle.b = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+1]].Position;
+						triangle.c = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+2]].Position;
 						
 						float distance;
 						bool hit = triangle.Intersects(localRay, &distance);
 						LOG("HIT GAME OBJECT: %s \n", hit ? "true" : "false");
 						if (hit) {
 							if (distance < minDistance) {
-								aux = gameObject;
+								aux = go;
 								minDistance = distance;
 							}
 						}
@@ -357,8 +357,8 @@ LineSegment ModuleRender::CreatingRay(float2 mouse) {
 	float sceneWidth = App->gui->GetSceneWidth();
 	float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
 	float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
-	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
-	
+	float2 normalizedPos = float2((mouse.x - (pos.x + (sceneWidth / 2))) / (sceneWidth / 2), ((pos.y + (sceneHeight / 2)) - mouse.y) / (sceneWidth / 2));
+	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
 	
 	return picking;
 
