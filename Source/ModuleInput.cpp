@@ -191,13 +191,17 @@ update_status ModuleInput::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			SDL_GetMouseState(&mouseX, &mouseY);
+			//SDL_GetMouseState(&mouseX, &mouseY);
 
 			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-				if (App->gui->isScene) {
+				if (App->gui->isScene && !App->scene->camera->GetOrbit()) {
 					//If the mouse is inside the scene tab, do all the stuff to cast a ray
+					float2 mouse = float2(sdlEvent.button.x, sdlEvent.button.y);
+					App->renderer->MousePicking(mouse);
 
-					if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
+
+
+					/*if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
 						mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
 						
 						//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
@@ -237,9 +241,10 @@ update_status ModuleInput::Update()
 						else {
 							App->scene->selected = nullptr;
 						}
-					}
+					}*/
+
 				}
-				//If the mouse is inside the scene tab, do all the stuff to cast a ray
+				
 				
 
 
@@ -290,6 +295,15 @@ update_status ModuleInput::Update()
 
 	if (keyboard[SDL_SCANCODE_F] && App->gui->isScene)
 		App->scene->camera->Focus();
+
+	if (keyboard[SDL_SCANCODE_R] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::ROTATE;
+
+	if (keyboard[SDL_SCANCODE_T] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::TRANSLATE;
+
+	if (keyboard[SDL_SCANCODE_Y] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::SCALE;
 
 	return UPDATE_CONTINUE;
 }
