@@ -20,6 +20,7 @@
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
 #include "optick/optick.h"
+#include "FileDialog/ImGuiFileDialog.h"
 
 ModuleGUI::ModuleGUI() {
 }
@@ -115,6 +116,7 @@ update_status ModuleGUI::Update() {
 		App->scene->DrawInspector(&showInspector);
 
 	ShowConsole(ICON_FA_TERMINAL " Console");
+	showExplorer();
 
 	ImGui::ShowDemoWindow();
 
@@ -828,4 +830,25 @@ void ModuleGUI::ShowDefWindow() {
 		}
 	}
 	ImGui::End();
+}
+
+void ModuleGUI::showExplorer() {
+	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
+		// open Dialog Simple
+
+	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Project", "", ".");
+
+		// display
+	if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk == true)
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			// action
+		}
+		// close
+		ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
+	}
 }
