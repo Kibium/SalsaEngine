@@ -9,6 +9,8 @@
 #include "optick/optick.h"
 #include "ComponentCamera.h"
 #include "AABBTree.h"
+#include "ComponentTransform.h"
+#include "JsonConfig.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -22,33 +24,19 @@ ModuleScene::~ModuleScene() {
 bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
+  
 	camera = new ComponentCamera();
+  
 	root = new GameObject("RootNode");
+  root->name = "RootNode";
+  
 	abbTree = new AABBTree(5);
-	/*GameObject* obj1 = new GameObject("Pepito");
-	obj1->parent = root;
-	root->children.push_back(obj1);
-
-	GameObject* obj1C = new GameObject("Pepa");
-	obj1C->parent = obj1;
-	obj1->children.push_back(obj1C);
-
-	GameObject* obj1C2 = new GameObject("Jorge");
-	obj1C2->parent = obj1;
-	obj1->children.push_back(obj1C2);
-
-	GameObject* obj2 = new GameObject("Marta");
-	obj2->parent = root;
-	root->children.push_back(obj2);
-
-	SortGameObjects(root->children);
-	SortGameObjects(obj1->children);*/
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
 			ret = (*it)->Init();
 	}
-	
+
 	return ret;
 }
 
@@ -92,6 +80,14 @@ GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
 	allGo.push_back(gameObject);
+	root->children.push_back(gameObject);
+	return gameObject;
+}
+
+GameObject* ModuleScene::CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile) {
+	GameObject* gameObject = new GameObject(UID, ParentUID, name, Active, Static, modelFile);
+	gameObject->parent = root;
+	root->children.push_back(gameObject);
 	return gameObject;
 }
 
@@ -102,6 +98,10 @@ void ModuleScene::DeleteGameObject(GameObject *gameObject) {
 			break;
 		}
 	}
+}
+
+void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
+	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
 }
 
 void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
@@ -131,11 +131,12 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 					if (ImGui::AcceptDragDropPayload("GameObject")) {
 						if (dragged->name < objects[i]->name && objects[i]->parent == root)
 							--i;
-						
+
 						dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
 						dragged->parent = objects[i];
 						objects[i]->children.push_back(dragged);
-						SortGameObjects(objects[i]->children);
+						dragged->components[0]->position += dragged->parent->components[0]->position;
+						//SortGameObjects(objects[i]->children);
 						dragged = nullptr;
 					}
 					ImGui::EndDragDropTarget();
@@ -168,8 +169,8 @@ void ModuleScene::DrawHierarchy(bool *showHierarchy) {
 	ImGui::End();
 }
 
-void ModuleScene::DrawInspector(bool *showInspector) {
-	if (showInspector && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", showInspector)) {
+void ModuleScene::DrawInspector(bool *show) {
+	if (show && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", show)) {
 		if (root->children.size() > 0 && selected != nullptr) {
 			selected->DrawComponents();
 		}
@@ -182,7 +183,7 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		ImGui::OpenPopup("GameObject Popup");
 		selected = gameObject;
 	}
-	if (ImGui::BeginPopup("GameObject Popup")) { 
+	if (ImGui::BeginPopup("GameObject Popup")) {
 		ImGui::Separator();
 		ImGui::TextDisabled("Copy");
 		ImGui::TextDisabled("Paste");
@@ -233,8 +234,16 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 	}
 }
 
-void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
-	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
+void ModuleScene::SaveScene() {
+	JsonConfig config;
+	for (auto &obj : root->children)
+		config.SaveGameObject(*obj);
+	config.SaveJson("SceneData.json");
+}
+
+void ModuleScene::LoadScene(const char *fileName) {
+	JsonConfig config;
+	config.LoadJson(fileName);
 }
 
 void ModuleScene::DrawTree() {

@@ -9,7 +9,7 @@
 
 
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices) : npolys(polygons), nvertex(totalVertices)
 {
 	this->vertices = vertices;
 	this->indices = indices;

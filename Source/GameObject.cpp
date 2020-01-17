@@ -12,9 +12,9 @@ GameObject::GameObject() {
 	UUID = pcg32_random();
 }
 
-GameObject::GameObject(const std::string &name) : name(name) {
-	CreateComponent(Type::TRANSFORM);
-	UUID = pcg32_random();
+GameObject::GameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile) : 
+UUID(UID), parentUUID(ParentUID), name(name), isActive(Active), isStatic(Static) {
+
 }
 
 GameObject::~GameObject() {
@@ -83,8 +83,8 @@ void GameObject::CreateComponent(Type type) {
 }
 
 void GameObject::DrawComponents() {
-	ImGui::Text("UUID: %d", UUID);
-	if (ImGui::Checkbox("Active##ObjectActive", &isActive)) {
+	//ImGui::Text("UUID: %d", UUID);
+	if (ImGui::Checkbox("Active##ObjectActive1", &isActive)) {
 		if (isActive) {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = true;
@@ -105,6 +105,9 @@ void GameObject::DrawComponents() {
 	for (int i = 0; i < components.size(); ++i) {
 		components[i]->OnEditor();
 	}
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	if (ImGui::Button("Add Component")) {
 		ImGui::OpenPopup("Add Component Popup");
 	}

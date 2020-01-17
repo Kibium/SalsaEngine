@@ -26,23 +26,15 @@ public:
 class Model {
 
 public:
+	std::string fileName;
 	bool isActive = true;
 	const char *filePath = nullptr;
 	string name;
-	void UpdateTris(float3 &f);
-	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	vector<Mesh> meshes;
+	vector<Texture> textures_loaded;
+	vector<Mesh*> meshes;
 	string directory, model_name;
 	vector<int> textureWidth;
 	vector<int> textureHeight;
-	Model();
-	Model(const char *filePath);
-	~Model();
-
-	void ProcessName();
-	void Draw();
-	void SwitchModel();
-	void SwitchTexture(const char*);
 	aiVector3D modelPosition;
 	aiVector3D modelScale;
 	aiVector3D modelRotation;
@@ -53,14 +45,25 @@ public:
 	int nvertex = 0;
 	int nmeshes = 0;
 	bool load_once = false;
-	Material mat; //The one applied to the model
+	Material mat; 
+
+public:
+	Model();
+	Model(const char *filePath);
+	~Model();
+
+	void ProcessName();
+	void Draw();
+	void SwitchModel();
+	void SwitchTexture(const char*);
+	void RenderAABB();
+  void UpdateTris(float3 &f);
 
 private:
-
 	void Load(const char*);
 	void LoadTexture(vector<Texture>& v, TextureType type);
 	void processNode(aiNode*, const aiScene*);
-	Mesh processMesh(aiMesh*, const aiScene*);
+	Mesh* processMesh(aiMesh*, const aiScene*);
 	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
@@ -69,4 +72,5 @@ private:
 
 
 };
+
 #endif // __MODEL_H__

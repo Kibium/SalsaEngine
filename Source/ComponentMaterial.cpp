@@ -36,39 +36,39 @@ void ComponentMaterial::UpdateMaterial(float4 &color) {
 
 void ComponentMaterial::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		Component::OnEditor();
 		if (ImGui::Checkbox("Active##ComponentMaterial", &active)) {
 			active ? Enable() : Disable();
 		}
-		if (myGo != nullptr) {
+		if (myGo != nullptr && myGo->model != nullptr) {
 			//For every mesh, see its material, and allow to update textures
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
-				for (int i = 0; i < myGo->model->meshes.size(); ++i) {
-					ImGui::Text("Mesh %d", i);
+			//if (ImGui::TreeNode(ICON_FA_BRUSH " Meshes")) { //TODO: When mouse picking is ready, remove this and use material as main info shower
+					//ImGui::Text("Mesh %d", i);
 
-					ImGui::Spacing();
+					//ImGui::Spacing();
 
 					ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.diffuse_map,   ImVec2(75,75 ), ImVec2(0, 1), ImVec2(1, 0))) {
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.diffuse_map,   ImVec2(75,75 ), ImVec2(0, 1), ImVec2(1, 0))) {
 																													 
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.diffuse_map);							 
+						UpdateMaterial(myGo->model->meshMaterial.diffuse_map);							 
 																													 
 					} ImGui::SameLine();																			 
 																													 
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.occlusion_map, ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.occlusion_map, ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
 																													  
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.occlusion_map);							  
+						UpdateMaterial(myGo->model->meshMaterial.occlusion_map);							  
 																													  
 					} ImGui::SameLine();																			  
 																													  
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshes[i].meshMaterial.specular_map,  ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
+					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.specular_map,  ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.specular_map);
+						UpdateMaterial(myGo->model->meshMaterial.specular_map);
 					}
-				}
 
-			}
+				//ImGui::TreePop();
+			//}
 
-			if (ImGui::CollapsingHeader(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
+			//if (ImGui::TreeNode(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
 				App->gui->HelpMarker("Now only shows the default mmaterial applied to every mesh");
 				if (ImGui::TreeNodeEx("Diffuse")) {
 					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
@@ -146,10 +146,9 @@ void ComponentMaterial::OnEditor() {
 					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), myGo->model->mat.shininess);
 
 				}
-
-			}
+				//ImGui::TreePop();
+			//}
 		}
 	}
 	ImGui::Separator();
-	Component::OnEditor();
 }

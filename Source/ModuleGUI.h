@@ -24,6 +24,7 @@ public:
 	void MainMenu();
 	void MainWindow();
 	void Clear() { logBuffer.clear(); LineOffsets.clear(); }
+  
 public:
 	void Game();
 	void Scene();
@@ -41,9 +42,9 @@ public:
 	char* GetInputFile();
 	float GetSceneWidth();
 	float GetSceneHeight();
+	char* GetInputFileJson();
 
 private:
-	
 	char szFileName[MAX_PATH] = _T("");
 	bool showAboutWindow = false;
 	bool showHelpWindow = false;
@@ -65,12 +66,8 @@ private:
 	ImVec2 vMin;
 	ImVec2 vMax;
 	ImVec2 scenePos;
-
-	
-
 	//Color picker variables
 	ImGuiColorEditFlags misc_flags;
-
 
 };
 #endif // __MODULEMODELLOADER_H__
