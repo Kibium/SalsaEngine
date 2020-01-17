@@ -334,7 +334,7 @@ void ModuleInput::DroppedFile(const char* file) const
 		LOG("\n");
 
 		// Process file and create gameobjects
-		//App->scene->selected = nullptr;
+		App->scene->selected = nullptr;
 		App->model->AddModel(file);
 
 	}

@@ -30,10 +30,12 @@ bool ModuleScene::Init() {
 
 	root = new GameObject();
 	root->name = "RootNode";
-  gameCamera = new GameObject();
-  gameCamera->name = "MainCamera";
-	gameCamera->CreateComponent(Type::CAMERA);
+
+	gameCamera = new GameObject();
+	gameCamera->name = "MainCamera";
+	gameCamera->DeleteComponent(Type::TRANSFORM);
 	gameCamera->CreateComponent(Type::TRANSFORM);
+	gameCamera->CreateComponent(Type::CAMERA);
 	gameCamera->parent = root;
 	root->children.push_back(gameCamera);
 
