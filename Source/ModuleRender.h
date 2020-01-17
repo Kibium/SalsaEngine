@@ -4,6 +4,7 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
 #include "ImGuizmo/ImGuizmo.h"
+#include <map>
 
 
 struct SDL_Texture;
@@ -32,6 +33,12 @@ public:
 	void SetWireframe(const bool wireframe);
 
 	void DrawLine(float3 so);
+
+	void MousePicking(float2 mouse);
+
+	LineSegment CreatingRay(float2 mouse);
+
+	void GetAABBHits(LineSegment ray, std::map<float, GameObject*>& gos);
 
 	void DrawGuizmo();
 
