@@ -11,11 +11,14 @@ public:
 
 	update_status Update() override;
 	void RotToQuat();
+	void QuatToFloat();
 	void UpdateMatrix();
-	void UpdateAABBBox();
+	void SetNewMatrix(const float4x4 & newGlobal);
+	void UpdateAABBBox(GameObject * go);
 	void OnEditor() override;
 
 public:
+	float3 lastPosition = float3::zero;
 	float3 position = float3::zero;
 	float3 rotationFloat = float3::zero;
 	float3 scale = float3(1.0f, 1.0f, 1.0f);
@@ -23,6 +26,9 @@ public:
 
 	float4x4 localMatrix = float4x4::identity;
 	float4x4 worldMatrix = float4x4::identity;
+
+	bool updateOnce = false;
+	bool updateOnce2 = false;
 
 	// local and world transform and dirty flag to know if needs to be recalculated
 };

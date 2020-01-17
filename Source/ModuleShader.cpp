@@ -300,10 +300,10 @@ bool ModuleShader::Init()
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 
-	glUseProgram(grid_program);
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	//glUseProgram(grid_program);
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
 	//TODO: This has to change
 	//.............FLAT.................//
@@ -564,7 +564,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 
-			LOG("\n ERROR::SHADER_COMPILATION_ERROR of type: %s ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- \n" );
+
+			LOG("ERROR::SHADER_COMPILATION_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}
@@ -575,7 +577,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
 
-			LOG( "\n ERROR::PROGRAM_LINKING_ERROR of type: %s", "\n",infoLog, "\n -- --------------------------------------------------- -- \n ");
+
+			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}

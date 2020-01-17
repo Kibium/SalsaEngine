@@ -32,30 +32,45 @@ update_status ComponentTransform::Update() {
 }
 
 void ComponentTransform::RotToQuat() {
-	
+
 	float3 auxRot = rotationFloat;
 	auxRot.x = DegToRad(auxRot.x);
 	auxRot.y = DegToRad(auxRot.y);
 	auxRot.z = DegToRad(auxRot.z);
 	rotationQuat = rotationQuat.FromEulerXYZ(auxRot.x, auxRot.y, auxRot.z);
 }
+void ComponentTransform::QuatToFloat() {
+
+	rotationFloat = rotationQuat.ToEulerXYZ();
+	rotationFloat.x = RadToDeg(rotationFloat.x);
+	rotationFloat.y = RadToDeg(rotationFloat.y);
+	rotationFloat.z = RadToDeg(rotationFloat.z);
+
+}
 void ComponentTransform::UpdateMatrix()
 {
 	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
 	worldMatrix = worldMatrix * localMatrix;
-	
+
+}
+void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal)
+{
+	worldMatrix = newGlobal*localMatrix;
+	worldMatrix.Decompose(position, rotationQuat, scale);
+	QuatToFloat();
+	UpdateAABBBox(App->scene->selected);
+
 }
 
-void ComponentTransform::UpdateAABBBox()
+void ComponentTransform::UpdateAABBBox(GameObject* go)
 {
-	if (myGo->model != nullptr) {
+	if (go->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
-		auxBox.Enclose(myGo->model->boundingBox);
+		auxBox.Enclose(go->model->boundingBox);
 		auxBox.TransformAsAABB(worldMatrix);
-		myGo->model->modelBox = auxBox;
-
+		go->model->modelBox = auxBox;
 	}
 }
 
@@ -68,20 +83,23 @@ void ComponentTransform::OnEditor() {
 			active ? Enable() : Disable();
 		}
 
-		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0],0.1f)) {
-			LOG("moving");
+
+
+		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.1f)) {
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
+
+
 		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
 			LOG("Rotating");
 			App->scene->selected->transform->RotToQuat();
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
 	}
 	ImGui::Separator();

@@ -20,6 +20,7 @@
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
 #include "optick/optick.h"
+#include "FileDialog/ImGuiFileDialog.h"
 
 ModuleGUI::ModuleGUI() {
 }
@@ -55,6 +56,7 @@ bool ModuleGUI::Init() {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigWindowsMoveFromTitleBarOnly = TRUE;
+
 	ImGui::JordiStyle();
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
@@ -92,12 +94,13 @@ update_status ModuleGUI::Update() {
 	if (showHelpWindow)
 		ShowHelp();
 
-	if (showGame)
+	/*if (showGame)
 		Game();
 
 	if (showScene)
-		Scene();
-
+		Scene();*/
+	if (showScene)
+		MainWindow();
 	if (true)
 		GameObjecInfo();
 
@@ -113,6 +116,7 @@ update_status ModuleGUI::Update() {
 		App->scene->DrawInspector(&showInspector);
 
 	ShowConsole(ICON_FA_TERMINAL " Console");
+	showExplorer();
 
 	ImGui::ShowDemoWindow();
 
@@ -285,10 +289,26 @@ void ModuleGUI::MainMenu() {
 	ImGui::EndMainMenuBar();
 
 }
+void ModuleGUI::MainWindow() {
+	ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
 
+	if (ImGui::Begin("MainWindow", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar))
+	{
+		ImGui::BeginTabBar("MainTabs");
+
+		if (showScene)
+			Scene();
+
+		if (showGame)
+			Game();
+
+		ImGui::EndTabBar();
+	}
+	ImGui::End();
+}
 
 void ModuleGUI::ShowTimeButtons() {
-	if (ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar)) {
+	if (ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
 
 		ImVec2 time_window_size = ImGui::GetWindowSize();
 
@@ -315,7 +335,7 @@ void ModuleGUI::ShowTimeButtons() {
 
 
 void ModuleGUI::Game() {
-	if (ImGui::Begin(ICON_FA_GAMEPAD " Game"))
+	if (ImGui::BeginTabItem(ICON_FA_GAMEPAD " Game"))
 	{
 		//isScene= ImGui::IsWindowFocused();
 		sceneWidthGame = ImGui::GetWindowWidth();
@@ -329,19 +349,40 @@ void ModuleGUI::Game() {
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-
+		ImGui::EndTabItem();
 	}
-	ImGui::End();
+	
 }
 
+float ModuleGUI::GetSceneWidth() { return sceneWidth; }
+float ModuleGUI::GetSceneHeight() { return sceneHeight; }
+
 void ModuleGUI::Scene() {
-	if (ImGui::Begin(ICON_FA_DICE_D20 " Scene"))
+	if (ImGui::BeginTabItem(ICON_FA_DICE_D20 " Scene"))
 	{
 		isScene = ImGui::IsWindowFocused();
+
+		//ImVec2 vMin = ImGui::GetWindowWidth();
+		//ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+
 		sceneWidth = ImGui::GetWindowWidth();
 		sceneHeight = ImGui::GetWindowHeight();
-		App->renderer->DrawScene(sceneWidth, sceneHeight);
 
+		//LOG("%0.1f %0.1f\n", sceneWidth, sceneHeight);
+
+		scenePos.x = ImGui::GetWindowPos().x;
+		scenePos.y = ImGui::GetWindowPos().y;
+
+		/*vMin.x += ImGui::GetWindowPos().x;
+		vMin.y += ImGui::GetWindowPos().y;
+		vMax.x += ImGui::GetWindowPos().x;
+		vMax.y += ImGui::GetWindowPos().y;*/
+		//ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
+
+
+		
+		App->renderer->DrawScene(sceneWidth, sceneHeight);
+		//LOG("Scene width: %0.1f, Scene Height: %0.1f", sceneWidth, sceneHeight);
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
@@ -349,9 +390,14 @@ void ModuleGUI::Scene() {
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
-
+		App->renderer->DrawGuizmo();
+		ImGui::EndTabItem();
 	}
-	ImGui::End();
+
+}
+
+ImVec2 ModuleGUI::GetScenePos() {
+	return scenePos;
 }
 
 char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item
@@ -784,4 +830,25 @@ void ModuleGUI::ShowDefWindow() {
 		}
 	}
 	ImGui::End();
+}
+
+void ModuleGUI::showExplorer() {
+	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
+		// open Dialog Simple
+
+	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Project", "", ".");
+
+		// display
+	if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk == true)
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			// action
+		}
+		// close
+		ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
+	}
 }

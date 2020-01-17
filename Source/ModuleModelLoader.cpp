@@ -174,7 +174,7 @@ void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	glBindVertexArray(0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(App->shader->grid_program);
+	//glUseProgram(App->shader->grid_program);
 }
 
 void ModuleModelLoader::CreateSphere(const char* name, const math::float3& pos, const math::Quat& rot, float size,

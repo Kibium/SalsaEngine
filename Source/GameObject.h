@@ -56,6 +56,7 @@ public:
 	ComponentMaterial* material = nullptr;
 	std::vector<Mesh> meshes;
 	Model* model = nullptr;
+	float distanceFromCamera = 0;
 };
 
 #endif // __GAMEOBJECT_H__

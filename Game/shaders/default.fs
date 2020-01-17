@@ -1,4 +1,4 @@
-#version 330 core
+#version 410
 
 out vec4 color;
 
@@ -45,25 +45,27 @@ uniform Material material;
 uniform Light light;
 uniform vec3 viewPos;
 
+//Using Blinn-Phong
+
 void main()
 {
-	vec3 norm = normalize(Normal);
 	vec3 light_dir = normalize(light.position - FragPos);
+	vec3 norm = normalize(Normal);
+	
     float diff = max(0.0, dot(norm, light_dir));
 	float spec =0;    
 
 	if(diff > 0.0 && material.shininess > 0.0)
     {
-        vec3 view_pos    = transpose(mat3(auxView))*(-auxView[3].xyz);
-        vec3 view_dir    = normalize(view_pos-FragPos);
+       // vec3 view_pos    = transpose(mat3(auxView))*(-auxView[3].xyz);
+        vec3 view_dir    = normalize(viewPos-FragPos);
+		vec3 halfway_dir    = normalize(light_dir+view_dir);
         vec3 reflect_dir = normalize(reflect(-light_dir, norm));
-        float sp         = max(dot(view_dir, reflect_dir), 0.0);
+        float sp         = max(dot(norm, halfway_dir), 0.0);
 
-        if(sp > 0.0)
-        {
-			//speculars
-            spec = pow(sp, material.shininess); 
-        }
+	   //speculars
+       spec = pow(sp, material.shininess); 
+       
     }
 
 	//ambient

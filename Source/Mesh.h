@@ -53,10 +53,13 @@ public:
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	vector<Triangle> triangles;
 	Material meshMaterial;
 	unsigned int VAO;
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m);
 	void Draw();
+	vector<Vertex> GetVertices();
+	
 
 private:
 	unsigned int VBO, EBO;

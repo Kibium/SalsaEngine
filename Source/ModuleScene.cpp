@@ -150,7 +150,8 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 				}
 
 				// Process each gameobject's childs
-				DrawGameObjects(objects[i]->children);
+				if(objects.size() > 0) //Toni super fix, it crashed when you'd delete the last one
+					DrawGameObjects(objects[i]->children);
 				ImGui::TreePop();
 			}
 		}
