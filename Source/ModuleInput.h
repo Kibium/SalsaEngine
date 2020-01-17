@@ -8,6 +8,7 @@
 #include <iterator>
 
 
+
 typedef unsigned __int8 Uint8;
 
 class ModuleInput : public Module
@@ -26,6 +27,7 @@ public:
 	float3 ray_world;
 	float4 temp;
 	int mouseX, mouseY;
+	
 private:
 	
 	float pickX, pickY;

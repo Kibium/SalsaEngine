@@ -11,7 +11,6 @@
 
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 {
-
 	this->vertices = vertices;
 	this->indices = indices;
 	this->meshMaterial = m;
@@ -24,7 +23,6 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m)
 	LOG("Tris: %d\n", triangles.size());
 	setupMesh();
 
-
 }
 
 vector<Vertex> Mesh::GetVertices() {
@@ -33,9 +31,6 @@ vector<Vertex> Mesh::GetVertices() {
 
 void Mesh::Draw()
 {
-
-	
-
 	//Assigning "ids" to textures
 	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.diff_map"), 0);
 	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.spec_map"), 1);
@@ -54,8 +49,6 @@ void Mesh::Draw()
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, meshMaterial.emissive_map);
-
-	
 
 	// draw mesh
 	glBindVertexArray(VAO);
@@ -97,7 +90,6 @@ void Mesh::setupMesh()
 	// vertex normal coords
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normals));
-
 
 	glBindVertexArray(0);
 

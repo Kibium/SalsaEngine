@@ -30,6 +30,8 @@ public:
 	void SetAxis();
 	void SetWireframe(const bool wireframe);
 
+	void DrawLine(float3 so);
+
 public:
 	void* context = nullptr;
 	GLuint frameTex;
