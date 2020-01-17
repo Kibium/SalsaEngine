@@ -11,8 +11,10 @@ public:
 
 	update_status Update() override;
 	void RotToQuat();
+	void QuatToFloat();
 	void UpdateMatrix();
-	void UpdateAABBBox();
+	void SetNewMatrix(const float4x4 & newGlobal);
+	void UpdateAABBBox(GameObject * go);
 	void OnEditor() override;
 
 public:

@@ -39,6 +39,14 @@ void ComponentTransform::RotToQuat() {
 	auxRot.z = DegToRad(auxRot.z);
 	rotationQuat = rotationQuat.FromEulerXYZ(auxRot.x, auxRot.y, auxRot.z);
 }
+void ComponentTransform::QuatToFloat() {
+
+	rotationFloat = rotationQuat.ToEulerXYZ();
+	rotationFloat.x = RadToDeg(rotationFloat.x);
+	rotationFloat.y = RadToDeg(rotationFloat.y);
+	rotationFloat.z = RadToDeg(rotationFloat.z);
+
+}
 void ComponentTransform::UpdateMatrix()
 {
 	worldMatrix = worldMatrix * localMatrix.Inverted();
@@ -46,20 +54,23 @@ void ComponentTransform::UpdateMatrix()
 	worldMatrix = worldMatrix * localMatrix;
 
 }
-
-void ComponentTransform::UpdateAABBBox()
+void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal)
 {
-	if (myGo->model != nullptr) {
+	worldMatrix = newGlobal*localMatrix;
+	worldMatrix.Decompose(position, rotationQuat, scale);
+	QuatToFloat();
+	UpdateAABBBox(App->scene->selected);
+
+}
+
+void ComponentTransform::UpdateAABBBox(GameObject* go)
+{
+	if (go->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
-		for (auto vertex : myGo->model->meshes) {
-			for (auto vertices : vertex.vertices) {
-				auxBox.Enclose(vertices.Position);
-			}
-		}
+		auxBox.Enclose(go->model->boundingBox);
 		auxBox.TransformAsAABB(worldMatrix);
-		myGo->model->modelBox = auxBox;
-
+		go->model->modelBox = auxBox;
 	}
 }
 
@@ -75,38 +86,20 @@ void ComponentTransform::OnEditor() {
 
 
 		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.1f)) {
-
-			if (!updateOnce) {
-				lastPosition = App->scene->selected->transform->position;
-				updateOnce = true;
-				updateOnce2 = false;
-			}
-
 			App->scene->selected->transform->UpdateMatrix();
-
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
 
-		else {
-			if (!updateOnce2) {
-				updateOnce = false;
-				float3 offset = App->scene->selected->transform->position - lastPosition;
-				LOG("offset: %0.1f 0.1f 0.1f\n", offset.x, offset.y, offset.z);
-				App->scene->selected->model->UpdateTris(offset);
-				updateOnce2 = true;
-			}
-
-		}
 
 		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
 			LOG("Rotating");
 			App->scene->selected->transform->RotToQuat();
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox();
+			UpdateAABBBox(App->scene->selected);
 		}
 	}
 	ImGui::Separator();
