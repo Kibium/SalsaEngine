@@ -30,7 +30,6 @@ public:
 	bool updateOnce = false;
 	bool updateOnce2 = false;
 
-	// local and world transform and dirty flag to know if needs to be recalculated
 };
 
 #endif // __COMPONENTTRANSFORM_H__

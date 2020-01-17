@@ -11,8 +11,7 @@
 #include "Application.h"
 #include "Geometry/AABB.h"
 
-
-ComponentTransform::ComponentTransform() : position(math::float3::zero), rotationFloat(math::float3::zero), scale(math::float3::one) {
+ComponentTransform::ComponentTransform() {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
 		position = float3(myGo->model->modelPosition.x, myGo->model->modelPosition.y, myGo->model->modelPosition.z);
@@ -22,10 +21,8 @@ ComponentTransform::ComponentTransform() : position(math::float3::zero), rotatio
 	}
 }
 
-
 ComponentTransform::~ComponentTransform() {
 }
-
 
 update_status ComponentTransform::Update() {
 	return UPDATE_CONTINUE;
@@ -38,7 +35,9 @@ void ComponentTransform::RotToQuat() {
 	auxRot.y = DegToRad(auxRot.y);
 	auxRot.z = DegToRad(auxRot.z);
 	rotationQuat = rotationQuat.FromEulerXYZ(auxRot.x, auxRot.y, auxRot.z);
+
 }
+
 void ComponentTransform::QuatToFloat() {
 
 	rotationFloat = rotationQuat.ToEulerXYZ();
@@ -47,24 +46,21 @@ void ComponentTransform::QuatToFloat() {
 	rotationFloat.z = RadToDeg(rotationFloat.z);
 
 }
-void ComponentTransform::UpdateMatrix()
-{
+
+void ComponentTransform::UpdateMatrix() {
 	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
 	worldMatrix = worldMatrix * localMatrix;
-
 }
-void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal)
-{
-	worldMatrix = newGlobal*localMatrix;
+
+void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal) {
+	worldMatrix = newGlobal * localMatrix;
 	worldMatrix.Decompose(position, rotationQuat, scale);
 	QuatToFloat();
 	UpdateAABBBox(App->scene->selected);
-
 }
 
-void ComponentTransform::UpdateAABBBox(GameObject* go)
-{
+void ComponentTransform::UpdateAABBBox(GameObject* go) {
 	if (go->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
@@ -74,8 +70,6 @@ void ComponentTransform::UpdateAABBBox(GameObject* go)
 	}
 }
 
-
-
 void ComponentTransform::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_RULER_COMBINED" Transform", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
 		Component::OnEditor();
@@ -83,13 +77,10 @@ void ComponentTransform::OnEditor() {
 			active ? Enable() : Disable();
 		}
 
-
-
 		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.1f)) {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox(App->scene->selected);
 		}
-
 
 		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
 			LOG("Rotating");
@@ -97,10 +88,12 @@ void ComponentTransform::OnEditor() {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox(App->scene->selected);
 		}
+
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
 			App->scene->selected->transform->UpdateMatrix();
 			UpdateAABBBox(App->scene->selected);
 		}
+
+		ImGui::Separator();
 	}
-	ImGui::Separator();
 }

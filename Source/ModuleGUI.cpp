@@ -193,18 +193,22 @@ void ModuleGUI::MainMenu() {
 	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("New Scene")) {
-			}
+			//if (ImGui::MenuItem("New Scene")) {
+			//}
 			if (ImGui::MenuItem("Open Scene")) {
+				App->scene->LoadScene(GetInputFileJson());
 			}
-			if (ImGui::MenuItem("Save")) {
+			ImGui::SameLine();
+			HelpMarker("Open file in $(SolutionDir)/Game/SceneData.json");
+			if (ImGui::MenuItem("Save Scene")) {
+				App->scene->SaveScene();
 			}
-			if (ImGui::MenuItem("New Project")) {
-			}
-			if (ImGui::MenuItem("Open Project")) {
-			}
-			if (ImGui::MenuItem("Save Project")) {
-			}
+			//if (ImGui::MenuItem("New Project")) {
+			//}
+			//if (ImGui::MenuItem("Open Project")) {
+			//}
+			//if (ImGui::MenuItem("Save Project")) {
+			//}
 			if (ImGui::MenuItem("Exit")) {
 				SDL_Event quit_event;
 				quit_event.type = SDL_QUIT;
@@ -444,6 +448,21 @@ char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every it
 		return "Not valid";
 }
 
+char* ModuleGUI::GetInputFileJson() {
+
+	OPENFILENAME ofn = { 0 };
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = 0;
+	ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0\0");
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+
+	if (GetOpenFileName(&ofn)) {
+		string temp = szFileName;
+		return szFileName;
+	}
+}
 
 
 void ModuleGUI::GameObjecInfo() {

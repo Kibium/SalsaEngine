@@ -2,6 +2,7 @@
 #define __COMPONENT_H__
 
 #include "Globals.h"
+#include "MathGeoLib.h"
 
 enum class Type;
 class GameObject;
@@ -24,6 +25,10 @@ public:
 	bool active = true;
 	GameObject* myGo = nullptr;
 	bool canBeDeleted = true;
+
+	math::float3 position;
+	math::float3 rotation;
+	math::float3 scale;
 };
 
 #endif // __COMPONENT_H__

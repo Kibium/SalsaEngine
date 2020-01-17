@@ -20,24 +20,27 @@ public:
 
 public:
 	GameObject* CreateGameObject();
+	GameObject* CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile = nullptr);
 	void DeleteGameObject(GameObject *gameObject);
+	void SortGameObjects(std::vector<GameObject*> &objects);
 
 	void DrawGameObjects(const std::vector<GameObject*>& objects);
 	void DrawHierarchy(bool *showHierarchy);
-	void DrawInspector(bool *showInspector);
+	void DrawInspector(bool *show);
 	void DrawPopup(GameObject *gameObject);
-
-	void SortGameObjects(std::vector<GameObject*> &objects);
 	void DrawTree();
-	ComponentCamera* camera = nullptr;
+
+	void SaveScene();
+	void LoadScene(const char *fileName);
 
 public:
-	std::vector<GameObject*> allGo;
+	ComponentCamera* camera = nullptr;
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
 	GameObject* gameCamera = nullptr;
 	AABBTree* abbTree = nullptr;
+	std::vector<GameObject*> gameObjects;
 
 };
 

@@ -11,15 +11,16 @@
 #include <assimp/material.h>
 #include <assimp/mesh.h>
 #include <algorithm>
+#include "GameObject.h"
 using namespace Assimp;
 
 Model::Model() {
 }
 
-Model::Model(const char *filePath) : filePath(filePath) {
+Model::Model(const char *filePath) : filePath(filePath), fileName(filePath) {
+	LOG("FILEPATH: %s\n", filePath);
 	ProcessName();
 	SwitchModel();
-
 }
 
 Model::~Model() {
@@ -42,20 +43,10 @@ void Model::ProcessName() {
 	name.pop_back();
 }
 
-void Model::UpdateTris(float3 &f) {
-	for (int i = 0; i < meshes.size(); ++i) {
-		for (int j = 0; j < meshes[i].triangles.size(); ++j) {
-			meshes[i].triangles[j].a += f;
-			meshes[i].triangles[j].b += f;
-			meshes[i].triangles[j].c += f;
-		}
-	}
-}
-
 void Model::Draw() {
 	if (isActive) {
 		for (int i = 0; i < meshes.size(); ++i)
-			meshes[i].Draw();
+			meshes[i]->Draw();
 	}
 
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
@@ -103,13 +94,13 @@ void Model::SwitchTexture(const char *file) {
 	textures_loaded.push_back(texture);
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].textures = textures;
+		meshes[i]->textures = textures;
 
 }
 
 void Model::Load(const char* path) {
 	DefaultLogger::create("", Logger::VERBOSE);
-	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
+	const unsigned int severity = /*Logger::Debugging | Logger::Info |*/ Logger::Err /*| Logger::Warn*/;
 	DefaultLogger::get()->attachStream(new myStream(), severity);
 	// read file via ASSIMP
 	Assimp::Importer importer;
@@ -128,11 +119,9 @@ void Model::Load(const char* path) {
 
 	model = true;
 	DefaultLogger::kill();
-
 }
 
 bool Model::item_exists(const char* path) {
-
 
 	FILE *file = nullptr;
 
@@ -153,10 +142,6 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 	case DIFFUSE:
 		dir = directory + name + "_diffuse.png";
 		tex.id = App->texture->Load(dir.c_str());
-		LOG(directory.c_str());
-		LOG("\n");
-		LOG(name.c_str());
-		LOG("\n");
 
 		if (item_exists(dir.c_str())) {
 			tex.type = "diffuse";
@@ -205,11 +190,24 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
 	// process each mesh located at the current node
+	int counter = 0;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+
+		// Create a Game Object for each mesh
+		Mesh* newMesh = processMesh(mesh, scene);
+		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
+		auto go = App->scene->CreateGameObject();
+		go->modelPath = fileName;
+		go->model = newMesh;
+		go->name = App->model->GetFilename(filePath) + " " + std::to_string(nmeshes);
+		go->DeleteComponent(Type::TRANSFORM);
+		go->CreateComponent(Type::TRANSFORM);
+		go->CreateComponent(Type::MESH);
+		go->CreateComponent(Type::MATERIAL);
+		meshes.push_back(newMesh);
 		nmeshes += 1;
 	}
 
@@ -223,7 +221,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 	App->scene->camera->Focus();
 }
 
-Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
@@ -252,8 +250,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
-	npolys += mesh->mNumFaces;
-	nvertex += indices.size();
+	int polygons = mesh->mNumFaces;
+	int verticesNum = indices.size();
 
 	// process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -286,7 +284,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		load_once = true;
 	}
 
-	return Mesh(vertices, indices, mat);
+	return new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {

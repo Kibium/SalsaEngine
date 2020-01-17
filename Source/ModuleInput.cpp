@@ -126,7 +126,7 @@ update_status ModuleInput::Update()
 	OPTICK_CATEGORY("UpdateInput", Optick::Category::Input);
 
 	SDL_PumpEvents();
-	SDL_Event sdlEvent;
+	static SDL_Event sdlEvent;
 
 	while (SDL_PollEvent(&sdlEvent) != 0)
 	{
@@ -330,20 +330,12 @@ void ModuleInput::DroppedFile(const char* file) const
 	if (assimpMap.find(extension) != assimpMap.end()) {
 
 		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
-		// Process file and create empty gameobject
+		LOG(file);
+		LOG("\n");
+
+		// Process file and create gameobjects
+		//App->scene->selected = nullptr;
 		App->model->AddModel(file);
-		auto obj = App->scene->CreateGameObject();
-		obj->name = App->model->GetModel(file)->name;
-
-		// Process components
-		obj->model = App->model->GetModel(file);
-		obj->DeleteComponent(Type::TRANSFORM);
-		obj->CreateComponent(Type::TRANSFORM);
-		obj->CreateComponent(Type::MESH);
-		obj->CreateComponent(Type::MATERIAL);
-		App->scene->root->children.push_back(obj);
-
-		//App->scene->selected = obj;
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {
