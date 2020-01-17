@@ -20,7 +20,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void EventManager(SDL_Event);
-	void ShowConsole(const char* title, bool* p_opened = NULL);
+	void ShowConsole();
+	void ProjectView();
 	void MainMenu();
 	void MainWindow();
 	void Clear() { logBuffer.clear(); LineOffsets.clear(); }
@@ -41,13 +42,15 @@ public:
 	char* GetInputFile();
 	float GetSceneWidth();
 	float GetSceneHeight();
-
+	ImVec2 explorerPos;
+	float explorerWidth = 0;
+	float explorerHeight = 0;
 private:
 	
 	char szFileName[MAX_PATH] = _T("");
 	bool showAboutWindow = false;
 	bool showHelpWindow = false;
-	bool showAppWindow = true;
+	bool showAppWindow = false;
 	bool showScene = true;
 	bool showGame = true;
 	bool showHierarchy = true;
@@ -65,6 +68,7 @@ private:
 	ImVec2 vMin;
 	ImVec2 vMax;
 	ImVec2 scenePos;
+	
 
 	
 

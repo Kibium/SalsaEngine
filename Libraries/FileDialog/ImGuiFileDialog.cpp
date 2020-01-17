@@ -4,7 +4,8 @@
 #include "FileDialog/ImGuiFileDialog.h"
 #include "IconsFontAwesome5.h"
 #include "imgui.h"
-
+#include "Application.h"
+#include "ModuleGUI.h"
 #include <windows.h>
 #include <filesystem>
 #include "FileDialog/dirent.h"
@@ -510,7 +511,8 @@ bool ImGuiFileDialog::FileDialog(const std::string& vKey)
 		}
 
 		IsOk = false;
-
+		//ImGui::SetNextWindowPos(ImVec2(App->gui->explorerPos.x, App->gui->explorerPos.y));
+		//ImGui::SetNextWindowSize(ImVec2(App->gui->explorerWidth - 4.0f, App->gui->explorerPos.y - 20.0f));
 		if (ImGui::Begin(name.c_str(), (bool*)0, ImGuiWindowFlags_Modal |
 			ImGuiWindowFlags_NoCollapse /*| ImGuiWindowFlags_NoDocking*/))
 		{

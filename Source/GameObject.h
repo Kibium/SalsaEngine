@@ -7,12 +7,13 @@
 #include <string>
 #include <vector>
 
-enum class Type { TRANSFORM, MESH, MATERIAL };
+enum class Type { TRANSFORM, MESH, MATERIAL, CAMERA };
 
 class Component;
 class ComponentTransform;
 class ComponentMesh;
 class ComponentMaterial;
+class ComponentCamera;
 
 typedef unsigned int uint32_t;
 
@@ -33,7 +34,6 @@ public:
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
 	void DeleteComponent(Type type);
-	void DrawGO();
 
 	GameObject* GetChild(unsigned childIndex) const;
 	GameObject* GetChild(const std::string &childName) const;
@@ -54,6 +54,8 @@ public:
 	ComponentTransform* transform = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentMaterial* material = nullptr;
+	ComponentCamera* camera = nullptr;
+	bool isCamera = false;
 	std::vector<Mesh> meshes;
 	Model* model = nullptr;
 	float distanceFromCamera = 0;

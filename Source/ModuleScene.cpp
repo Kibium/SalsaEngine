@@ -7,6 +7,7 @@
 #include "ModuleGUI.h"
 #include <algorithm>
 #include "optick/optick.h"
+#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "AABBTree.h"
 
@@ -24,25 +25,13 @@ bool ModuleScene::Init() {
 	bool ret = true;
 	camera = new ComponentCamera();
 	root = new GameObject("RootNode");
+	gameCamera = new GameObject("Main Camera");
+	gameCamera->CreateComponent(Type::CAMERA);
+	gameCamera->CreateComponent(Type::TRANSFORM);
+	gameCamera->parent = root;
+	root->children.push_back(gameCamera);
+
 	abbTree = new AABBTree(5);
-	/*GameObject* obj1 = new GameObject("Pepito");
-	obj1->parent = root;
-	root->children.push_back(obj1);
-
-	GameObject* obj1C = new GameObject("Pepa");
-	obj1C->parent = obj1;
-	obj1->children.push_back(obj1C);
-
-	GameObject* obj1C2 = new GameObject("Jorge");
-	obj1C2->parent = obj1;
-	obj1->children.push_back(obj1C2);
-
-	GameObject* obj2 = new GameObject("Marta");
-	obj2->parent = root;
-	root->children.push_back(obj2);
-
-	SortGameObjects(root->children);
-	SortGameObjects(obj1->children);*/
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
@@ -72,6 +61,11 @@ update_status ModuleScene::Update() {
 		if ((*it)->isActive)
 			ret = (*it)->PostUpdate();
 	}
+
+	gameCamera->camera->frustum.pos = gameCamera->transform->position;
+	gameCamera->camera->frustum.up = gameCamera->transform->rotationQuat * float3::unitY;
+	gameCamera->camera->frustum.front = gameCamera->transform->rotationQuat * float3::unitZ;
+	gameCamera->camera->CalculateMatrixes();
 
 	return ret;
 }

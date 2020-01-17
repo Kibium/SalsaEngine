@@ -115,10 +115,10 @@ update_status ModuleGUI::Update() {
 	if (showInspector)
 		App->scene->DrawInspector(&showInspector);
 
-	ShowConsole(ICON_FA_TERMINAL " Console");
-	showExplorer();
-
-	ImGui::ShowDemoWindow();
+	//ShowConsole(ICON_FA_TERMINAL " Console");
+	//showExplorer();
+	ProjectView();
+	//ImGui::ShowDemoWindow();
 
 	return UPDATE_CONTINUE;
 }
@@ -141,33 +141,51 @@ void ModuleGUI::EventManager(SDL_Event event) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void ModuleGUI::ShowConsole(const char * title, bool * p_opened) {
-	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
-	ImGui::Begin(title, p_opened);
-	if (ImGui::Button("Clear")) Clear();
-	ImGui::Separator();
-	ImGui::BeginChild("scrolling");
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
+void ModuleGUI::ShowConsole() {
+	if (ImGui::BeginTabItem(ICON_FA_TERMINAL " Console")) {
+		if (ImGui::Button("Clear")) Clear();
+		ImGui::Separator();
+		ImGui::BeginChild("scrolling");
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
 
-	if (Filter.IsActive()) {
-		const char* buf_begin = logBuffer.begin();
-		const char* line = buf_begin;
-		for (int line_no = 0; line != NULL; line_no++) {
-			const char* line_end = (line_no < LineOffsets.Size) ? buf_begin + LineOffsets[line_no] : NULL;
-			if (Filter.PassFilter(line, line_end))
-				ImGui::TextUnformatted(line, line_end);
-			line = line_end && line_end[1] ? line_end + 1 : NULL;
+		if (Filter.IsActive()) {
+			const char* buf_begin = logBuffer.begin();
+			const char* line = buf_begin;
+			for (int line_no = 0; line != NULL; line_no++) {
+				const char* line_end = (line_no < LineOffsets.Size) ? buf_begin + LineOffsets[line_no] : NULL;
+				if (Filter.PassFilter(line, line_end))
+					ImGui::TextUnformatted(line, line_end);
+				line = line_end && line_end[1] ? line_end + 1 : NULL;
+			}
 		}
-	}
-	else {
-		ImGui::TextUnformatted(logBuffer.begin());
+		else {
+			ImGui::TextUnformatted(logBuffer.begin());
+		}
+
+		if (ScrollToBottom)
+			ImGui::SetScrollHere(1.0f);
+		ScrollToBottom = false;
+		ImGui::PopStyleVar();
+		ImGui::EndChild();
+		ImGui::EndTabItem();
 	}
 
-	if (ScrollToBottom)
-		ImGui::SetScrollHere(1.0f);
-	ScrollToBottom = false;
-	ImGui::PopStyleVar();
-	ImGui::EndChild();
+
+}
+void ModuleGUI::ProjectView() {
+	//ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+	explorerPos = ImGui::GetWindowPos();
+	explorerHeight = ImGui::GetWindowHeight();
+	explorerWidth = ImGui::GetWindowWidth();
+	if (ImGui::Begin(ICON_FA_ALIGN_JUSTIFY "", NULL, ImGuiWindowFlags_NoScrollbar))
+	{
+		ImGui::BeginTabBar("ProjectTabs");
+
+		ShowConsole();
+		showExplorer();
+
+		ImGui::EndTabBar();
+	}
 	ImGui::End();
 }
 void ModuleGUI::MainMenu() {
@@ -292,7 +310,7 @@ void ModuleGUI::MainMenu() {
 void ModuleGUI::MainWindow() {
 	ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
 
-	if (ImGui::Begin("MainWindow", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar))
+	if (ImGui::Begin(ICON_FA_SOLAR_PANEL "", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
 		ImGui::BeginTabBar("MainTabs");
 
@@ -833,22 +851,27 @@ void ModuleGUI::ShowDefWindow() {
 }
 
 void ModuleGUI::showExplorer() {
-	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 		// open Dialog Simple
+	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "", "", ".");
+	
+	if (ImGui::BeginTabItem(ICON_FA_ARCHIVE " Project")) {
 
-	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Project", "", ".");
 
 		// display
-	if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey"))
-	{
-		// action if OK
-		if (ImGuiFileDialog::Instance()->IsOk == true)
+		if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey"))
 		{
-			std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-			// action
+			// action if OK
+			if (ImGuiFileDialog::Instance()->IsOk == true)
+			{
+				std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+				std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+				// action
+	
+			}
+			// close
+			ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
 		}
-		// close
-		ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
+		ImGui::EndTabItem();
 	}
+
 }
