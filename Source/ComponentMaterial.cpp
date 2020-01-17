@@ -47,107 +47,105 @@ void ComponentMaterial::OnEditor() {
 
 					//ImGui::Spacing();
 
-					ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.diffuse_map,   ImVec2(75,75 ), ImVec2(0, 1), ImVec2(1, 0))) {
-																													 
-						UpdateMaterial(myGo->model->meshMaterial.diffuse_map);							 
-																													 
-					} ImGui::SameLine();																			 
-																													 
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.occlusion_map, ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
-																													  
-						UpdateMaterial(myGo->model->meshMaterial.occlusion_map);							  
-																													  
-					} ImGui::SameLine();																			  
-																													  
-					if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.specular_map,  ImVec2(75,75), ImVec2(0, 1), ImVec2(1, 0))) {
+			ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
+			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.diffuse_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-						UpdateMaterial(myGo->model->meshMaterial.specular_map);
-					}
+				UpdateMaterial(myGo->model->meshMaterial.diffuse_map);
 
-				//ImGui::TreePop();
-			//}
+			} ImGui::SameLine();
 
-			//if (ImGui::TreeNode(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
-				App->gui->HelpMarker("Now only shows the default mmaterial applied to every mesh");
-				if (ImGui::TreeNodeEx("Diffuse")) {
-					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
-					ImGui::Text(myGo->model->mat.diff_path.c_str());
-					ImGui::Spacing();
+			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.occlusion_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::PushItemWidth(100);
+				UpdateMaterial(myGo->model->meshMaterial.occlusion_map);
 
-					ImGui::SliderFloat("Color R", &myGo->model->mat.diffuse_color.x, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color G", &myGo->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color B", &myGo->model->mat.diffuse_color.z, 0, 1);
+			} ImGui::SameLine();
 
-					for (int i = 0; i < myGo->model->meshes.size(); ++i) {
-						UpdateMaterial(myGo->model->meshes[i].meshMaterial.diffuse_color);
-						glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), myGo->model->meshes[i].meshMaterial.diffuse_color.x, myGo->model->meshes[i].meshMaterial.diffuse_color.y, myGo->model->meshes[i].meshMaterial.diffuse_color.z, myGo->model->meshes[i].meshMaterial.diffuse_color.w);
+			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->meshMaterial.specular_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-					}
+				UpdateMaterial(myGo->model->meshMaterial.specular_map);
+			}
 
+			//ImGui::TreePop();
+		//}
 
+		//if (ImGui::TreeNode(ICON_FA_BRUSH " Selected Mesh: Material (TODO)")) { //TODO: Mouse picking and show the info here
+			App->gui->HelpMarker("Now only shows the default mmaterial applied to every mesh");
+			if (ImGui::TreeNodeEx("Diffuse")) {
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::Text(myGo->model->mat.diff_path.c_str());
+				ImGui::Spacing();
 
-					if (ImGui::SliderFloat("k diffuse", &myGo->model->mat.k_diffuse, 0, 1)) {
-						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), myGo->model->mat.k_diffuse);
+				ImGui::Image((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::PushItemWidth(100);
 
-					}
+				ImGui::SliderFloat("Color R", &myGo->model->mat.diffuse_color.x, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color G", &myGo->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color B", &myGo->model->mat.diffuse_color.z, 0, 1);
 
-					ImGui::TreePop();
+				UpdateMaterial(myGo->model->meshMaterial.diffuse_color);
+				glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"),
+					myGo->model->meshMaterial.diffuse_color.x,
+					myGo->model->meshMaterial.diffuse_color.y,
+					myGo->model->meshMaterial.diffuse_color.z,
+					myGo->model->meshMaterial.diffuse_color.w);
+
+				if (ImGui::SliderFloat("k diffuse", &myGo->model->mat.k_diffuse, 0, 1)) {
+					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), myGo->model->mat.k_diffuse);
 				}
 
-				if (ImGui::TreeNodeEx("Occlusion")) {
-					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
-					ImGui::Text(myGo->model->mat.occ_path.c_str());
-					ImGui::Spacing();
+				ImGui::TreePop();
+			}
 
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.occlusion_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::PushItemWidth(100);
-					ImGui::SliderFloat("Color R", &myGo->model->mat.occlusion_color.x, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color G", &myGo->model->mat.occlusion_color.y, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color B", &myGo->model->mat.occlusion_color.z, 0, 1);
+			if (ImGui::TreeNodeEx("Occlusion")) {
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::Text(myGo->model->mat.occ_path.c_str());
+				ImGui::Spacing();
 
-
-					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), myGo->model->mat.occlusion_color.x, myGo->model->mat.occlusion_color.y, myGo->model->mat.occlusion_color.z, myGo->model->mat.occlusion_color.w);
-
-					if (ImGui::SliderFloat("k ambient", &myGo->model->mat.k_ambient, 0, 1)) {
-						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), myGo->model->mat.k_ambient);
-
-					}
-
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNodeEx("Specular")) {
-					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
-					ImGui::Text(myGo->model->mat.spec_path.c_str());
-					ImGui::Spacing();
-
-					ImGui::Image((void*)(intptr_t)myGo->model->mat.specular_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
-					ImGui::PushItemWidth(100);
-					ImGui::SliderFloat("Color R", &myGo->model->mat.specular_color.x, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color G", &myGo->model->mat.specular_color.y, 0, 1); ImGui::SameLine();
-					ImGui::SliderFloat("Color B", &myGo->model->mat.specular_color.z, 0, 1);
+				ImGui::Image((void*)(intptr_t)myGo->model->mat.occlusion_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::PushItemWidth(100);
+				ImGui::SliderFloat("Color R", &myGo->model->mat.occlusion_color.x, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color G", &myGo->model->mat.occlusion_color.y, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color B", &myGo->model->mat.occlusion_color.z, 0, 1);
 
 
-					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), myGo->model->mat.specular_color.x, myGo->model->mat.specular_color.y, myGo->model->mat.specular_color.z, myGo->model->mat.specular_color.w);
+				glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), myGo->model->mat.occlusion_color.x, myGo->model->mat.occlusion_color.y, myGo->model->mat.occlusion_color.z, myGo->model->mat.occlusion_color.w);
 
-					if (ImGui::SliderFloat("k specular", &myGo->model->mat.k_specular, 0, 1)) {
-						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), myGo->model->mat.k_specular);
-
-					}
-
-					ImGui::TreePop();
-				}
-
-				if (ImGui::SliderFloat("Shininess", &myGo->model->mat.shininess, -100, 100)) {
-					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), myGo->model->mat.shininess);
+				if (ImGui::SliderFloat("k ambient", &myGo->model->mat.k_ambient, 0, 1)) {
+					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), myGo->model->mat.k_ambient);
 
 				}
-				//ImGui::TreePop();
-			//}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNodeEx("Specular")) {
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::Text(myGo->model->mat.spec_path.c_str());
+				ImGui::Spacing();
+
+				ImGui::Image((void*)(intptr_t)myGo->model->mat.specular_map, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::PushItemWidth(100);
+				ImGui::SliderFloat("Color R", &myGo->model->mat.specular_color.x, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color G", &myGo->model->mat.specular_color.y, 0, 1); ImGui::SameLine();
+				ImGui::SliderFloat("Color B", &myGo->model->mat.specular_color.z, 0, 1);
+
+
+				glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), myGo->model->mat.specular_color.x, myGo->model->mat.specular_color.y, myGo->model->mat.specular_color.z, myGo->model->mat.specular_color.w);
+
+				if (ImGui::SliderFloat("k specular", &myGo->model->mat.k_specular, 0, 1)) {
+					glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), myGo->model->mat.k_specular);
+
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::SliderFloat("Shininess", &myGo->model->mat.shininess, -100, 100)) {
+				glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), myGo->model->mat.shininess);
+
+			}
+			//ImGui::TreePop();
+		//}
 		}
 	}
 	ImGui::Separator();

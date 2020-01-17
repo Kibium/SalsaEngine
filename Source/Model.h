@@ -57,7 +57,6 @@ public:
 	void SwitchModel();
 	void SwitchTexture(const char*);
 	void RenderAABB();
-  void UpdateTris(float3 &f);
 
 private:
 	void Load(const char*);
@@ -68,8 +67,6 @@ private:
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
 	bool item_exists(const char* path);
-
-
 
 };
 

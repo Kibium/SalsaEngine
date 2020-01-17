@@ -53,8 +53,8 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	object.AddMember("Active", obj.isActive, *allocator);
 	object.AddMember("Static", obj.isStatic, *allocator);
 	if (obj.model != nullptr) {
-		//LOG("MODEL FILE PATH: %s\n", obj.model->filePath);
-		//object.AddMember("Model", rapidjson::Value(obj.model->filePath, *allocator), *allocator);
+		LOG("MODEL FILE PATH: %s\n", obj.modelPath.c_str());
+		object.AddMember("Model", rapidjson::Value(obj.modelPath.c_str(), *allocator), *allocator);
 	}
 	else {
 		object.AddMember("Model", "None", *allocator);
@@ -156,11 +156,6 @@ void JsonConfig::LoadJson(const char *fileName) {
 			else if (std::string(itr->name.GetString()) == std::string("Model")) {
 				gameObject->modelPath = itr->value.GetString();
 				App->model->AddModel(gameObject->modelPath.c_str());
-				//gameObject->model = App->model->GetModel(gameObject->modelPath.c_str());
-				gameObject->DeleteComponent(Type::TRANSFORM);
-				gameObject->CreateComponent(Type::TRANSFORM);
-				gameObject->CreateComponent(Type::MESH);
-				gameObject->CreateComponent(Type::MATERIAL);
 			}
 
 			std::string memberType = kTypeNames[itr->value.GetType()];

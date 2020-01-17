@@ -43,16 +43,6 @@ void Model::ProcessName() {
 	name.pop_back();
 }
 
-void Model::UpdateTris(float3 &f) {
-	for (int i = 0; i < meshes.size(); ++i) {
-		for (int j = 0; j < meshes[i].triangles.size(); ++j) {
-			meshes[i].triangles[j].a += f;
-			meshes[i].triangles[j].b += f;
-			meshes[i].triangles[j].c += f;
-		}
-	}
-}
-
 void Model::Draw() {
 	if (isActive) {
 		for (int i = 0; i < meshes.size(); ++i)
@@ -210,6 +200,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 		Mesh* newMesh = processMesh(mesh, scene);
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
 		auto go = App->scene->CreateGameObject();
+		go->modelPath = fileName;
 		go->model = newMesh;
 		go->name = App->model->GetFilename(filePath) + " " + std::to_string(nmeshes);
 		go->DeleteComponent(Type::TRANSFORM);
@@ -293,7 +284,7 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		load_once = true;
 	}
 
-	return new Mesh(vertices, indices, mat, polygons, verticesNum);
+	return new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {

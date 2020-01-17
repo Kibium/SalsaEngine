@@ -33,7 +33,6 @@ public:
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
 	void DeleteComponent(Type type);
-	void DrawGO();
 
 	GameObject* GetChild(unsigned childIndex) const;
 	GameObject* GetChild(const std::string &childName) const;
