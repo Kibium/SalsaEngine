@@ -121,6 +121,7 @@ void Model::Load(const char* path) {
 		return;
 	}
 	modelBox.SetNegativeInfinity();
+	boundingBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
@@ -241,6 +242,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
 
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+	boundingBox.Enclose(modelBox);
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
@@ -351,47 +353,4 @@ string Model::GetFilename(const char *path) {
 	std::string filename = dir.substr(currentDir + 1);
 
 	return filename;
-}
-void Model::RenderAABB() {
-
-
-	/*
-		glLineWidth(2.0F);
-		glBegin(GL_QUADS);
-
-		glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
-
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MaxY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MinZ());
-		glVertex3f(modelBox.MaxX(), modelBox.MinY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MinZ());
-		glVertex3f(modelBox.MinX(), modelBox.MinY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MaxZ());
-		glVertex3f(modelBox.MinX(), modelBox.MaxY(), modelBox.MinZ());
-
-		glEnd();*/
-
-
 }

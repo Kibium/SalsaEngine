@@ -43,12 +43,12 @@ public:
 	void Draw();
 	void SwitchModel();
 	void SwitchTexture(const char*);
-	void RenderAABB();
 	aiVector3D modelPosition;
 	aiVector3D modelScale;
 	aiVector3D modelRotation;
 	bool model = false;
 	AABB modelBox;
+	AABB boundingBox;
 	int npolys = 0;
 	int nvertex = 0;
 	int nmeshes = 0;
