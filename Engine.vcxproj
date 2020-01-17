@@ -163,6 +163,11 @@
     <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImApp.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="Libraries\Imgui\imconfig.h" />
     <ClInclude Include="Libraries\Imgui\imgui.h" />
     <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h" />
@@ -309,6 +314,10 @@
     <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_draw.cpp" />
