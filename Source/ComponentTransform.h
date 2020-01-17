@@ -12,6 +12,7 @@ public:
 	update_status Update() override;
 	void RotToQuat();
 	void UpdateMatrix();
+	void SetNewMatrix(const float4x4 & newGlobal);
 	void UpdateAABBBox();
 	void OnEditor() override;
 

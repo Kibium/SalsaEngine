@@ -5,6 +5,7 @@
 #include "ModuleWindow.h"
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
+#include "ModuleGUI.h"
 #include "ModuleModelLoader.h"
 #include "debugdraw.h"
 #include "ModuleDebugDraw.h"
@@ -18,6 +19,7 @@
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
 #include "AABBTree.h"
+
 
 ModuleRender::ModuleRender()
 {
@@ -212,9 +214,8 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();
-	
-	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	DrawLine(App->input->ray_world);
+	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -307,8 +308,30 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 
 void ModuleRender::DrawLine(float3 so) {
 
-
-	
 	dd::line(App->scene->camera->frustum.pos, so, math::float3(1.0f, 0.0f, 1.0f));
+
+}
+void ModuleRender::DrawGuizmo() {
+
+	ImVec2 pos = App->gui->GetScenePos();
+	float sceneHeight = App->gui->GetSceneHeight();
+	float sceneWidth = App->gui->GetSceneWidth();
+	ImGuizmo::SetRect((float)pos.x, (float)pos.y, sceneWidth, sceneHeight);
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetOrthographic(false);
+	ImGuizmo::Enable(true);
+
+
+	if (App->scene->selected != nullptr) {
+
+		float4x4 newModel = App->scene->selected->transform->worldMatrix.Transposed();
+		float4x4 newView = App->scene->camera->view.Transposed();
+		float4x4 newProj = App->scene->camera->proj.Transposed();
+		ImGuizmo::Manipulate(newView.ptr(), newProj.ptr(), guizmoOP, guizmoMode, newModel.ptr());
+
+		if (ImGuizmo::IsUsing()) {
+			App->scene->selected->transform->SetNewMatrix(newModel.Transposed());
+		}
+	}
 
 }

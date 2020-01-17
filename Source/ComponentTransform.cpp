@@ -46,6 +46,12 @@ void ComponentTransform::UpdateMatrix()
 	worldMatrix = worldMatrix * localMatrix;
 
 }
+void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal)
+{
+	worldMatrix = newGlobal*localMatrix;
+	UpdateAABBBox();
+
+}
 
 void ComponentTransform::UpdateAABBBox()
 {

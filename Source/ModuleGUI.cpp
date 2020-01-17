@@ -370,6 +370,7 @@ void ModuleGUI::Scene() {
 			ImVec2(0, 1),
 			ImVec2(1, 0)
 		);
+		App->renderer->DrawGuizmo();
 
 	}
 	ImGui::End();

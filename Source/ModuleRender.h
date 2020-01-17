@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "ModuleCamera.h"
 #include "Globals.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 
 struct SDL_Texture;
@@ -32,11 +33,15 @@ public:
 
 	void DrawLine(float3 so);
 
+	void DrawGuizmo();
+
 public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
 	ComponentCamera* GameCamera = nullptr;
+	ImGuizmo::OPERATION guizmoOP = ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE guizmoMode = ImGuizmo::WORLD;
 
 private:
 	GLuint FBO;
