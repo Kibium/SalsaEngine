@@ -51,7 +51,7 @@ public:
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
 	std::vector<Mesh> meshes;
-	Model* model = nullptr;
+	Mesh* model = nullptr;
 	std::string modelPath;
 };
 

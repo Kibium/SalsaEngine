@@ -256,21 +256,21 @@ void ModuleInput::DroppedFile(const char* file) const
 		LOG("\n");
 
 		// Process file and create empty gameobject
-		App->scene->selected = nullptr;
+		//App->scene->selected = nullptr;
 		App->model->AddModel(file);
-		auto obj = App->scene->CreateGameObject();
-		obj->name = App->model->GetModel(file)->name;
+		//auto obj = App->scene->CreateGameObject();
+		//obj->name = App->model->GetModel(file)->name;
 
 		// Process components
-		obj->model = App->model->GetModel(file);
-		obj->DeleteComponent(Type::TRANSFORM);
-		obj->CreateComponent(Type::TRANSFORM);
-		obj->CreateComponent(Type::MESH);
-		obj->CreateComponent(Type::MATERIAL);
+		//obj->model = App->model->GetModel(file);
+		//obj->DeleteComponent(Type::TRANSFORM);
+		//obj->CreateComponent(Type::TRANSFORM);
+		//obj->CreateComponent(Type::MESH);
+		//obj->CreateComponent(Type::MATERIAL);
 
-		App->scene->selected = obj;
-		App->scene->camera->Focus();
-		App->scene->camera->Focus();
+		//App->scene->selected = obj;
+		//App->scene->camera->Focus();
+		//App->scene->camera->Focus();
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {

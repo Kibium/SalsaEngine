@@ -11,6 +11,7 @@
 #include <assimp/material.h>
 #include <assimp/mesh.h>
 #include <algorithm>
+#include "GameObject.h"
 using namespace Assimp;
 
 Model::Model() {
@@ -20,7 +21,6 @@ Model::Model(const char *filePath) : filePath(filePath), fileName(filePath) {
 	LOG("FILEPATH: %s\n", filePath);
 	ProcessName();
 	SwitchModel();
-	
 }
 
 Model::~Model() {
@@ -46,18 +46,18 @@ void Model::ProcessName() {
 void Model::Draw() {
 	if (isActive) {
 		for (int i = 0; i < meshes.size(); ++i)
-			meshes[i].Draw();
+			meshes[i]->Draw();
 	}
 
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1,1,1);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1, 1, 1);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
 
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x,   mat.diffuse_color.y,   mat.diffuse_color.z,   mat.diffuse_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x,  mat.specular_color.y,  mat.specular_color.z,  mat.specular_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"),  mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"),  mat.emissive_color.x,  mat.emissive_color.y,  mat.emissive_color.z,  mat.emissive_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z, mat.diffuse_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x, mat.specular_color.y, mat.specular_color.z, mat.specular_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), mat.emissive_color.x, mat.emissive_color.y, mat.emissive_color.z, mat.emissive_color.w);
 
 	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), mat.shininess);
 
@@ -94,13 +94,13 @@ void Model::SwitchTexture(const char *file) {
 	textures_loaded.push_back(texture);
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].textures = textures;
+		meshes[i]->textures = textures;
 
 }
 
 void Model::Load(const char* path) {
 	DefaultLogger::create("", Logger::VERBOSE);
-	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
+	const unsigned int severity = /*Logger::Debugging | Logger::Info |*/ Logger::Err /*| Logger::Warn*/;
 	DefaultLogger::get()->attachStream(new myStream(), severity);
 	// read file via ASSIMP
 	Assimp::Importer importer;
@@ -114,19 +114,13 @@ void Model::Load(const char* path) {
 	modelBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
-	//scene->mRootNode->mTransformation.a4 = 12;
-
 	processNode(scene->mRootNode, scene);
-
-
 
 	model = true;
 	DefaultLogger::kill();
-
 }
 
 bool Model::item_exists(const char* path) {
-
 
 	FILE *file = nullptr;
 
@@ -156,14 +150,14 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 
 			mat.diffuse_map = tex.id;
 			mat.diff_path = dir;
-			
+
 		}
 
 		break;
 
 
 	case SPECULAR:
-		dir = directory +name + "_specular.tif";
+		dir = directory + name + "_specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
 		cout << tex.id;
 		if (item_exists(dir.c_str())) {
@@ -190,16 +184,28 @@ void Model::LoadTexture(vector<Texture>& v, TextureType type) {
 		}
 		break;
 	}
-	
+
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
 	// process each mesh located at the current node
+	int counter = 0;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+
+		// Create a Game Object for each mesh
+		Mesh* newMesh = processMesh(mesh, scene);
+		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
+		auto go = App->scene->CreateGameObject();
+		go->model = newMesh;
+		go->name = App->model->GetFilename(filePath) + " " + std::to_string(nmeshes);
+		go->DeleteComponent(Type::TRANSFORM);
+		go->CreateComponent(Type::TRANSFORM);
+		go->CreateComponent(Type::MESH);
+		go->CreateComponent(Type::MATERIAL);
+		meshes.push_back(newMesh);
 		nmeshes += 1;
 	}
 
@@ -212,7 +218,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 	App->scene->camera->Focus();
 }
 
-Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
@@ -236,8 +242,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
-	npolys += mesh->mNumFaces;
-	nvertex += indices.size();
+	int polygons = mesh->mNumFaces;
+	int verticesNum = indices.size();
 
 	// process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -270,7 +276,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		load_once = true;
 	}
 
-	return Mesh(vertices, indices, mat);
+	return new Mesh(vertices, indices, mat, polygons, verticesNum);
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {

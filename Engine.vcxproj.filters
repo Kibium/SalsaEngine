@@ -675,9 +675,6 @@
     <ClInclude Include="Libraries\optick\optick_server.h">
       <Filter>Optick</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\rapidjson\internal\meta.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -905,6 +902,9 @@
     </ClInclude>
     <ClInclude Include="Source\JsonConfig.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
+      <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

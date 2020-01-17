@@ -2,7 +2,9 @@
 #define MESH_H
 
 #include "MathGeoLib.h"
-
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -50,12 +52,20 @@ struct Material
 
 class Mesh {
 public:
+	Material mat;
+	AABB modelBox;
+	int npolys = 0;
+	int nvertex = 0;
+	bool isActive = true;
+	aiVector3D modelPosition;
+	aiVector3D modelScale;
+	aiVector3D modelRotation;
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
 	Material meshMaterial;
 	unsigned int VAO;
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m);
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices);
 	void Draw();
 
 private:
