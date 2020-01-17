@@ -1,19 +1,26 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
+#include "ModuleGUI.h"
 #include "ModuleModelLoader.h"
 #include "debugdraw.h"
 #include "ModuleDebugDraw.h"
 #include "Skybox.h"
-
+#include "GameObject.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
 #include "SDL.h"
 #include "MathGeoLib.h"
 #include "optick/optick.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
+#include "Geometry/LineSegment.h"
+
 
 ModuleRender::ModuleRender()
 {
@@ -69,6 +76,7 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
 	OPTICK_CATEGORY("UpdateRender", Optick::Category::Rendering);
+	
 	//DrawScene();
 	return UPDATE_CONTINUE;
 }
@@ -121,14 +129,20 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
 	App->scene->camera->DrawFrustum();
-	//dd::axisTriad(App->camera->view.Inverted(),5,8);
+	for (auto gameObject : App->scene->root->children) {
+		if (gameObject->model != nullptr) {
+			DrawAABB(gameObject);
+			App->scene->DrawTree();
+		}
+
+	}
 	DrawGrid();
 //	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
 		//App->model->Draw();
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
-	App->debugdraw->Draw(GameCamera, gameFBO, width, height);
+	App->debugdraw->Draw(GameCamera, gameFBO, width, height); 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {
@@ -186,13 +200,22 @@ void ModuleRender::DrawScene(const float width, const float height) {
 
 	glUseProgram(App->shader->def_program);
 
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
-	DrawGrid();
-	App->model->Draw();
+	for (auto gameObject : App->scene->root->children) {
+		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
+		if (gameObject->model != nullptr) {
+			gameObject->model->Draw();
+			DrawAABB(gameObject);
+			App->scene->DrawTree();
+		}
+			
+			
+	}
 	glUseProgram(0);
 	App->skybox->Draw();
+	DrawGrid();
+	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -224,61 +247,16 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	glViewport(0, 0, width, height);
 }
 void ModuleRender::DrawGrid() {
+
 	// Lines white
-	//
-
-	glLineWidth(1.0F);
-	float d = 200.0F;
-	glColor4f(1.F, 1.F, 1.F, 1.F);
-	glBegin(GL_LINES);
-	for (float i = -d; i <= d; i += 1.0F) {
-		glVertex3f(i, 0.0F, -d);
-		glVertex3f(i, 0.0F, d);
-		glVertex3f(-d, 0.0F, i);
-		glVertex3f(d, 0.0F, i);
-	}
-	glEnd();
-
-	glLineWidth(2.0F);
-	glBegin(GL_LINES);
-
-	// Red X
-	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.1F, 0.0F);
-	glVertex3f(1.1F, -0.1F, 0.0F);
-	glVertex3f(1.1F, 0.1F, 0.0F);
-	glVertex3f(1.0F, -0.1F, 0.0F);
-
-	// Green Y
-	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 1.0F, 0.0F);
-	glVertex3f(-0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.05F, 0.0F);
-
-	// Blue Z
-	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 0.0F, 1.0F);
-	glVertex3f(-0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(0.05F, -0.1F, 1.05F);
-
-	glEnd();
-	glLineWidth(1.0F);
-
-	glUseProgram(App->shader->def_program);
+	dd::xzSquareGrid(-100.0f, 100.0f, 0.0f, 4.0f, math::float3(0.0f, 0.0f, 0.0f));
 
 }
+void ModuleRender::DrawAABB(GameObject* go) {
+
+	dd::aabb(go->model->modelBox.minPoint, go->model->modelBox.maxPoint, math::float3(0.0f, 0.0f, 0.0f));
+}
+
 void ModuleRender::SetAxis() {
 	glLineWidth(2.0F);
 	glBegin(GL_LINES);
@@ -326,4 +304,93 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	
+}
+
+void ModuleRender::MousePicking(float2 mouse) {
+
+	std::map<float, GameObject*> hits;
+	LineSegment ray = CreatingRay(mouse);
+	GetAABBHits(ray, hits);
+	float minDistance = App->scene->camera->frustum.farPlaneDistance*20;
+	if (hits.size() > 0) {
+		GameObject* aux = nullptr;
+		for (std::map<float, GameObject*>::const_iterator it = hits.begin(); it != hits.end(); ++it) {
+			GameObject* go = it->second;
+			if (go->model != nullptr) {
+				LineSegment localRay(ray);
+				localRay.Transform(go->transform->worldMatrix.Inverted());
+				Triangle triangle;
+				for (int j = 0; j < go->model->meshes.size(); j++) {
+					for (int i = 0; i < go->model->meshes[j].indices.size()-2; i++) {
+						triangle.a = go->model->meshes[j].vertices[go->model->meshes[j].indices[i]].Position;
+						triangle.b = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+1]].Position;
+						triangle.c = go->model->meshes[j].vertices[go->model->meshes[j].indices[i+2]].Position;
+						
+						float distance;
+						bool hit = triangle.Intersects(localRay, &distance);
+						LOG("HIT GAME OBJECT: %s \n", hit ? "true" : "false");
+						if (hit) {
+							if (distance < minDistance) {
+								aux = go;
+								minDistance = distance;
+							}
+						}
+					}
+				}
+			}
+		}
+		App->scene->selected = aux;
+	}	
+
+}
+
+LineSegment ModuleRender::CreatingRay(float2 mouse) {
+	
+	ImVec2 pos = App->gui->GetScenePos();
+	float sceneHeight = App->gui->GetSceneHeight();
+	float sceneWidth = App->gui->GetSceneWidth();
+	float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
+	float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
+	float2 normalizedPos = float2((mouse.x - (pos.x + (sceneWidth / 2))) / (sceneWidth / 2), ((pos.y + (sceneHeight / 2)) - mouse.y) / (sceneWidth / 2));
+	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
+	
+	return picking;
+
+}
+ void ModuleRender::GetAABBHits(LineSegment ray, std::map<float, GameObject*>& gos) {
+	 for (auto gameObject : App->scene->root->children) {
+		 if (gameObject->model != nullptr) {
+			 bool hit = ray.Intersects(gameObject->model->modelBox);
+			 LOG("HIT AABB: %s \n", hit ? "true" : "false");
+			 if (hit) {
+				 float distance = App->scene->camera->frustum.pos.Distance(gameObject->model->modelBox);
+				 gos[distance] = gameObject;
+			 }
+		 }
+	 }
+}
+
+void ModuleRender::DrawGuizmo() {
+
+	ImVec2 pos = App->gui->GetScenePos();
+	float sceneHeight = App->gui->GetSceneHeight();
+	float sceneWidth = App->gui->GetSceneWidth();
+	ImGuizmo::SetRect((float)pos.x, (float)pos.y, sceneWidth, sceneHeight);
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetOrthographic(false);
+	ImGuizmo::Enable(true);
+
+
+	if (App->scene->selected != nullptr) {
+
+		float4x4 newModel = App->scene->selected->transform->worldMatrix.Transposed();
+		float4x4 newView = App->scene->camera->view.Transposed();
+		float4x4 newProj = App->scene->camera->proj.Transposed();
+		ImGuizmo::Manipulate(newView.ptr(), newProj.ptr(), guizmoOP, guizmoMode, newModel.ptr());
+
+		if (ImGuizmo::IsUsing()) {
+			App->scene->selected->transform->SetNewMatrix(newModel.Transposed());
+		}
+	}
+
 }

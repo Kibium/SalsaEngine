@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Globals.h"
 #include "MathGeoLib.h"
+#include "GameObject.h"
 
 #define SIZE_FACTOR 3
 #define CAMERA_SPEED 0.1f
@@ -59,6 +60,8 @@ public:
 	void Orbit(const float, const float);
 	void Focus();
 	void DrawFrustum();
+	bool PickingAABBHit();
+	bool PickingTriangleHit();
 	in_out_frustum ContainsAABOX(const AABB & refBox);
 
 	Frustum frustum;
@@ -70,10 +73,19 @@ public:
 	float cameraSpeed = CAMERA_SPEED;
 	float rotationSpeed = ROTATION_SPEED;
 private:
+	bool CompareDistances(GameObject* g1, GameObject* g2);
+	void SortByDistance();
 	float lastX = 0;
 	float lastY = 0;
 	bool orbit = false;
 	bool speeding = false;
+	LineSegment picking;
+	vector<GameObject*> objectsHit, sorted;
+	float a, b;
+	float3 hit_point;
+	float distance;
+
+
 };
 #endif // __COMPONENTCAMERA_H__
 

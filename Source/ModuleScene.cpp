@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "optick/optick.h"
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 #include "ComponentTransform.h"
 #include "JsonConfig.h"
 
@@ -23,38 +24,13 @@ ModuleScene::~ModuleScene() {
 bool ModuleScene::Init() {
 	LOG("Init Module Scene\n");
 	bool ret = true;
+  
 	camera = new ComponentCamera();
-	root = new GameObject();
-	root->name = "RootNode";
-
-	//GameObject* obj1 = new GameObject();
-	//obj1->name = "Jorgito";
-	//obj1->CreateComponent(Type::MESH);
-	//obj1->CreateComponent(Type::MATERIAL);
-	//obj1->parent = root;
-	//root->children.push_back(obj1);
-	//gameObjects.push_back(obj1);
-
-	//GameObject* obj1C = new GameObject();
-	//obj1C->name = "Pepa";
-	//obj1C->parent = obj1;
-	//obj1->children.push_back(obj1C);
-	//gameObjects.push_back(obj1C);
-
-	//GameObject* obj1C2 = new GameObject();
-	//obj1C2->name = "Jorge";
-	//obj1C2->parent = obj1;
-	//obj1->children.push_back(obj1C2);
-	//gameObjects.push_back(obj1C2);
-
-	//GameObject* obj2 = new GameObject();
-	//obj2->name = "Marta";
-	//obj2->parent = root;
-	//root->children.push_back(obj2);
-	//gameObjects.push_back(obj2);
-
-	//SortGameObjects(root->children);
-	//SortGameObjects(obj1->children);
+  
+	root = new GameObject("RootNode");
+  root->name = "RootNode";
+  
+	abbTree = new AABBTree(5);
 
 	for (std::vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it) {
 		if ((*it)->isActive)
@@ -103,6 +79,7 @@ bool ModuleScene::CleanUp() {
 GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
+	allGo.push_back(gameObject);
 	root->children.push_back(gameObject);
 	return gameObject;
 }
@@ -174,7 +151,8 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 				}
 
 				// Process each gameobject's childs
-				DrawGameObjects(objects[i]->children);
+				if(objects.size() > 0) //Toni super fix, it crashed when you'd delete the last one
+					DrawGameObjects(objects[i]->children);
 				ImGui::TreePop();
 			}
 		}
@@ -266,4 +244,19 @@ void ModuleScene::SaveScene() {
 void ModuleScene::LoadScene(const char *fileName) {
 	JsonConfig config;
 	config.LoadJson(fileName);
+}
+
+void ModuleScene::DrawTree() {
+	AABBTree* aux = nullptr;
+	aux = new AABBTree(5);
+	for (auto gameObject : root->children) {
+
+		if (gameObject->model != nullptr) 
+			aux->insertObject(gameObject);
+		
+	}
+
+	aux->DrawTree();
+	abbTree = aux;
+	aux = nullptr;
 }

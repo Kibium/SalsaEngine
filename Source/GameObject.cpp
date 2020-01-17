@@ -50,23 +50,26 @@ bool GameObject::CleanUp() {
 	return true;
 }
 
-Component* GameObject::CreateComponent(Type type) {
-	Component* component = nullptr;
+void GameObject::CreateComponent(Type type) {
+	//Component* component = nullptr;
 
 	switch (type) {
 	case Type::TRANSFORM:
-		component = new ComponentTransform();
-		component->myGo = this;
+		transform = new ComponentTransform();
+		transform->myGo = this;
+		components.push_back(transform);
 		break;
 
 	case Type::MESH:
-		component = new ComponentMesh();
-		component->myGo = this;
+		mesh = new ComponentMesh();
+		mesh->myGo = this;
+		components.push_back(mesh);
 		break;
 
 	case Type::MATERIAL:
-		component = new ComponentMaterial();
-		component->myGo = this;
+		material = new ComponentMaterial();
+		material->myGo = this;
+		components.push_back(material);
 		break;
 
 	default:
@@ -74,10 +77,9 @@ Component* GameObject::CreateComponent(Type type) {
 		break;
 	}
 
-	if (component != nullptr)
-		components.push_back(component);
+	/*if (component != nullptr)
+		components.push_back(component);*/
 
-	return component;
 }
 
 void GameObject::DrawComponents() {
@@ -148,6 +150,7 @@ void GameObject::DeleteComponent(Type type) {
 		}
 	}
 }
+
 
 GameObject* GameObject::GetChild(unsigned childIndex) const {
 	GameObject* child = nullptr;

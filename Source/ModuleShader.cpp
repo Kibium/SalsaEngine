@@ -76,7 +76,7 @@ std::string ModuleShader::getShadertext(char* source) {
 
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 		return "error";
 	}
 }
@@ -146,6 +146,53 @@ bool ModuleShader::Init()
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 
+	//............Lines.................//
+	try
+	{
+		// open files
+		vShaderFile.open("./shaders/lines.vs");
+		fShaderFile.open("./shaders/lines.fs");
+		std::stringstream vShaderStream, fShaderStream;
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+		// close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+		// convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
+	}
+
+	// 2. compile shaders
+	
+	// vertex shader
+	vertex = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertex, 1, &vShaderCode, NULL);
+	glCompileShader(vertex);
+	checkCompileErrors(vertex, "VERTEX");
+	// fragment Shader
+	fragment = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragment, 1, &fShaderCode, NULL);
+	glCompileShader(fragment);
+	checkCompileErrors(fragment, "FRAGMENT");
+	// shader Program
+	lines_program = glCreateProgram();
+	glAttachShader(lines_program, vertex);
+	glAttachShader(lines_program, fragment);
+	glLinkProgram(lines_program);
+	checkCompileErrors(lines_program, "PROGRAM");
+
+	
+
+	// delete the shaders as they're linked into our program now and no longer necessary
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
+
 
 	//TODO: This has to change
 	//.............PHONG.................//
@@ -169,7 +216,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -227,7 +274,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -253,10 +300,10 @@ bool ModuleShader::Init()
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 
-	glUseProgram(grid_program);
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(grid_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	//glUseProgram(grid_program);
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "model"), 1, GL_TRUE, &model[0][0]); //Calculating vertexs in the vertex shader
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
+	//glUniformMatrix4fv(glGetUniformLocation(grid_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
 	//TODO: This has to change
 	//.............FLAT.................//
@@ -279,7 +326,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -328,7 +375,7 @@ bool ModuleShader::Init()
 	}
 	catch (std::ifstream::failure e)
 	{
-		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
+		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ \n");
 	}
 	vShaderCode = vertexCode.c_str();
 	fShaderCode = fragmentCode.c_str();
@@ -517,7 +564,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
 
-			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- \n" );
+
+			LOG("ERROR::SHADER_COMPILATION_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}
@@ -528,7 +577,9 @@ void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
 
-			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: ", "\n",infoLog, "\n -- --------------------------------------------------- -- \n ");
+
+			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: %s\n", infoLog);
+
 
 		}
 	}

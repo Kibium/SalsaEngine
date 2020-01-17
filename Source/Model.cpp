@@ -43,6 +43,16 @@ void Model::ProcessName() {
 	name.pop_back();
 }
 
+void Model::UpdateTris(float3 &f) {
+	for (int i = 0; i < meshes.size(); ++i) {
+		for (int j = 0; j < meshes[i].triangles.size(); ++j) {
+			meshes[i].triangles[j].a += f;
+			meshes[i].triangles[j].b += f;
+			meshes[i].triangles[j].c += f;
+		}
+	}
+}
+
 void Model::Draw() {
 	if (isActive) {
 		for (int i = 0; i < meshes.size(); ++i)
@@ -112,6 +122,7 @@ void Model::Load(const char* path) {
 		return;
 	}
 	modelBox.SetNegativeInfinity();
+	boundingBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
 	// process ASSIMP's root node recursively
 	processNode(scene->mRootNode, scene);
@@ -215,6 +226,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
 		processNode(node->mChildren[i], scene);
 	}
+	
 	App->scene->camera->Focus();
 }
 
@@ -228,16 +240,21 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 
+
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
 		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
 	}
+
+
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+	boundingBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 		aiFace face = mesh->mFaces[i];
+
 		// retrieve all indices of the face and store them in the indices vector
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
@@ -343,7 +360,4 @@ string Model::GetFilename(const char *path) {
 	std::string filename = dir.substr(currentDir + 1);
 
 	return filename;
-}
-void Model::RenderAABB() {
-
 }

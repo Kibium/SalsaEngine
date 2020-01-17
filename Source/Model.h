@@ -40,6 +40,7 @@ public:
 	aiVector3D modelRotation;
 	bool model = false;
 	AABB modelBox;
+	AABB boundingBox;
 	int npolys = 0;
 	int nvertex = 0;
 	int nmeshes = 0;
@@ -56,6 +57,7 @@ public:
 	void SwitchModel();
 	void SwitchTexture(const char*);
 	void RenderAABB();
+  void UpdateTris(float3 &f);
 
 private:
 	void Load(const char*);
@@ -66,6 +68,8 @@ private:
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
 	bool item_exists(const char* path);
+
+
 
 };
 

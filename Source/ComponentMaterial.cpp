@@ -28,6 +28,12 @@ void ComponentMaterial::UpdateMaterial(unsigned int& materialID) {
 
 }
 
+void ComponentMaterial::UpdateMaterial(float4 &color) {
+
+	color = myGo->model->mat.diffuse_color;
+
+}
+
 void ComponentMaterial::OnEditor() {
 	if (ImGui::CollapsingHeader(ICON_FA_PALETTE" Material", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
 		Component::OnEditor();
@@ -76,8 +82,13 @@ void ComponentMaterial::OnEditor() {
 					ImGui::SliderFloat("Color G", &myGo->model->mat.diffuse_color.y, 0, 1); ImGui::SameLine();
 					ImGui::SliderFloat("Color B", &myGo->model->mat.diffuse_color.z, 0, 1);
 
+					for (int i = 0; i < myGo->model->meshes.size(); ++i) {
+						UpdateMaterial(myGo->model->meshes[i].meshMaterial.diffuse_color);
+						glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), myGo->model->meshes[i].meshMaterial.diffuse_color.x, myGo->model->meshes[i].meshMaterial.diffuse_color.y, myGo->model->meshes[i].meshMaterial.diffuse_color.z, myGo->model->meshes[i].meshMaterial.diffuse_color.w);
 
-					glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), myGo->model->mat.diffuse_color.x, myGo->model->mat.diffuse_color.y, myGo->model->mat.diffuse_color.z, myGo->model->mat.diffuse_color.w);
+					}
+
+
 
 					if (ImGui::SliderFloat("k diffuse", &myGo->model->mat.k_diffuse, 0, 1)) {
 						glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), myGo->model->mat.k_diffuse);

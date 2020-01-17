@@ -64,24 +64,6 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_demo.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_draw.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_impl_opengl3.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_impl_sdl.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_widgets.cpp">
-      <Filter>Other</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp">
       <Filter>Other</Filter>
     </ClCompile>
@@ -217,8 +199,118 @@
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Source\JsonConfig.cpp">
+    <ClCompile Include="Source\AABBTree.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui_demo.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui_draw.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui_impl_opengl3.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui_impl_sdl.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\Imgui\imgui_widgets.cpp">
+      <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    <ClCompile Include="Source\ModuleFileSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\globbing.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\ignorecase.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_7z.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_dir.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_grp.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_hog.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_iso9660.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_mvl.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_qpak.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_slb.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_unpacked.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_vdf.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_wad.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_zip.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_byteorder.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_haiku.cpp">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_os2.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_posix.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_qnx.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_unix.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\PhysFS\include\physfsrwops.c">
+      <Filter>PhysFS</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\FileDialog\ImGuiFileDialog.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,34 +548,10 @@
     <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imconfig.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_impl_sdl.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_internal.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\Importer.hpp">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\importerdesc.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_rectpack.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_textedit.h">
-      <Filter>Other</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_truetype.h">
       <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h">
@@ -894,16 +962,102 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\JsonConfig.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMaterial.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentMesh.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentTransform.h">
+      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AABBTree.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imconfig.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imgui.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imgui_impl_sdl.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imgui_internal.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imstb_rectpack.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imstb_textedit.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\Imgui\imstb_truetype.h">
+      <Filter>ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\ImGuizmo\ImApp.h">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\ImGuizmo\ImGradient.h">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\ImGuizmo\ImGuizmo.h">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\ImGuizmo\ImSequencer.h">
+      <Filter>ImGUI\ImGuizmo</Filter>
+    <ClInclude Include="Source\ModuleFileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\abs-file.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\globbing.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\ignorecase.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs_casefolding.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs_internal.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs_lzmasdk.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs_miniz.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfs_platforms.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\PhysFS\include\physfsrwops.h">
+      <Filter>PhysFS</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\FileDialog\ImGuiFileDialog.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\FileDialog\dirent.h">
       <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>
@@ -996,8 +1150,8 @@
     <None Include="Game\shaders\lines.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\SceneData.json">
-      <Filter>Main</Filter>
+    <None Include="Libraries\PhysFS\include\physfs_platform_apple.m">
+      <Filter>PhysFS</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1018,6 +1172,15 @@
     </Filter>
     <Filter Include="Optick">
       <UniqueIdentifier>{bf4eef41-2355-4b4c-b485-04840ca28395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI">
+      <UniqueIdentifier>{250a1907-d5fc-4f40-9651-fa23a32b15eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI\ImGuizmo">
+      <UniqueIdentifier>{29e955e5-de31-4e19-9c9c-a28c24d63bcc}</UniqueIdentifier>
+    <Filter Include="PhysFS">
+      <UniqueIdentifier>{7b939d69-165a-4b58-a633-ced16b6f41d8}</UniqueIdentifier>
+
     </Filter>
   </ItemGroup>
 </Project>

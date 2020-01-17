@@ -29,10 +29,11 @@ public:
 	virtual bool CleanUp();
 
 public:
-	Component* CreateComponent(Type type);
+	void CreateComponent(Type type);
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
 	void DeleteComponent(Type type);
+	void DrawGO();
 
 	GameObject* GetChild(unsigned childIndex) const;
 	GameObject* GetChild(const std::string &childName) const;
@@ -50,9 +51,14 @@ public:
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
+	ComponentTransform* transform = nullptr;
+	ComponentMesh* mesh = nullptr;
+	ComponentMaterial* material = nullptr;
 	std::vector<Mesh> meshes;
+	float distanceFromCamera = 0;
 	Mesh* model = nullptr;
 	std::string modelPath;
+
 };
 
 #endif // __GAMEOBJECT_H__

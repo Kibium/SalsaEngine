@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include <vector>
 
+class AABBTree;
 class GameObject;
 class ComponentCamera;
 
@@ -27,16 +28,20 @@ public:
 	void DrawHierarchy(bool *showHierarchy);
 	void DrawInspector(bool *show);
 	void DrawPopup(GameObject *gameObject);
+	void DrawTree();
 
 	void SaveScene();
 	void LoadScene(const char *fileName);
 
 public:
+  ComponentCamera* camera = nullptr;
+	std::vector<GameObject*> allGo;
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
-	ComponentCamera* camera = nullptr;
+	AABBTree* abbTree = nullptr;
 	std::vector<GameObject*> gameObjects;
+
 };
 
 #endif // __MODULESCENE_H__

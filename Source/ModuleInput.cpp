@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleTexture.h"
 #include "ModuleModelLoader.h"
+#include "GameObject.h"
 #include "SDL.h"
 #include <assert.h>
 #include <shlwapi.h>
@@ -13,10 +14,13 @@
 #pragma comment(lib,"shlwapi.lib")
 
 #include "ModuleScene.h"
-#include "GameObject.h"
+
 #include "ComponentCamera.h"
+#include "AABBTree.h"
 
 #include "optick/optick.h"
+
+#include "debugdraw.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -30,7 +34,7 @@ bool ModuleInput::Init()
 	bool ret = true;
 	SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -113,7 +117,7 @@ bool ModuleInput::Init()
 	devilMap[".sgi"] = 69;
 	devilMap[".tga"] = 70;
 	devilMap[".tif"] = 71;
-	
+
 	return ret;
 }
 
@@ -141,7 +145,7 @@ update_status ModuleInput::Update()
 		case SDL_MOUSEWHEEL:
 			if (sdlEvent.wheel.y > 0 && App->gui->isScene)
 				App->scene->camera->MoveFoward();
-			
+
 			else if (sdlEvent.wheel.y < 0 && App->gui->isScene)
 				App->scene->camera->MoveBackward();
 
@@ -171,26 +175,91 @@ update_status ModuleInput::Update()
 				App->scene->camera->SetSpeed(CAMERA_SPEED);
 				App->scene->camera->SetRotationSpeed(ROTATION_SPEED);
 				App->scene->camera->SetSpeeding(false);
-				
+
 
 			}
 			break;
 
 		case SDL_MOUSEMOTION:
+
+
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
-				if(App->scene->camera->GetOrbit())
+				if (App->scene->camera->GetOrbit())
 					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 				else
 					App->scene->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
 			break;
 
-					
+		case SDL_MOUSEBUTTONDOWN:
+			//SDL_GetMouseState(&mouseX, &mouseY);
+
+			if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+				if (App->gui->isScene && !App->scene->camera->GetOrbit()) {
+					//If the mouse is inside the scene tab, do all the stuff to cast a ray
+					float2 mouse = float2(sdlEvent.button.x, sdlEvent.button.y);
+					App->renderer->MousePicking(mouse);
+
+
+
+					/*if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
+						mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
+						
+						//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
+
+						float x = (2 * (mouseX - App->gui->GetScenePos().x)) / App->gui->GetSceneWidth() - 1;
+						float y = 1 - (2 * (mouseY - App->gui->GetScenePos().y)) / App->gui->GetSceneHeight();
+						float z = 1;
+
+						float3 ray_nds = float3(x, y, z);
+
+						//We use 'mousepos' to give mouse position to the ray collidiion checker (ComponentCamera.cpp)
+						mousepos = float2(x, y);
+						
+						ray_clip = float4(ray_nds.x, ray_nds.y, -1, 1);
+
+						ray_eye = App->scene->camera->proj.Inverted() * ray_clip;
+
+						ray_eye = float4(ray_eye.x, ray_eye.y, -1, 1);
+
+						temp = App->scene->camera->view.Inverted() * ray_eye;
+
+						ray_world = temp.xyz();
+
+						//ray_world = ray_world.Normalized();
+
+						//LOG("Ray: %0.1f, 0.1f, 0.1f", ray_world.x, ray_world.y, ray_world.z)
+						
+
+						//If there are models in the scene and the ray collided with an AABB
+						if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
+
+							//Detect Triangle collisions
+							App->scene->camera->PickingTriangleHit();
+						}
+
+						//No collissions detected
+						else {
+							App->scene->selected = nullptr;
+						}
+					}*/
+
+				}
+				
+				
+
+
+			}
+
+
+			break;
+
+
 		case SDL_DROPFILE:
 			char* newFile = sdlEvent.drop.file;
 			DroppedFile(newFile);
 			SDL_free(newFile);
 			break;
-		
+
 		}
 	}
 
@@ -227,6 +296,15 @@ update_status ModuleInput::Update()
 	if (keyboard[SDL_SCANCODE_F] && App->gui->isScene)
 		App->scene->camera->Focus();
 
+	if (keyboard[SDL_SCANCODE_R] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::ROTATE;
+
+	if (keyboard[SDL_SCANCODE_T] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::TRANSLATE;
+
+	if (keyboard[SDL_SCANCODE_Y] && App->gui->isScene)
+		App->renderer->guizmoOP = ImGuizmo::SCALE;
+
 	return UPDATE_CONTINUE;
 }
 
@@ -242,7 +320,7 @@ void ModuleInput::DroppedFile(const char* file) const
 	//If the house is BakerHouse.fbx, returns BakerHouse
 	App->model->model_name = App->model->GetFilename(file);
 	App->model->load_once = false;
-	
+
 
 	if (file == NULL) {
 		LOG("ERROR:: DROPPED FILE NOT VALID OR MISSING\n ");
@@ -255,22 +333,9 @@ void ModuleInput::DroppedFile(const char* file) const
 		LOG(file);
 		LOG("\n");
 
-		// Process file and create empty gameobject
+		// Process file and create gameobjects
 		//App->scene->selected = nullptr;
 		App->model->AddModel(file);
-		//auto obj = App->scene->CreateGameObject();
-		//obj->name = App->model->GetModel(file)->name;
-
-		// Process components
-		//obj->model = App->model->GetModel(file);
-		//obj->DeleteComponent(Type::TRANSFORM);
-		//obj->CreateComponent(Type::TRANSFORM);
-		//obj->CreateComponent(Type::MESH);
-		//obj->CreateComponent(Type::MATERIAL);
-
-		//App->scene->selected = obj;
-		//App->scene->camera->Focus();
-		//App->scene->camera->Focus();
 
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {
@@ -280,5 +345,5 @@ void ModuleInput::DroppedFile(const char* file) const
 	else {
 		LOG("ERROR:: FILE FORMAT '%s' NOT ACCEPTED\n ", extension);
 	}
-	
+
 }
