@@ -7,6 +7,7 @@
 #include "ModuleGUI.h"
 #include <algorithm>
 #include "optick/optick.h"
+#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "AABBTree.h"
 #include "ComponentTransform.h"
@@ -29,6 +30,12 @@ bool ModuleScene::Init() {
 
 	root = new GameObject();
 	root->name = "RootNode";
+  gameCamera = new GameObject();
+  gameCamera->name = "MainCamera";
+	gameCamera->CreateComponent(Type::CAMERA);
+	gameCamera->CreateComponent(Type::TRANSFORM);
+	gameCamera->parent = root;
+	root->children.push_back(gameCamera);
 
 	abbTree = new AABBTree(5);
 
@@ -60,6 +67,11 @@ update_status ModuleScene::Update() {
 		if ((*it)->isActive)
 			ret = (*it)->PostUpdate();
 	}
+
+	gameCamera->camera->frustum.pos = gameCamera->transform->position;
+	gameCamera->camera->frustum.up = gameCamera->transform->rotationQuat * float3::unitY;
+	gameCamera->camera->frustum.front = gameCamera->transform->rotationQuat * float3::unitZ;
+	gameCamera->camera->CalculateMatrixes();
 
 	return ret;
 }

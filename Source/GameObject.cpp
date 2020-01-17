@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 #include "imgui.h"
 #include "pcg/pcg_basic.h"
 
@@ -54,6 +55,12 @@ void GameObject::CreateComponent(Type type) {
 	//Component* component = nullptr;
 
 	switch (type) {
+	case Type::CAMERA:
+		camera = new ComponentCamera();
+		camera->myGo = this;
+		isCamera = true;
+		components.push_back(camera);
+		break;
 	case Type::TRANSFORM:
 		transform = new ComponentTransform();
 		transform->myGo = this;

@@ -38,6 +38,7 @@ public:
 	GameObject* root = nullptr;
 	GameObject* dragged = nullptr;
 	GameObject* selected = nullptr;
+	GameObject* gameCamera = nullptr;
 	AABBTree* abbTree = nullptr;
 	std::vector<GameObject*> gameObjects;
 

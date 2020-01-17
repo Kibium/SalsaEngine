@@ -53,7 +53,6 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
-
 	GameCamera = new ComponentCamera();
 	GameCamera->Init();
 	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
@@ -125,14 +124,19 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 
 	glUseProgram(App->shader->test_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &App->scene->camera->model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &GameCamera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &GameCamera->proj[0][0]);
-	App->scene->camera->DrawFrustum();
+	
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &App->scene->gameCamera->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &App->scene->gameCamera->camera->proj[0][0]);
+	//App->scene->camera->DrawFrustum();
+
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
 			DrawAABB(gameObject);
 			App->scene->DrawTree();
+			if (App->scene->gameCamera->camera->ContainsAABOX(gameObject->model->modelBox)) {
+				glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
+				gameObject->model->Draw();
+			}
 		}
 
 	}
@@ -142,7 +146,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
-	App->debugdraw->Draw(GameCamera, gameFBO, width, height); 
+	App->debugdraw->Draw(App->scene->gameCamera->camera, gameFBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void ModuleRender::DrawScene(const float width, const float height) {
@@ -202,6 +206,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->camera->proj[0][0]);
+	App->scene->gameCamera->camera->DrawFrustum();
 	for (auto gameObject : App->scene->root->children) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 		if (gameObject->model != nullptr) {
@@ -255,45 +260,6 @@ void ModuleRender::DrawGrid() {
 void ModuleRender::DrawAABB(GameObject* go) {
 
 	dd::aabb(go->model->modelBox.minPoint, go->model->modelBox.maxPoint, math::float3(0.0f, 0.0f, 0.0f));
-}
-
-void ModuleRender::SetAxis() {
-	glLineWidth(2.0F);
-	glBegin(GL_LINES);
-
-	// Red X
-	glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.0F, 0.0F);
-	glVertex3f(1.0F, 0.1F, 0.0F);
-	glVertex3f(1.1F, -0.1F, 0.0F);
-	glVertex3f(1.1F, 0.1F, 0.0F);
-	glVertex3f(1.0F, -0.1F, 0.0F);
-
-	// Green Y
-	glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 1.0F, 0.0F);
-	glVertex3f(-0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.05F, 1.25F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.15F, 0.0F);
-	glVertex3f(0.0F, 1.05F, 0.0F);
-
-	// Blue Z
-	glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
-	glVertex3f(0.0F, 0.0F, 0.0F);
-	glVertex3f(0.0F, 0.0F, 1.0F);
-	glVertex3f(-0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(0.05F, 0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(-0.05F, -0.1F, 1.05F);
-	glVertex3f(0.05F, -0.1F, 1.05F);
-
-	glEnd();
-	glLineWidth(1.0F);
 }
 
 void ModuleRender::SetWireframe(const bool wireframe) {
