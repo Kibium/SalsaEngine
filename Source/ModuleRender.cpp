@@ -215,7 +215,6 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();
-	DrawLine(App->input->ray_world);
 	App->debugdraw->Draw(App->scene->camera, FBO, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -307,11 +306,6 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 	
 }
 
-void ModuleRender::DrawLine(float3 so) {
-
-	dd::line(App->scene->camera->frustum.pos, so, math::float3(1.0f, 0.0f, 1.0f));
-
-}
 void ModuleRender::MousePicking(float2 mouse) {
 
 	std::map<float, GameObject*> hits;

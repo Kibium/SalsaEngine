@@ -22,6 +22,7 @@ public:
 	void EventManager(SDL_Event);
 	void ShowConsole(const char* title, bool* p_opened = NULL);
 	void MainMenu();
+	void MainWindow();
 	void Clear() { logBuffer.clear(); LineOffsets.clear(); }
 public:
 	void Game();
