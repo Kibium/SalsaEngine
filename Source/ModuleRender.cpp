@@ -127,7 +127,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &App->scene->gameCamera->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &App->scene->gameCamera->camera->proj[0][0]);
-	//App->scene->camera->DrawFrustum();
 
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
@@ -141,8 +140,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 	}
 	DrawGrid();
-//	if(App->scene->camera->ContainsAABOX(App->model->modelBox)!= 0)
-		//App->model->Draw();
+
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
@@ -190,18 +188,6 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-/* TONI USED THIS TO RENDER FIGURES AND THE GRID
-	//glUseProgram(App->shader->grid_program);
-	DrawGrid();
-
-	glUseProgram(App->shader->phong_program);
-
-	for (int i = 0; i < App->model->figures.size(); ++i) {
-		const ModuleModelLoader::Figure& f = App->model->figures[i];
-		App->model->RenderMesh(f, App->model->materials[f.material], f.transform, App->camera->view, App->camera->proj);
-	}
-*/
-
 	glUseProgram(App->shader->def_program);
 
 	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->camera->view[0][0]);
@@ -212,6 +198,15 @@ void ModuleRender::DrawScene(const float width, const float height) {
 		if (gameObject->model != nullptr) {
 			gameObject->model->Draw();
 			DrawAABB(gameObject);
+
+			// Draw each child if the obj has
+			if (gameObject->children.size() > 0) {
+				for (auto& obj : gameObject->children) {
+					obj->model->Draw();
+					DrawAABB(obj);
+				}
+			}
+
 			App->scene->DrawTree();
 		}
 			

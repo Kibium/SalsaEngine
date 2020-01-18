@@ -5,6 +5,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
+#include "ModuleTexture.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -70,7 +71,8 @@ public:
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb);
 	void Draw();
 	vector<Vertex> GetVertices();
-	void UpdateTris(float3 &f);
+	void LoadTexture(vector<Texture>& v, TextureType type, std::string & directory, std::string & name);
+	bool item_exists(const char* path);
 
 private:
 	unsigned int VBO, EBO;

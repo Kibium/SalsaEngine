@@ -323,18 +323,23 @@ void ComponentCamera::Orbit(const float xpos, float ypos)
 void ComponentCamera::Focus()
 {
 	if (App->scene->selected != nullptr) {
-		float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
-		float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
+		if (App->scene->selected->isCamera) {
+			//TODO focus when camera selected
+		}
+		else {
+			float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
+			float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
-		float3 direction = (center - frustum.pos).Normalized();
-		float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
-		frustum.front = rotationMatrix * frustum.front;
-		frustum.up = rotationMatrix * frustum.up;
+			float3 direction = (center - frustum.pos).Normalized();
+			float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
+			frustum.front = rotationMatrix * frustum.front;
+			frustum.up = rotationMatrix * frustum.up;
 
-		frustum.farPlaneDistance = 1000 * (size.Length() / 2);
-		frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
-		frustum.pos.y = (size.Length() / 4);
-		CalculateMatrixes();
+			frustum.farPlaneDistance = 1000 * (size.Length() / 2);
+			frustum.pos = center - frustum.front * SIZE_FACTOR * (size.Length() / 2);
+			frustum.pos.y = (size.Length() / 4);
+			CalculateMatrixes();
+		}
 	}
 
 }

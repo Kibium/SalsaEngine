@@ -56,7 +56,7 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentCamera* camera = nullptr;
 	bool isCamera = false;
-	std::vector<Mesh> meshes;
+	//std::vector<Mesh> meshes;
 	float distanceFromCamera = 0;
 	Mesh* model = nullptr;
 	std::string modelPath;

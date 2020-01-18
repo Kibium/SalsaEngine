@@ -7,7 +7,7 @@
 #include "GameObject.h"
 
 #define SIZE_FACTOR 3
-#define CAMERA_SPEED 0.1f
+#define CAMERA_SPEED 10.0f
 #define ROTATION_SPEED 0.02f
 #define MAXIMUM_PITCH 89.f
 #define MINIMUM_PITCH -89.f

@@ -58,6 +58,11 @@ void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal) {
 	worldMatrix.Decompose(position, rotationQuat, scale);
 	QuatToFloat();
 	UpdateAABBBox(App->scene->selected);
+	if (myGo->children.size() > 0) {
+		for (auto& obj : myGo->children) {
+			obj->transform->SetNewMatrix(worldMatrix);
+		}
+	}
 }
 
 void ComponentTransform::UpdateAABBBox(GameObject* go) {

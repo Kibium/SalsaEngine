@@ -3,13 +3,14 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleShader.h"
-
+#include "ModuleModelLoader.h"
 #include <glew.h>
 
 
 
 
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb) : npolys(polygons), nvertex(totalVertices), boundingBox(bb), modelBox(mb)
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb) 
+	: npolys(polygons), nvertex(totalVertices), boundingBox(bb), modelBox(mb)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -29,18 +30,89 @@ vector<Vertex> Mesh::GetVertices() {
 	return vertices;
 }
 
-void Mesh::UpdateTris(float3 & f) {
-	//for (int i = 0; i < meshes.size(); ++i) {
-	for (int j = 0; j < triangles.size(); ++j) {
-		triangles[j].a += f;
-		triangles[j].b += f;
-		triangles[j].c += f;
+void Mesh::LoadTexture(vector<Texture>& v, TextureType type, std::string& directory, std::string& name) {
+	string dir;
+	Texture tex;
+
+	directory = directory.substr(0, directory.size() - 4);
+
+	switch (type) {
+	case DIFFUSE:
+		dir = directory + "Diffuse.png";
+		tex.id = App->texture->Load(dir.c_str());
+
+		if (item_exists(dir.c_str())) {
+			tex.type = "diffuse";
+			tex.path = dir;
+			v.push_back(tex);
+
+			mat.diffuse_map = tex.id;
+			mat.diff_path = dir;
+
+		}
+
+		break;
+
+
+	case SPECULAR:
+		dir = directory + "Specular.tif";
+		tex.id = App->texture->Load(dir.c_str());
+		cout << tex.id;
+		if (item_exists(dir.c_str())) {
+			tex.type = "specular";
+			tex.path = dir;
+			v.push_back(tex);
+
+			mat.specular_map = tex.id;
+			mat.spec_path = dir;
+		}
+		break;
+
+	case OCCLUSION:
+		dir = directory + "Occlusion.png";
+		tex.id = App->texture->Load(dir.c_str());
+		if (item_exists(dir.c_str())) {
+			tex.type = "occlusion";
+			tex.path = dir;
+			v.push_back(tex);
+
+			mat.occlusion_map = tex.id;
+		}
+		break;
 	}
-	//}
+
+}
+
+bool Mesh::item_exists(const char * path) {
+
+	FILE *file = nullptr;
+
+	fopen_s(&file, path, "rb");
+	if (file)
+		return true;
+
+	else
+		return false;
 }
 
 void Mesh::Draw()
 {
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1, 1, 1);
+	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
+
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z, mat.diffuse_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x, mat.specular_color.y, mat.specular_color.z, mat.specular_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
+	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), mat.emissive_color.x, mat.emissive_color.y, mat.emissive_color.z, mat.emissive_color.w);
+
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), mat.shininess);
+
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), mat.k_specular);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), mat.k_diffuse);
+	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), mat.k_ambient);
+
 	//Assigning "ids" to textures
 	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.diff_map"), 0);
 	glUniform1i(glGetUniformLocation(App->shader->def_program, "material.spec_map"), 1);
@@ -49,16 +121,16 @@ void Mesh::Draw()
 
 	//applying textures to the variables deppending on its id
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, meshMaterial.diffuse_map);
+	glBindTexture(GL_TEXTURE_2D, mat.diffuse_map);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, meshMaterial.specular_map);
+	glBindTexture(GL_TEXTURE_2D, mat.specular_map);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, meshMaterial.occlusion_map);
+	glBindTexture(GL_TEXTURE_2D, mat.occlusion_map);
 
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, meshMaterial.emissive_map);
+	glBindTexture(GL_TEXTURE_2D, mat.emissive_map);
 
 	// draw mesh
 	glBindVertexArray(VAO);
@@ -67,7 +139,6 @@ void Mesh::Draw()
 
 	// always good practice to set everything back to defaults once configured.
 	glActiveTexture(GL_TEXTURE0);
-
 }
 
 void Mesh::setupMesh()

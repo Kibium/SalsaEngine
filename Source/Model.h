@@ -26,11 +26,9 @@ public:
 class Model {
 
 public:
-	std::string fileName;
+	std::string fileName, name;
 	bool isActive = true;
 	const char *filePath = nullptr;
-	string name;
-	vector<Texture> textures_loaded;
 	vector<Mesh*> meshes;
 	string directory, model_name;
 	vector<int> textureWidth;
@@ -54,19 +52,15 @@ public:
 
 	void ProcessName();
 	void Draw();
-	void SwitchModel();
-	void SwitchTexture(const char*);
-	void RenderAABB();
 
 private:
 	void Load(const char*);
-	void LoadTexture(vector<Texture>& v, TextureType type);
+	//void LoadTexture(vector<Texture>& v, TextureType type);
 	void processNode(aiNode*, const aiScene*);
 	Mesh* processMesh(aiMesh*, const aiScene*);
-	vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
+	//vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
-	bool item_exists(const char* path);
 
 };
 

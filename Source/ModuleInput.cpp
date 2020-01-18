@@ -117,7 +117,7 @@ bool ModuleInput::Init()
 	devilMap[".sgi"] = 69;
 	devilMap[".tga"] = 70;
 	devilMap[".tif"] = 71;
-
+	assimpMap[".FBX"] = 72;
 	return ret;
 }
 
