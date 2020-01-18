@@ -39,7 +39,7 @@ update_status GameObject::Update() {
 		if ((*it)->active)
 			ret = (*it)->Update();
 	}
-
+	
 	return ret;
 }
 

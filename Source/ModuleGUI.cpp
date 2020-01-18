@@ -173,7 +173,12 @@ void ModuleGUI::ShowConsole() {
 
 }
 void ModuleGUI::ProjectView() {
-	//ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+
+	ImGui::SetNextWindowPos(ImVec2(0,App->window->screen_surface->h * OFFSET_CONSOLE_UP),ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_CONSOLEW, App->window->screen_surface->h * OFFSET_CONSOLEH),
+		ImGuiCond_Once
+	);
 	explorerPos = ImGui::GetWindowPos();
 	explorerHeight = ImGui::GetWindowHeight();
 	explorerWidth = ImGui::GetWindowWidth();
@@ -312,7 +317,11 @@ void ModuleGUI::MainMenu() {
 
 }
 void ModuleGUI::MainWindow() {
-	ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_SCENE_POSX, App->window->screen_surface->h * (OFFSET_NAVBAR+ OFFSET_SCENE_POSY)), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_SCENEW, App->window->screen_surface->h * OFFSET_SCENEH),
+		ImGuiCond_Once
+	);
 
 	if (ImGui::Begin(ICON_FA_SOLAR_PANEL "", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
@@ -330,7 +339,28 @@ void ModuleGUI::MainWindow() {
 }
 
 void ModuleGUI::ShowTimeButtons() {
-	if (ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_BUTTON_POSX, App->window->screen_surface->h * OFFSET_NAVBAR), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_BUTTONW, App->window->screen_surface->h * OFFSET_BUTTONH),
+		ImGuiCond_Once
+	);
+	if (ImGui::Begin("Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
+
+		if (ImGui::Button(ICON_FA_RULER_COMBINED, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::TRANSLATE;
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_SYNC, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::ROTATE;
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_BALANCE_SCALE, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::SCALE;
+		}
+
 
 		ImVec2 time_window_size = ImGui::GetWindowSize();
 
@@ -351,6 +381,11 @@ void ModuleGUI::ShowTimeButtons() {
 		{
 			//TODO
 		}
+
+		ImGui::SameLine();
+		ImGui::Checkbox("Draw AABB Tree", &App->renderer->drawTree);
+		ImGui::SameLine();
+		ImGui::Checkbox("Draw AABB's", &App->renderer->drawBB);
 	}
 	ImGui::End();
 }
@@ -394,17 +429,8 @@ void ModuleGUI::Scene() {
 
 		scenePos.x = ImGui::GetWindowPos().x;
 		scenePos.y = ImGui::GetWindowPos().y;
-
-		/*vMin.x += ImGui::GetWindowPos().x;
-		vMin.y += ImGui::GetWindowPos().y;
-		vMax.x += ImGui::GetWindowPos().x;
-		vMax.y += ImGui::GetWindowPos().y;*/
-		//ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-
-
-		
+		cursorScene = ImGui::GetCursorScreenPos();
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
-		//LOG("Scene width: %0.1f, Scene Height: %0.1f", sceneWidth, sceneHeight);
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),
@@ -855,22 +881,17 @@ void ModuleGUI::ShowDefWindow() {
 
 		}
 
-		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("Front C", (float*)&App->renderer->GameCamera->frustum.front, 0.1);
-			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);
-			ImGui::DragFloat3("Position C", (float*)&App->renderer->GameCamera->frustum.pos, 0.1);
-
-			ImGui::Separator();
-
-
-		}
 	}
 	ImGui::End();
 }
 
 void ModuleGUI::showExplorer() {
 		// open Dialog Simple
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * (OFFSET_CONSOLE_UP +0.05)), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * (OFFSET_CONSOLEW), App->window->screen_surface->h * (OFFSET_CONSOLEH - 0.055)),
+		ImGuiCond_Once
+	);
 	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "", "", ".");
 	
 	if (ImGui::BeginTabItem(ICON_FA_ARCHIVE " Project")) {

@@ -11,6 +11,17 @@
 #include "Application.h"
 #include "Geometry/AABB.h"
 
+ComponentTransform::ComponentTransform(const float3 position, const float3 rotation, const float3 scale) {
+	type = Type::TRANSFORM;
+	if (myGo != nullptr) {
+		this->position = position;
+		this->rotationFloat = rotation;
+		RotToQuat();
+		this->scale = scale;
+		UpdateMatrix();
+	}
+}
+
 ComponentTransform::ComponentTransform() {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
@@ -48,30 +59,51 @@ void ComponentTransform::QuatToFloat() {
 }
 
 void ComponentTransform::UpdateMatrix() {
-	worldMatrix = worldMatrix * localMatrix.Inverted();
 	localMatrix = float4x4::FromTRS(position, rotationQuat, scale);
-	worldMatrix = worldMatrix * localMatrix;
+	SetWorldMatrix();
 }
 
-void ComponentTransform::SetNewMatrix(const float4x4 &newGlobal) {
-	worldMatrix = newGlobal * localMatrix;
-	worldMatrix.Decompose(position, rotationQuat, scale);
-	QuatToFloat();
-	UpdateAABBBox(App->scene->selected);
-	if (myGo->children.size() > 0) {
-		for (auto& obj : myGo->children) {
-			obj->transform->SetNewMatrix(worldMatrix);
-		}
+void ComponentTransform::SetNewMatrixLocal(const float4x4 &newLocal) {
+	if (myGo->parent->isRoot) {
+
+		localMatrix = newLocal;
 	}
+	else {
+		localMatrix = myGo->parent->transform->worldMatrix.Inverted() * newLocal;
+	}
+	localMatrix.Decompose(position, rotationQuat, scale);
+	SetWorldMatrix();
+
+}
+void ComponentTransform::SetWorldMatrix() {
+	if (myGo->parent->isRoot) {
+
+		worldMatrix = localMatrix;
+	}
+	else {
+		worldMatrix = myGo->parent->transform->worldMatrix * localMatrix;
+	}
+	CheckScale();
+	QuatToFloat();
+	UpdateAABBBox();
 }
 
-void ComponentTransform::UpdateAABBBox(GameObject* go) {
-	if (go->model != nullptr) {
+void ComponentTransform::CheckScale() {
+
+	if (scale.x < MINIMUM_SCALE)
+		scale.x = MINIMUM_SCALE;
+	if (scale.y < MINIMUM_SCALE)
+		scale.y = MINIMUM_SCALE;
+	if (scale.z < MINIMUM_SCALE)
+		scale.z = MINIMUM_SCALE;
+}
+void ComponentTransform::UpdateAABBBox() {
+	if (myGo->model != nullptr) {
 		AABB auxBox;
 		auxBox.SetNegativeInfinity();
-		auxBox.Enclose(go->model->boundingBox);
-		auxBox.TransformAsAABB(worldMatrix);
-		go->model->modelBox = auxBox;
+		auxBox.Enclose(myGo->model->boundingBox);
+		auxBox.TransformAsAABB(localMatrix);
+		myGo->model->modelBox = auxBox;
 	}
 }
 
@@ -84,19 +116,20 @@ void ComponentTransform::OnEditor() {
 
 		if (ImGui::DragFloat3("Position", &App->scene->selected->transform->position[0], 0.1f)) {
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox(App->scene->selected);
+			App->scene->selected->transform->UpdateAABBBox();
 		}
 
 		if (ImGui::DragFloat3("Rotation", &App->scene->selected->transform->rotationFloat[0], 0.1f)) {
 			LOG("Rotating");
 			App->scene->selected->transform->RotToQuat();
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox(App->scene->selected);
+			App->scene->selected->transform->UpdateAABBBox();
 		}
 
 		if (ImGui::DragFloat3("Scale", &App->scene->selected->transform->scale[0], 0.5F, -9999.F, 9999.F, "%.1f")) {
+			App->scene->selected->transform->CheckScale();
 			App->scene->selected->transform->UpdateMatrix();
-			UpdateAABBBox(App->scene->selected);
+			App->scene->selected->transform->UpdateAABBBox();
 		}
 
 		ImGui::Separator();
