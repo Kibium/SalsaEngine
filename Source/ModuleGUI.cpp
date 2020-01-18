@@ -173,7 +173,7 @@ void ModuleGUI::ShowConsole() {
 
 }
 void ModuleGUI::ProjectView() {
-	//ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+
 	ImGui::SetNextWindowPos(ImVec2(0,App->window->screen_surface->h * OFFSET_CONSOLE_UP),ImGuiCond_Once);
 	ImGui::SetNextWindowSize(
 		ImVec2(App->window->screen_surface->w * OFFSET_CONSOLEW, App->window->screen_surface->h * OFFSET_CONSOLEH),
@@ -381,6 +381,11 @@ void ModuleGUI::ShowTimeButtons() {
 		{
 			//TODO
 		}
+
+		ImGui::SameLine();
+		ImGui::Checkbox("Draw AABB Tree", &App->renderer->drawTree);
+		ImGui::SameLine();
+		ImGui::Checkbox("Draw AABB's", &App->renderer->drawBB);
 	}
 	ImGui::End();
 }
@@ -425,17 +430,7 @@ void ModuleGUI::Scene() {
 		scenePos.x = ImGui::GetWindowPos().x;
 		scenePos.y = ImGui::GetWindowPos().y;
 		cursorScene = ImGui::GetCursorScreenPos();
-
-		/*vMin.x += ImGui::GetWindowPos().x;
-		vMin.y += ImGui::GetWindowPos().y;
-		vMax.x += ImGui::GetWindowPos().x;
-		vMax.y += ImGui::GetWindowPos().y;*/
-		//ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-
-
-		
 		App->renderer->DrawScene(sceneWidth, sceneHeight);
-		//LOG("Scene width: %0.1f, Scene Height: %0.1f", sceneWidth, sceneHeight);
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)App->renderer->frameTex,
 			ImVec2(ImGui::GetCursorScreenPos()),

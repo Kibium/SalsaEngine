@@ -195,19 +195,23 @@ void ModuleRender::DrawScene(const float width, const float height) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 		if (gameObject->model != nullptr) {
 			gameObject->model->Draw();
-			DrawAABB(gameObject);
+			if(drawBB)
+				DrawAABB(gameObject);
 
 			// Draw each child if the obj has
 			if (gameObject->children.size() > 0) {
 				for (auto& obj : gameObject->children) {
 					obj->model->Draw();
-					DrawAABB(obj);
+					if (drawBB)
+						DrawAABB(obj);
 				}
 			}
 		}		
 			
 	}
-	App->scene->DrawTree();
+	if(drawTree)
+		App->scene->DrawTree();
+
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();
