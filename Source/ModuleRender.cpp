@@ -350,7 +350,7 @@ void ModuleRender::DrawGuizmo() {
 		ImGuizmo::Manipulate(newView.ptr(), newProj.ptr(), guizmoOP, guizmoMode, newModel.ptr());
 
 		if (ImGuizmo::IsUsing()) {
-			App->scene->selected->transform->SetNewMatrix(newModel.Transposed());
+			App->scene->selected->transform->SetNewMatrixLocal(newModel.Transposed());
 		}
 	}
 
