@@ -31,13 +31,13 @@ public:
 
 public:
 	const char *filePath = nullptr;
-
+	std::string GetFileName(const char *);
 private:
 	void Load(const char*);
 	void ProcessNode(aiNode*, const aiScene*);
 	Mesh* ProcessMesh(aiMesh*, const aiScene*, const std::string&);
 	std::string GetModelDirectory(const char*);
-	std::string GetFileName(const char *);
+	
 
 private:
 	std::string fileName;

@@ -23,14 +23,55 @@ ModuleFileSystem::ModuleFileSystem()
 ModuleFileSystem::~ModuleFileSystem()
 {
 }
+bool ModuleFileSystem::AddPath(const char* path_or_zip)
+{
+	bool ret = false;
 
+	if (PHYSFS_mount(path_or_zip, nullptr, 1) == 0)
+		LOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError());
+	else
+		ret = true;
+
+	return ret;
+}
 bool ModuleFileSystem::Init()
 {
+
+
+	// needs to be created before Init so other modules can use it
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
+	SDL_free(base_path);
 
-	if (!exists("../Assets"))
+	if (!is_directory("../Assets"))
 		create_directory("../Assets");
+
+	if (!is_directory("../Library"))
+		create_directory("../Library");
+
+	if (!is_directory("../Library/Meshes"))
+		create_directory("../Library/Meshes");
+
+	// workaround VS string directory mess
+	AddPath("../Library/Meshes");
+
+	// Dump list of paths
+	LOG("FileSystem Operations base is [%s] plus:", PHYSFS_getBaseDir());
+	//LOG(GetReadPaths());
+
+	for (auto i = PHYSFS_getSearchPath(); *i != NULL; ++i) {
+		LOG("Work paths: [%s]: \n", *i);
+	}
+
+	
+
+	// enable us to write in the game's dir area
+	if (PHYSFS_setWriteDir("../Library/Meshes") == 0)
+		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
+
+	LOG("GETWRITEDIR: [%s]", PHYSFS_getWriteDir());
+	LOG("\n");
+
 	return true;
 }
 
@@ -68,24 +109,43 @@ char* ModuleFileSystem::Load(const char * path, const char * file) const
 	return res;
 }
 
-bool ModuleFileSystem::Save(const char * path, const char * file, const void * buffer, unsigned int size) const
+bool ModuleFileSystem::Save(const char * path, const char * file, const void * buffer, unsigned int size, bool append) const
 {
-	string filename = path; filename += file;
+	unsigned int ret = 0;
 
-	SDL_RWops *rw;
-	
-	rw = SDL_RWFromFile(filename.c_str(), "w");
+	bool overwrite = PHYSFS_exists(file) != 0;
 
-	if (rw == NULL) return NULL;
+	string s = std::string(file) + ".mesh";
 
-	Sint64 nb_write_total = SDL_RWwrite(rw, buffer, 1, size);
-	SDL_RWclose(rw);
+	LOG(s.c_str());
+	LOG("\n");
 
-	if (nb_write_total != size)
-		return NULL;
+	PHYSFS_file* fs_file = PHYSFS_openWrite(s.c_str());
 
+	if (fs_file != nullptr)
+	{
+		unsigned int written = (unsigned int)PHYSFS_write(fs_file, (const void*)buffer, 1, size);
+		if (written != size)
+			LOG("File System error while writing to file %s: %s\n", file, PHYSFS_getLastError());
+		else
+		{
+			if (append == true)
+				LOG("Added %u data to [%s%s]\n", size, PHYSFS_getWriteDir(), file);
+			//else if(overwrite == true)
+				//LOG("File [%s%s] overwritten with %u bytes", PHYSFS_getWriteDir(), file, size);
+			else if (overwrite == false)
+				LOG("New file created [%s%s] of %u bytes\n", PHYSFS_getWriteDir(), file, size);
 
-	return 1;
+			ret = written;
+		}
+
+		if (PHYSFS_close(fs_file) == 0)
+			LOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
+	}
+	else
+		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
+
+	return ret;
 }
 
 bool ModuleFileSystem::Remove(const char * file)
@@ -101,7 +161,7 @@ bool ModuleFileSystem::Exists(const char * file) const
 
 bool ModuleFileSystem::MakeDirectory(const char * directory)
 {
-	return create_directory(directory);
+	return PHYSFS_mkdir(directory);
 }
 
 bool ModuleFileSystem::IsDirectory(const char * directory) const

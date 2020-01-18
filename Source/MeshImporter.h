@@ -2,24 +2,24 @@
 #define __MESHIMPORTER_H__
 
 #include "Importer.h"
+#include <vector>
+#include "MathGeoLib.h"
 
 struct MeshData
 {
 	std::string name;
 
-	unsigned int nIndices;
-	unsigned int nVertices;
+	unsigned int nIndices = 0;
+	unsigned int nVertices = 0;
+	
 
 	//what defines the order of the triangles' vertices
-	unsigned int* indices = nullptr;
+	std::vector <unsigned int> indices;
 
 	//Its positions
-	float* positions = nullptr;
+	std::vector <float3> positions;
 
-	//Self explanatory xd
-	float* normals = nullptr;
-
-	float* texture_coords = nullptr;	
+	std::vector <float2> texture_coords;
 };
 
 class MeshImporter : public Importer

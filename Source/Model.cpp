@@ -12,6 +12,7 @@
 #include <assimp/mesh.h>
 #include <algorithm>
 #include "GameObject.h"
+#include "MeshImporter.h"
 using namespace std;
 using namespace Assimp;
 
@@ -86,12 +87,18 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	MeshData data;
+	
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+		
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
+
+		data.positions.push_back(vertex.Position);
+		data.texture_coords.push_back(vertex.TexCoords);
 	}
 
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
@@ -118,11 +125,22 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 	// normal: texture_normalN
 
 	Mesh* meshM = new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
-	std::string meshName = directory + name;
+	std::string meshName = name;
 
 	meshM->LoadTexture(textures, DIFFUSE, std::string(meshName));
 	meshM->LoadTexture(textures, SPECULAR, std::string(meshName));
 	meshM->LoadTexture(textures, OCCLUSION, std::string(meshName));
+
+	data.indices = indices;
+	
+	data.nIndices = indices.size();
+	data.nVertices = vertices.size();
+
+	MeshImporter importer;
+	string s;
+	importer.Import(meshName.c_str(), data, s);
+
+	
 
 	return meshM;
 }

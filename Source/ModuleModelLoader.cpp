@@ -6,13 +6,15 @@
 //textrues are no longer supported
 #include "ModuleTexture.h"
 #include "ModuleRender.h"
+#include "ModuleFileSystem.h"
+#include "MeshImporter.h"
 
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
-
+#include "MeshImporter.h"
 #define PAR_SHAPES_IMPLEMENTATION
 #include "Util/par_shapes.h"
 using namespace Assimp;
@@ -356,6 +358,11 @@ ModuleModelLoader::~ModuleModelLoader() {
 
 void ModuleModelLoader::AddModel(const char *filePath) {
 	Model *model = new Model(filePath);
+	string path = "../Library/" + model->GetFileName(filePath);
+	//import
+	MeshData md;
+	MeshImporter i;
+	//i.Load(model->GetFileName(filePath).c_str(), md);
 	models.push_back(model);
 }
 

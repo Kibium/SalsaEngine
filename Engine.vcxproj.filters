@@ -316,10 +316,10 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Other</Filter>
     </ClCompile>
-    <ClCompile Include="MeshImporter.cpp">
+    <ClCompile Include="Source\Importer.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="Importer.cpp">
+    <ClCompile Include="Source\MeshImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1077,10 +1077,10 @@
     <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="MeshImporter.h">
+    <ClInclude Include="Source\Importer.h">
       <Filter>Importer</Filter>
     </ClInclude>
-    <ClInclude Include="Importer.h">
+    <ClInclude Include="Source\MeshImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
   </ItemGroup>

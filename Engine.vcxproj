@@ -76,7 +76,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Importer.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\anim.h" />
@@ -302,7 +301,6 @@
     <ClInclude Include="Libraries\rapidjson\writer.h" />
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
-    <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="Source\AABBTree.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component.h" />
@@ -312,8 +310,10 @@
     <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\Importer.h" />
     <ClInclude Include="Source\JsonConfig.h" />
     <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\MeshImporter.h" />
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
@@ -331,7 +331,6 @@
     <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp" />
@@ -410,7 +409,6 @@
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
-    <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="Source\AABBTree.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -420,10 +418,12 @@
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Importer.cpp" />
     <ClCompile Include="Source\JsonConfig.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\MeshImporter.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
