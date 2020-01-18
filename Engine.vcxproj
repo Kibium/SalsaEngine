@@ -47,13 +47,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;./Libraries</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;./Libaries/PhysFS/include;./Libraries</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86;./Libraries/SDL_image/libx86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,7 +71,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>./Libraries/glew-2.1.0/lib/Release/Win32;./Libraries/DevIL/lib/x86/Release;./Libraries/Assimp/lib/x86;./Libraries/SDL_image/libx86</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glu32.lib;glew32.lib;DevIL.lib;ILU.lib;ILUT.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -161,8 +161,15 @@
     <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\ilu_region.h" />
     <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h" />
+    <ClInclude Include="Libraries\FileDialog\dirent.h" />
+    <ClInclude Include="Libraries\FileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h" />
     <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImApp.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImSequencer.h" />
     <ClInclude Include="Libraries\Imgui\imconfig.h" />
     <ClInclude Include="Libraries\Imgui\imgui.h" />
     <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h" />
@@ -231,21 +238,101 @@
     <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Libraries\optick\optick.config.h" />
+    <ClInclude Include="Libraries\optick\optick.h" />
+    <ClInclude Include="Libraries\optick\optick_common.h" />
+    <ClInclude Include="Libraries\optick\optick_core.freebsd.h" />
+    <ClInclude Include="Libraries\optick\optick_core.h" />
+    <ClInclude Include="Libraries\optick\optick_core.linux.h" />
+    <ClInclude Include="Libraries\optick\optick_core.macos.h" />
+    <ClInclude Include="Libraries\optick\optick_core.platform.h" />
+    <ClInclude Include="Libraries\optick\optick_core.win.h" />
+    <ClInclude Include="Libraries\optick\optick_gpu.h" />
+    <ClInclude Include="Libraries\optick\optick_memory.h" />
+    <ClInclude Include="Libraries\optick\optick_message.h" />
+    <ClInclude Include="Libraries\optick\optick_miniz.h" />
+    <ClInclude Include="Libraries\optick\optick_serialization.h" />
+    <ClInclude Include="Libraries\optick\optick_server.h" />
+    <ClInclude Include="Libraries\pcg\pcg_basic.h" />
+    <ClInclude Include="Libraries\PhysFS\include\abs-file.h" />
+    <ClInclude Include="Libraries\PhysFS\include\globbing.h" />
+    <ClInclude Include="Libraries\PhysFS\include\ignorecase.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfsrwops.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_casefolding.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_internal.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_lzmasdk.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_miniz.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_platforms.h" />
+    <ClInclude Include="Libraries\rapidjson\allocators.h" />
+    <ClInclude Include="Libraries\rapidjson\document.h" />
+    <ClInclude Include="Libraries\rapidjson\encodedstream.h" />
+    <ClInclude Include="Libraries\rapidjson\encodings.h" />
+    <ClInclude Include="Libraries\rapidjson\error\en.h" />
+    <ClInclude Include="Libraries\rapidjson\error\error.h" />
+    <ClInclude Include="Libraries\rapidjson\filereadstream.h" />
+    <ClInclude Include="Libraries\rapidjson\filewritestream.h" />
+    <ClInclude Include="Libraries\rapidjson\fwd.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\itoa.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\meta.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\pow10.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\regex.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\stack.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\strtod.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\swap.h" />
+    <ClInclude Include="Libraries\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="Libraries\rapidjson\memorybuffer.h" />
+    <ClInclude Include="Libraries\rapidjson\memorystream.h" />
+    <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="Libraries\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="Libraries\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="Libraries\rapidjson\pointer.h" />
+    <ClInclude Include="Libraries\rapidjson\prettywriter.h" />
+    <ClInclude Include="Libraries\rapidjson\rapidjson.h" />
+    <ClInclude Include="Libraries\rapidjson\reader.h" />
+    <ClInclude Include="Libraries\rapidjson\schema.h" />
+    <ClInclude Include="Libraries\rapidjson\stream.h" />
+    <ClInclude Include="Libraries\rapidjson\stringbuffer.h" />
+    <ClInclude Include="Libraries\rapidjson\writer.h" />
+    <ClInclude Include="Libraries\Util\debug_draw.hpp" />
+    <ClInclude Include="Libraries\Util\par_shapes.h" />
+    <ClInclude Include="Source\AABBTree.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentCamera.h" />
+    <ClInclude Include="Source\ComponentMaterial.h" />
+    <ClInclude Include="Source\ComponentMesh.h" />
+    <ClInclude Include="Source\ComponentTransform.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\JsonConfig.h" />
     <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
+    <ClInclude Include="Source\ModuleDebugDraw.h" />
+    <ClInclude Include="Source\ModuleFileSystem.h" />
     <ClInclude Include="Source\ModuleGUI.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleModelLoader.h" />
+    <ClInclude Include="Source\ModuleMSTimer.h" />
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleShader.h" />
     <ClInclude Include="Source\ModuleTexture.h" />
-    <ClInclude Include="Source\ModuleTriangle.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="Libraries\FileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_demo.cpp" />
     <ClCompile Include="Libraries\Imgui\imgui_draw.cpp" />
@@ -284,21 +371,82 @@
     <ClCompile Include="Libraries\MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="Libraries\optick\optick_core.cpp" />
+    <ClCompile Include="Libraries\optick\optick_gpu.cpp" />
+    <ClCompile Include="Libraries\optick\optick_message.cpp" />
+    <ClCompile Include="Libraries\optick\optick_miniz.cpp" />
+    <ClCompile Include="Libraries\optick\optick_serialization.cpp" />
+    <ClCompile Include="Libraries\optick\optick_server.cpp" />
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg_basic.c" />
+    <ClCompile Include="Libraries\PhysFS\include\globbing.c" />
+    <ClCompile Include="Libraries\PhysFS\include\ignorecase.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfsrwops.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_7z.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_dir.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_grp.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_hog.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_iso9660.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_mvl.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_qpak.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_slb.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_unpacked.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_vdf.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_wad.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_zip.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_byteorder.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_haiku.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_os2.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_posix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_qnx.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_unix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
+    <ClCompile Include="Source\AABBTree.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentCamera.cpp" />
+    <ClCompile Include="Source\ComponentMaterial.cpp" />
+    <ClCompile Include="Source\ComponentMesh.cpp" />
+    <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\JsonConfig.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
+    <ClCompile Include="Source\ModuleDebugDraw.cpp" />
+    <ClCompile Include="Source\ModuleFileSystem.cpp" />
     <ClCompile Include="Source\ModuleGUI.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleModelLoader.cpp" />
+    <ClCompile Include="Source\ModuleMSTimer.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleShader.cpp" />
     <ClCompile Include="Source\ModuleTexture.cpp" />
-    <ClCompile Include="Source\ModuleTriangle.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\SceneData.json" />
+    <None Include="Game\shaders\Blinn.fs" />
+    <None Include="Game\shaders\Blinn.vs" />
+    <None Include="Game\shaders\default.fs" />
+    <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\flat.fs" />
+    <None Include="Game\shaders\flat.vs" />
+    <None Include="Game\shaders\Gouraud.fs" />
+    <None Include="Game\shaders\Gouraud.vs" />
+    <None Include="Game\shaders\lines.fs" />
+    <None Include="Game\shaders\lines.vs" />
+    <None Include="Game\shaders\Phong.fs" />
+    <None Include="Game\shaders\Phong.vs" />
     <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
     <None Include="Libraries\Assimp\include\assimp\color4.inl" />
     <None Include="Libraries\Assimp\include\assimp\material.inl" />
@@ -317,6 +465,7 @@
     <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Libraries\MathGeoLib\include\Math\Matrix.inl" />
+    <None Include="Libraries\PhysFS\include\physfs_platform_apple.m" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

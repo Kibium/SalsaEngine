@@ -1,0 +1,1 @@
+{"Game Objects":[{"UID":483882979,"ParentUID":3406281715,"Name":"MainCamera","Active":true,"Static":false,"Model":"None","Components":[{"UID":2766312848,"ParentUID":483882979,"Type":0,"Active":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0],"Scale":[1.0,1.0,1.0]},{"UID":1713261421,"ParentUID":483882979,"Type":-842150451,"Active":true}]}]}

@@ -3,9 +3,15 @@
 
 #include "Module.h"
 
+enum TextureType {
+	DIFFUSE = 0,
+	SPECULAR,
+	OCCLUSION
+};
+
 typedef unsigned int GLuint;
 typedef unsigned int ILenum;
-struct ILinfo;
+//struct ILinfo;
 
 class ModuleTexture : public Module {
 public:
@@ -16,6 +22,7 @@ public:
 
 public:
 	GLuint Load(const char*);
+	void LoadSkybox(const char * , int);
 	bool loaded;
 
 };

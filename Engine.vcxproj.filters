@@ -1,749 +1,394 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleRender.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleGUI.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleModelLoader.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleShader.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTexture.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTriangle.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_demo.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_draw.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_impl_opengl3.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_impl_sdl.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\Imgui\imgui_widgets.cpp">
-      <Filter>Addons\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\BitOps.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float2.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3x3.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3x4.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float4.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\float4x4.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathFunc.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathLog.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathOps.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\Polynomial.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\Quat.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\SSEMath.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\AABB.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Capsule.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Circle.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Cone.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Cylinder.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Line.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\LineSegment.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\OBB.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Plane.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Polygon.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Polyhedron.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Ray.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Sphere.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Triangle.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Modules\Added Modules</Filter>
-    </ClCompile>
+    <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Libraries\ImGuizmo\ImSequencer.cpp" />
+    <ClCompile Include="Libraries\FileDialog\ImGuiFileDialog.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Libraries\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\AABB.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Capsule.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Circle.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Cone.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Cylinder.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Frustum.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Line.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\LineSegment.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\OBB.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Plane.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Polygon.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Polyhedron.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Ray.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Sphere.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\Triangle.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\BitOps.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float2.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3x3.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float3x4.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float4.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\float4x4.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathFunc.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathLog.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\MathOps.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\Polynomial.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\Quat.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\SSEMath.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Math\TransformOps.cpp" />
+    <ClCompile Include="Libraries\MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="Libraries\optick\optick_core.cpp" />
+    <ClCompile Include="Libraries\optick\optick_gpu.cpp" />
+    <ClCompile Include="Libraries\optick\optick_message.cpp" />
+    <ClCompile Include="Libraries\optick\optick_miniz.cpp" />
+    <ClCompile Include="Libraries\optick\optick_serialization.cpp" />
+    <ClCompile Include="Libraries\optick\optick_server.cpp" />
+    <ClCompile Include="Libraries\pcg\pcg32-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32-global-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg32x2-demo.c" />
+    <ClCompile Include="Libraries\pcg\pcg_basic.c" />
+    <ClCompile Include="Libraries\PhysFS\include\globbing.c" />
+    <ClCompile Include="Libraries\PhysFS\include\ignorecase.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfsrwops.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_7z.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_dir.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_grp.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_hog.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_iso9660.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_mvl.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_qpak.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_slb.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_unpacked.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_vdf.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_wad.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_archiver_zip.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_byteorder.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_haiku.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_os2.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_posix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_qnx.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_unix.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
+    <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
+    <ClCompile Include="Source\AABBTree.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentCamera.cpp" />
+    <ClCompile Include="Source\ComponentMaterial.cpp" />
+    <ClCompile Include="Source\ComponentMesh.cpp" />
+    <ClCompile Include="Source\ComponentTransform.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\log.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\ModuleCamera.cpp" />
+    <ClCompile Include="Source\ModuleDebugDraw.cpp" />
+    <ClCompile Include="Source\ModuleFileSystem.cpp" />
+    <ClCompile Include="Source\ModuleGUI.cpp" />
+    <ClCompile Include="Source\ModuleInput.cpp" />
+    <ClCompile Include="Source\ModuleModelLoader.cpp" />
+    <ClCompile Include="Source\ModuleMSTimer.cpp" />
+    <ClCompile Include="Source\ModuleRender.cpp" />
+    <ClCompile Include="Source\ModuleScene.cpp" />
+    <ClCompile Include="Source\ModuleShader.cpp" />
+    <ClCompile Include="Source\ModuleTexture.cpp" />
+    <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Application.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Globals.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleWindow.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Module.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleCamera.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleGUI.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleModelLoader.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleShader.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTexture.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleTriangle.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\devil_cpp_wrapper.hpp">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\devil_internal_exports.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\il.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\ilu.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\ilu_region.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\ilut.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h">
-      <Filter>Addons\DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imconfig.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_impl_sdl.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imgui_internal.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_rectpack.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_textedit.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Imgui\imstb_truetype.h">
-      <Filter>Addons\ImGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\MathBuildConfig.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\MathGeoLib.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\MathGeoLibFwd.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\assume.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\BitOps.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\Complex.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\CoordinateAxisConvention.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\FixedPoint.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float2.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3x3.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3x4.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4_neon.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4_sse.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4_neon.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4_sse.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\FloatCmp.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathAll.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathConstants.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathFunc.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathLog.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathNamespace.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathTypes.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\MatrixProxy.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\myassert.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\Polynomial.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\Quat.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\quat_simd.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\Rect.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\Reinterpret.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\SSEMath.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\AABB.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\AABB2D.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Capsule.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Circle.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Cone.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Cylinder.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Frustum.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\GeometryAll.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\GeomType.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\HitInfo.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\KDTree.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Line.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\LineSegment.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\OBB.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\PBVolume.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Plane.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Polygon.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Polyhedron.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\QuadTree.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Ray.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Sphere.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Triangle.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\MathGeoLib\include\Algorithm\Random\LCG.h">
-      <Filter>Addons\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
-      <Filter>Modules\Added Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\anim.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\BaseImporter.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Bitmap.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\BlobIOSystem.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\ByteSwapper.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\camera.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\cexport.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\cfileio.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\cimport.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\color4.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\config.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\CreateAnimMesh.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOStream.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOSystem.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultLogger.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Defines.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\defs.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Exceptional.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Exporter.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\fast_atof.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Hash.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Importer.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\importerdesc.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\IOStream.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\IOStreamBuffer.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\IOSystem.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\irrXMLWrapper.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\light.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\LineSplitter.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\LogAux.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Logger.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\LogStream.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Macros.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\material.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\MathFunctions.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\matrix3x3.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\matrix4x4.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\MemoryIOWrapper.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\NullLogger.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\ParsingUtils.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\pbrmaterial.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\postprocess.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Profiler.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\ProgressHandler.hpp">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\qnan.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\quaternion.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\RemoveComments.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\scene.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\SceneCombiner.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\SGSpatialSort.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\SkeletonMeshBuilder.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\SmoothingGroups.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\SpatialSort.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\StandardShapes.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\StreamReader.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\StreamWriter.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\StringComparison.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\StringUtils.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Subdivision.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\texture.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\TinyFormatter.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\types.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\vector2.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\vector3.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\version.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Vertex.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\XMLTools.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\poppack1.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pstdint.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pushpack1.h">
-      <Filter>Addons\Assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h">
-      <Filter>Addons\IconFontsCppHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h">
-      <Filter>Addons\IconFontsCppHeaders</Filter>
-    </ClInclude>
+    <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\anim.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\BaseImporter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Bitmap.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\BlobIOSystem.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ByteSwapper.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\camera.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\cexport.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\cfileio.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\cimport.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\color4.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\config.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Defines.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\defs.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Exceptional.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Exporter.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\fast_atof.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\GenericProperty.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Hash.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Importer.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\importerdesc.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\IOStream.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\light.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\LineSplitter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\LogAux.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Logger.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\LogStream.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Macros.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\material.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\MathFunctions.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\matrix3x3.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\matrix4x4.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\mesh.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\metadata.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ParsingUtils.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\pbrmaterial.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\postprocess.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Profiler.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\qnan.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\quaternion.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\RemoveComments.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\scene.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SceneCombiner.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SGSpatialSort.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SmoothingGroups.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\SpatialSort.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StandardShapes.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StreamReader.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StreamWriter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StringComparison.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\StringUtils.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Subdivision.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\texture.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\TinyFormatter.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\types.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\vector2.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\vector3.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\version.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\Vertex.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\XMLTools.h" />
+    <ClInclude Include="Libraries\Assimp\include\assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\devil_cpp_wrapper.hpp" />
+    <ClInclude Include="Libraries\DevIL\include\IL\devil_internal_exports.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\il.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\ilu.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\ilut.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\ilut_config.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\ilu_region.h" />
+    <ClInclude Include="Libraries\DevIL\include\IL\il_wrap.h" />
+    <ClInclude Include="Libraries\FileDialog\dirent.h" />
+    <ClInclude Include="Libraries\FileDialog\ImGuiFileDialog.h" />
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsFontAwesome5.h" />
+    <ClInclude Include="Libraries\IconFontsCppHeaders\IconsMaterialDesignIcons.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImApp.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Libraries\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="Libraries\Imgui\imconfig.h" />
+    <ClInclude Include="Libraries\Imgui\imgui.h" />
+    <ClInclude Include="Libraries\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Libraries\Imgui\imgui_impl_sdl.h" />
+    <ClInclude Include="Libraries\Imgui\imgui_internal.h" />
+    <ClInclude Include="Libraries\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="Libraries\Imgui\imstb_textedit.h" />
+    <ClInclude Include="Libraries\Imgui\imstb_truetype.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Algorithm\Random\LCG.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\AABB.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\AABB2D.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Capsule.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Circle.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Cone.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Cylinder.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Frustum.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\GeometryAll.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\GeomType.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\HitInfo.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\KDTree.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Line.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\LineSegment.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\OBB.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\PBVolume.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Plane.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Polygon.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Polyhedron.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\QuadTree.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Ray.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Sphere.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\Triangle.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\MathBuildConfig.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\MathGeoLib.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\MathGeoLibFwd.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\assume.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\BitOps.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\Complex.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\CoordinateAxisConvention.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\FixedPoint.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float2.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3x3.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float3x4.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4_neon.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4x4_sse.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4_neon.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\float4_sse.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\FloatCmp.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathAll.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathConstants.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathFunc.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathLog.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathNamespace.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MathTypes.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\MatrixProxy.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\myassert.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\Polynomial.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\Quat.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\quat_simd.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\Rect.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\Reinterpret.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\SSEMath.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\sse_mathfun.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Math\TransformOps.h" />
+    <ClInclude Include="Libraries\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Libraries\optick\optick.config.h" />
+    <ClInclude Include="Libraries\optick\optick.h" />
+    <ClInclude Include="Libraries\optick\optick_common.h" />
+    <ClInclude Include="Libraries\optick\optick_core.freebsd.h" />
+    <ClInclude Include="Libraries\optick\optick_core.h" />
+    <ClInclude Include="Libraries\optick\optick_core.linux.h" />
+    <ClInclude Include="Libraries\optick\optick_core.macos.h" />
+    <ClInclude Include="Libraries\optick\optick_core.platform.h" />
+    <ClInclude Include="Libraries\optick\optick_core.win.h" />
+    <ClInclude Include="Libraries\optick\optick_gpu.h" />
+    <ClInclude Include="Libraries\optick\optick_memory.h" />
+    <ClInclude Include="Libraries\optick\optick_message.h" />
+    <ClInclude Include="Libraries\optick\optick_miniz.h" />
+    <ClInclude Include="Libraries\optick\optick_serialization.h" />
+    <ClInclude Include="Libraries\optick\optick_server.h" />
+    <ClInclude Include="Libraries\pcg\pcg_basic.h" />
+    <ClInclude Include="Libraries\PhysFS\include\abs-file.h" />
+    <ClInclude Include="Libraries\PhysFS\include\globbing.h" />
+    <ClInclude Include="Libraries\PhysFS\include\ignorecase.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfsrwops.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_casefolding.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_internal.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_lzmasdk.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_miniz.h" />
+    <ClInclude Include="Libraries\PhysFS\include\physfs_platforms.h" />
+    <ClInclude Include="Libraries\rapidjson\allocators.h" />
+    <ClInclude Include="Libraries\rapidjson\document.h" />
+    <ClInclude Include="Libraries\rapidjson\encodedstream.h" />
+    <ClInclude Include="Libraries\rapidjson\encodings.h" />
+    <ClInclude Include="Libraries\rapidjson\error\en.h" />
+    <ClInclude Include="Libraries\rapidjson\error\error.h" />
+    <ClInclude Include="Libraries\rapidjson\filereadstream.h" />
+    <ClInclude Include="Libraries\rapidjson\filewritestream.h" />
+    <ClInclude Include="Libraries\rapidjson\fwd.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\itoa.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\meta.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\pow10.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\regex.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\stack.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\strtod.h" />
+    <ClInclude Include="Libraries\rapidjson\internal\swap.h" />
+    <ClInclude Include="Libraries\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="Libraries\rapidjson\memorybuffer.h" />
+    <ClInclude Include="Libraries\rapidjson\memorystream.h" />
+    <ClInclude Include="Libraries\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="Libraries\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="Libraries\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="Libraries\rapidjson\pointer.h" />
+    <ClInclude Include="Libraries\rapidjson\prettywriter.h" />
+    <ClInclude Include="Libraries\rapidjson\rapidjson.h" />
+    <ClInclude Include="Libraries\rapidjson\reader.h" />
+    <ClInclude Include="Libraries\rapidjson\schema.h" />
+    <ClInclude Include="Libraries\rapidjson\stream.h" />
+    <ClInclude Include="Libraries\rapidjson\stringbuffer.h" />
+    <ClInclude Include="Libraries\rapidjson\writer.h" />
+    <ClInclude Include="Libraries\Util\debug_draw.hpp" />
+    <ClInclude Include="Libraries\Util\par_shapes.h" />
+    <ClInclude Include="Source\AABBTree.h" />
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentCamera.h" />
+    <ClInclude Include="Source\ComponentMaterial.h" />
+    <ClInclude Include="Source\ComponentMesh.h" />
+    <ClInclude Include="Source\ComponentTransform.h" />
+    <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\ModuleCamera.h" />
+    <ClInclude Include="Source\ModuleDebugDraw.h" />
+    <ClInclude Include="Source\ModuleFileSystem.h" />
+    <ClInclude Include="Source\ModuleGUI.h" />
+    <ClInclude Include="Source\ModuleInput.h" />
+    <ClInclude Include="Source\ModuleModelLoader.h" />
+    <ClInclude Include="Source\ModuleMSTimer.h" />
+    <ClInclude Include="Source\ModuleRender.h" />
+    <ClInclude Include="Source\ModuleScene.h" />
+    <ClInclude Include="Source\ModuleShader.h" />
+    <ClInclude Include="Source\ModuleTexture.h" />
+    <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\Skybox.h" />
+    <ClInclude Include="Source\GameObject.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Main">
-      <UniqueIdentifier>{2d47b906-420c-4f6d-8102-1515a503b160}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{447605b5-f487-42c3-b1cf-f678d05581d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\Added Modules">
-      <UniqueIdentifier>{d88d371e-a129-4bcd-882c-2b496e1941a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons">
-      <UniqueIdentifier>{11299798-02cf-436b-948e-883322079fd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons\MathGeoLib">
-      <UniqueIdentifier>{0bf89e07-9ea9-48c6-95bc-3fed6faba479}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons\Assimp">
-      <UniqueIdentifier>{6c9bc935-2b5e-4701-9325-b08796d63ebc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons\DevIL">
-      <UniqueIdentifier>{9f18f494-cb9a-4c06-8d3d-efeb45e24063}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons\ImGUI">
-      <UniqueIdentifier>{c2ca4474-0194-4b38-8b03-8ba3f30956ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Addons\IconFontsCppHeaders">
-      <UniqueIdentifier>{022e0de6-85b6-49b6-943c-8126d2ff24b5}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Libraries\DevIL\include\IL\config.h.win">
-      <Filter>Addons\DevIL</Filter>
-    </None>
-    <None Include="Libraries\DevIL\include\IL\DevIL.i">
-      <Filter>Addons\DevIL</Filter>
-    </None>
-    <None Include="Libraries\DevIL\include\IL\stamp-h.in">
-      <Filter>Addons\DevIL</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Math\Matrix.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Geometry\KDTree.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Geometry\QuadTree.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
-      <Filter>Addons\MathGeoLib</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\.editorconfig">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\color4.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\material.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\matrix3x3.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\matrix4x4.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\quaternion.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\SmoothingGroups.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\vector2.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
-    <None Include="Libraries\Assimp\include\assimp\vector3.inl">
-      <Filter>Addons\Assimp</Filter>
-    </None>
+    <None Include="Game\shaders\Blinn.fs" />
+    <None Include="Game\shaders\Blinn.vs" />
+    <None Include="Game\shaders\default.fs" />
+    <None Include="Game\shaders\default.vs" />
+    <None Include="Game\shaders\flat.fs" />
+    <None Include="Game\shaders\flat.vs" />
+    <None Include="Game\shaders\Gouraud.fs" />
+    <None Include="Game\shaders\Gouraud.vs" />
+    <None Include="Game\shaders\lines.fs" />
+    <None Include="Game\shaders\lines.vs" />
+    <None Include="Game\shaders\Phong.fs" />
+    <None Include="Game\shaders\Phong.vs" />
+    <None Include="Libraries\Assimp\include\assimp\.editorconfig" />
+    <None Include="Libraries\Assimp\include\assimp\color4.inl" />
+    <None Include="Libraries\Assimp\include\assimp\material.inl" />
+    <None Include="Libraries\Assimp\include\assimp\matrix3x3.inl" />
+    <None Include="Libraries\Assimp\include\assimp\matrix4x4.inl" />
+    <None Include="Libraries\Assimp\include\assimp\quaternion.inl" />
+    <None Include="Libraries\Assimp\include\assimp\SmoothingGroups.inl" />
+    <None Include="Libraries\Assimp\include\assimp\vector2.inl" />
+    <None Include="Libraries\Assimp\include\assimp\vector3.inl" />
+    <None Include="Libraries\DevIL\include\IL\config.h.win" />
+    <None Include="Libraries\DevIL\include\IL\DevIL.i" />
+    <None Include="Libraries\DevIL\include\IL\stamp-h.in" />
+    <None Include="Libraries\MathGeoLib\include\Geometry\KDTree.inl" />
+    <None Include="Libraries\MathGeoLib\include\Geometry\QuadTree.inl" />
+    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
+    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
+    <None Include="Libraries\MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
+    <None Include="Libraries\MathGeoLib\include\Math\Matrix.inl" />
+    <None Include="Libraries\PhysFS\include\physfs_platform_apple.m" />
   </ItemGroup>
 </Project>
