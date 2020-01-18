@@ -42,7 +42,7 @@ void ComponentMaterial::OnEditor() {
 		}
 		if (myGo != nullptr && myGo->model != nullptr) {
 
-			ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("     Occlusion "); ImGui::SameLine(); ImGui::Text("    Specular");
+			ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("    Occlusion"); ImGui::SameLine(); ImGui::Text("    Specular");
 			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
 				UpdateMaterial(myGo->model->mat.diffuse_map);
@@ -60,9 +60,9 @@ void ComponentMaterial::OnEditor() {
 				UpdateMaterial(myGo->model->mat.specular_map);
 			}
 
-			App->gui->HelpMarker("Now only shows the default mmaterial applied to every mesh");
 			if (ImGui::TreeNodeEx("Diffuse")) {
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path:");
+				ImGui::SameLine();
 				ImGui::Text(myGo->model->mat.diff_path.c_str());
 				ImGui::Spacing();
 
@@ -88,7 +88,8 @@ void ComponentMaterial::OnEditor() {
 			}
 
 			if (ImGui::TreeNodeEx("Occlusion")) {
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path:");
+				ImGui::SameLine();
 				ImGui::Text(myGo->model->mat.occ_path.c_str());
 				ImGui::Spacing();
 
@@ -110,7 +111,8 @@ void ComponentMaterial::OnEditor() {
 			}
 
 			if (ImGui::TreeNodeEx("Specular")) {
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path: ");
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Path:");
+				ImGui::SameLine();
 				ImGui::Text(myGo->model->mat.spec_path.c_str());
 				ImGui::Spacing();
 

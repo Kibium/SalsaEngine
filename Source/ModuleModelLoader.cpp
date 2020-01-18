@@ -561,15 +561,6 @@ string ModuleModelLoader::GetModelDirectory(const char *path)
 
 }
 
-void ModuleModelLoader::Draw() {
-	if (models.size() > 0) {
-		for (int i = 0; i < models.size(); ++i)
-			models[i]->Draw();
-	}
-}
-
-  
-
 string ModuleModelLoader::GetFilename(const char *path)
 {
 	std::string dir = std::string(path);

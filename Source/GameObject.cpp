@@ -61,6 +61,7 @@ void GameObject::CreateComponent(Type type) {
 		isCamera = true;
 		components.push_back(camera);
 		break;
+
 	case Type::TRANSFORM:
 		transform = new ComponentTransform();
 		transform->myGo = this;
@@ -96,12 +97,14 @@ void GameObject::DrawComponents() {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = true;
 			}
+			SetChildrenActive(children, true);
 			if (model != nullptr) model->isActive = true;
 		}
 		else {
 			for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 				(*it)->active = false;
 			}
+			SetChildrenActive(children, false);
 			if (model != nullptr) model->isActive = false;
 		}
 	}
@@ -143,7 +146,19 @@ void GameObject::DeleteChild(GameObject *child) {
 
 	for (int i = 0; i < children.size(); ++i) {
 		if (child == children[i]) {
-			children.erase(children.begin() + i);
+			child->isActive = false;
+			break;
+		}
+	}
+}
+
+void GameObject::DeleteChildFlag(GameObject *child) {
+	assert(child != nullptr);
+
+	for (int i = 0; i < children.size(); ++i) {
+		if (child == children[i]) {
+			//children.erase(children.begin() + i);
+			child->deleteFlag = true;
 			break;
 		}
 	}
@@ -262,4 +277,13 @@ Component* GameObject::GetComponentInChild(const std::string &childName, Type ty
 	}
 
 	return component;
+}
+
+void GameObject::SetChildrenActive(std::vector<GameObject*>& objects, bool active) {
+	if (objects.size() > 0) {
+		for (auto& obj : objects) {
+			obj->isActive = active;
+			SetChildrenActive(obj->children, active);
+		}
+	}
 }
