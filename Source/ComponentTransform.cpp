@@ -11,6 +11,17 @@
 #include "Application.h"
 #include "Geometry/AABB.h"
 
+ComponentTransform::ComponentTransform(const float3 position, const float3 rotation, const float3 scale) {
+	type = Type::TRANSFORM;
+	if (myGo != nullptr) {
+		this->position = position;
+		this->rotationFloat = rotation;
+		RotToQuat();
+		this->scale = scale;
+		UpdateMatrix();
+	}
+}
+
 ComponentTransform::ComponentTransform() {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
@@ -53,7 +64,7 @@ void ComponentTransform::UpdateMatrix() {
 }
 
 void ComponentTransform::SetNewMatrixLocal(const float4x4 &newLocal) {
-	if (myGo->parent != nullptr || myGo->parent->isRoot) {
+	if (myGo->parent->isRoot) {
 
 		localMatrix = newLocal;
 	}
@@ -65,7 +76,7 @@ void ComponentTransform::SetNewMatrixLocal(const float4x4 &newLocal) {
 
 }
 void ComponentTransform::SetWorldMatrix() {
-	if (myGo->parent != nullptr || myGo->parent->isRoot) {
+	if (myGo->parent->isRoot) {
 
 		worldMatrix = localMatrix;
 	}

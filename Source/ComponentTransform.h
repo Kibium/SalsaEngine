@@ -7,6 +7,7 @@
 
 class ComponentTransform : public Component {
 public:
+	ComponentTransform(const float3, const float3, const float3);
 	ComponentTransform();
 	~ComponentTransform();
 
@@ -14,10 +15,7 @@ public:
 	void RotToQuat();
 	void QuatToFloat();
 	void UpdateMatrix();
-	void UpdateLocals(float3 newPosition, Quat newRotation, float3 newScale);
-	void SetNewMatrix(const float4x4 & newGlobal);
 	void SetWorldMatrix();
-	void SetBothMatrix(const float4x4 & newGlobal, const float4x4 & newLocal);
 	void SetNewMatrixLocal(const float4x4 & newLocal);
 	void CheckScale();
 	void UpdateAABBBox();
