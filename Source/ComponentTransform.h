@@ -3,9 +3,11 @@
 
 #include "Component.h"
 #include "MathGeoLib.h"
+#define MINIMUM_SCALE 0.001f
 
 class ComponentTransform : public Component {
 public:
+	ComponentTransform(const float3, const float3, const float3);
 	ComponentTransform();
 	ComponentTransform::ComponentTransform(const float3 position, const float3 rotation, const float3 scale);
 	~ComponentTransform();
@@ -14,8 +16,11 @@ public:
 	void RotToQuat();
 	void QuatToFloat();
 	void UpdateMatrix();
-	void SetNewMatrix(const float4x4 & newGlobal);
-	void UpdateAABBBox(GameObject * go);
+	void SetWorldMatrix();
+	void SetNewMatrixLocal(const float4x4 & newLocal);
+	void CheckScale();
+	void UpdateAABBBox();
+	//void UpdateAABBBox(GameObject * go);
 	void OnEditor() override;
 
 public:
