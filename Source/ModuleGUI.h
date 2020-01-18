@@ -47,6 +47,7 @@ public:
 	float explorerWidth = 0;
 	float explorerHeight = 0;
 	char* GetInputFileJson();
+	ImVec2 cursorScene;
 
 private:
 	char szFileName[MAX_PATH] = _T("");

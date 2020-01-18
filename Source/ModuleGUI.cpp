@@ -394,6 +394,7 @@ void ModuleGUI::Scene() {
 
 		scenePos.x = ImGui::GetWindowPos().x;
 		scenePos.y = ImGui::GetWindowPos().y;
+		cursorScene = ImGui::GetCursorScreenPos();
 
 		/*vMin.x += ImGui::GetWindowPos().x;
 		vMin.y += ImGui::GetWindowPos().y;

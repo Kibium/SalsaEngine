@@ -173,8 +173,9 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 }
 
 void ModuleScene::DrawHierarchy(bool *showHierarchy) {
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
 	if (showHierarchy && ImGui::Begin(ICON_FA_CUBES" Hierarchy", showHierarchy)) {
-		if (root->children.size() > 0 && (ImGui::TreeNode(root->name.c_str()))) {
+		if (root->children.size() > 0 && (ImGui::TreeNodeEx(root->name.c_str(),flags))) {
 			DrawGameObjects(root->children);
 			ImGui::TreePop();
 		}

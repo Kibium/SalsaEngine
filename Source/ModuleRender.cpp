@@ -288,7 +288,7 @@ void ModuleRender::MousePicking(float2 mouse) {
 						triangle.c = go->model->vertices[go->model->indices[i+2]].Position;
 						
 						float distance;
-						bool hit = triangle.Intersects(localRay, &distance);
+						bool hit = triangle.Intersects(localRay, &distance);//TODO PAINT HIT
 						LOG("HIT GAME OBJECT: %s \n", hit ? "true" : "false");
 						if (hit) {
 							if (distance < minDistance) {
@@ -307,11 +307,11 @@ void ModuleRender::MousePicking(float2 mouse) {
 
 LineSegment ModuleRender::CreatingRay(float2 mouse) {
 	
-	ImVec2 pos = App->gui->GetScenePos();
+	ImVec2 pos = App->gui->cursorScene;
 	float sceneHeight = App->gui->GetSceneHeight();
 	float sceneWidth = App->gui->GetSceneWidth();
-	float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
-	float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
+	//float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
+	//float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
 	float2 normalizedPos = float2((mouse.x - (pos.x + (sceneWidth / 2))) / (sceneWidth / 2), ((pos.y + (sceneHeight / 2)) - mouse.y) / (sceneWidth / 2));
 	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
 	
