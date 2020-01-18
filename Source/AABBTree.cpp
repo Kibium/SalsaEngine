@@ -175,6 +175,7 @@ void AABBTree::insertLeaf(unsigned leafNodeIndex)
 		}
 		else
 		{
+
 			AABB newRightAabb = leafNode.aabb;
 			newRightAabb.Enclose(rightNode.aabb);
 			costRight = (newRightAabb.SurfaceArea()- rightNode.aabb.SurfaceArea()) + minimumPushDownCost;
@@ -320,19 +321,26 @@ void AABBTree::fixUpwardsTree(unsigned treeNodeIndex)
 
 void AABBTree::DrawTree()
 {
-
-	if (_rootNodeIndex != AABB_NULL_NODE) {
-
-		std::stack<AABBNode> aabbTree;
-		aabbTree.push(_nodes[_rootNodeIndex]);
-		while (!aabbTree.empty())
+	std::stack<AABBNode> aabbTree;
+	aabbTree.push(_nodes[_rootNodeIndex]);
+	while (!aabbTree.empty())
+	{
+		AABBNode node = aabbTree.top();
+		aabbTree.pop();
+		if (node.parentNodeIndex != AABB_NULL_NODE)
 		{
-			AABBNode node = aabbTree.top();
-			dd::aabb(node.aabb.minPoint, node.aabb.maxPoint, float3(1.0f, 0.0f, 1.0f));
-			aabbTree.pop();
+			AABBNode parent = _nodes[node.parentNodeIndex];
 		}
+		if (node.leftNodeIndex != AABB_NULL_NODE)
+			aabbTree.push(_nodes[node.leftNodeIndex]);
+		else if (node.rightNodeIndex != AABB_NULL_NODE)
+			aabbTree.push(_nodes[node.rightNodeIndex]);
+
+		DrawAABB(node.aabb);
 	}
-
-
+	
 }
+void AABBTree::DrawAABB(AABB aabb) {
 
+	dd::aabb(aabb.minPoint, aabb.maxPoint, math::float3(1.0f, 0.0f, 1.0f));
+}

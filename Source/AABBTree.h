@@ -60,6 +60,8 @@ public:
 	void updateObject(GameObject*);
 	std::forward_list<GameObject*> queryOverlaps(const GameObject*) const;
 	void DrawTree();
+	void DrawAABB(AABB aabb);
+
 };
 
 #endif // __AABBTREE_H__

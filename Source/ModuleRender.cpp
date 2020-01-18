@@ -131,7 +131,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
 			DrawAABB(gameObject);
-			App->scene->DrawTree();
 			if (App->scene->gameCamera->camera->ContainsAABOX(gameObject->model->modelBox)) {
 				glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 				gameObject->model->Draw();
@@ -139,7 +138,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 		}
 
 	}
-	DrawGrid();
 
 	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
@@ -206,12 +204,10 @@ void ModuleRender::DrawScene(const float width, const float height) {
 					DrawAABB(obj);
 				}
 			}
-
-			App->scene->DrawTree();
-		}
-			
+		}		
 			
 	}
+	App->scene->DrawTree();
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();

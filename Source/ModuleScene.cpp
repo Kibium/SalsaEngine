@@ -273,16 +273,20 @@ void ModuleScene::LoadScene(const char *fileName) {
 }
 
 void ModuleScene::DrawTree() {
-	AABBTree* aux = nullptr;
-	aux = new AABBTree(5);
-	for (auto gameObject : root->children) {
+	
+	if (root->children.size() > 1) {
+		AABBTree* aux = nullptr;
+		aux = new AABBTree(5);
+		for (auto gameObject : root->children) {
 
-		if (gameObject->model != nullptr)
-			aux->insertObject(gameObject);
+			if (gameObject->model != nullptr)
+				aux->insertObject(gameObject);
 
+		}
+
+		aux->DrawTree();
+		abbTree = aux;
+		aux = nullptr;
 	}
 
-	aux->DrawTree();
-	abbTree = aux;
-	aux = nullptr;
 }
