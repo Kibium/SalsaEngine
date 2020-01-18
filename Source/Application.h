@@ -18,6 +18,7 @@ class ModuleMSTimer;
 
 class Skybox;
 class ModuleScene;
+class ModuleFileSystem;
 
 
 
@@ -49,6 +50,7 @@ public:
 	ModuleDebugDraw* debugdraw = nullptr;
 	Skybox* skybox = nullptr;
 	ModuleScene* scene = nullptr;
+	ModuleFileSystem* fs = nullptr;
 
 
 private:

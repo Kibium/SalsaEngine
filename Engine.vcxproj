@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Importer.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="Libraries\Assimp\include\assimp\anim.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="Libraries\rapidjson\writer.h" />
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
+    <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="Source\AABBTree.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component.h" />
@@ -329,6 +331,7 @@
     <ClInclude Include="Source\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImGradient.cpp" />
     <ClCompile Include="Libraries\ImGuizmo\ImGuizmo.cpp" />
@@ -407,6 +410,7 @@
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
+    <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="Source\AABBTree.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
