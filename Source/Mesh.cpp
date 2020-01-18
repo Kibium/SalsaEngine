@@ -6,22 +6,18 @@
 #include "ModuleModelLoader.h"
 #include <glew.h>
 
-
-
-
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb) 
-	: npolys(polygons), nvertex(totalVertices), boundingBox(bb), modelBox(mb)
-{
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb)
+	: npolys(polygons), nvertex(totalVertices), boundingBox(bb), modelBox(mb) {
 	this->vertices = vertices;
 	this->indices = indices;
 	this->meshMaterial = m;
 
 	//Creating triangle data
-	for (int i = 0; i < indices.size(); i+= 3) {		
-			Triangle t = Triangle(vertices[indices[i]].Position, vertices[indices[i+1]].Position, vertices[indices[i + 2]].Position);
-			triangles.push_back(t);
+	for (int i = 0; i < indices.size(); i += 3) {
+		Triangle t = Triangle(vertices[indices[i]].Position, vertices[indices[i + 1]].Position, vertices[indices[i + 2]].Position);
+		triangles.push_back(t);
 	}
-	LOG("Tris: %d\n", triangles.size());
+	//LOG("Tris: %d\n", triangles.size());
 	setupMesh();
 
 }
@@ -30,11 +26,9 @@ vector<Vertex> Mesh::GetVertices() {
 	return vertices;
 }
 
-void Mesh::LoadTexture(vector<Texture>& v, TextureType type, std::string& directory, std::string& name) {
+void Mesh::LoadTexture(vector<Texture>& v, TextureType type, const std::string& directory) {
 	string dir;
 	Texture tex;
-
-	directory = directory.substr(0, directory.size() - 4);
 
 	switch (type) {
 	case DIFFUSE:
@@ -48,16 +42,13 @@ void Mesh::LoadTexture(vector<Texture>& v, TextureType type, std::string& direct
 
 			mat.diffuse_map = tex.id;
 			mat.diff_path = dir;
-
 		}
-
 		break;
-
 
 	case SPECULAR:
 		dir = directory + "Specular.tif";
 		tex.id = App->texture->Load(dir.c_str());
-		cout << tex.id;
+
 		if (item_exists(dir.c_str())) {
 			tex.type = "specular";
 			tex.path = dir;
@@ -71,12 +62,14 @@ void Mesh::LoadTexture(vector<Texture>& v, TextureType type, std::string& direct
 	case OCCLUSION:
 		dir = directory + "Occlusion.png";
 		tex.id = App->texture->Load(dir.c_str());
+
 		if (item_exists(dir.c_str())) {
 			tex.type = "occlusion";
 			tex.path = dir;
 			v.push_back(tex);
 
 			mat.occlusion_map = tex.id;
+			mat.occ_path = dir;
 		}
 		break;
 	}
@@ -95,8 +88,7 @@ bool Mesh::item_exists(const char * path) {
 		return false;
 }
 
-void Mesh::Draw()
-{
+void Mesh::Draw() {
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
 	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1, 1, 1);
@@ -141,8 +133,7 @@ void Mesh::Draw()
 	glActiveTexture(GL_TEXTURE0);
 }
 
-void Mesh::setupMesh()
-{
+void Mesh::setupMesh() {
 	// create buffers/arrays
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -163,7 +154,7 @@ void Mesh::setupMesh()
 	// vertex Positions
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	
+
 	// vertex texture coords
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));

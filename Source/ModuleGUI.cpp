@@ -439,7 +439,7 @@ char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every it
 		string temp = szFileName;
 
 		//TODO: ADD HERE ACCEPETD FILETYPES
-		if (temp.substr(temp.size() - 4) == ".png" || temp.substr(temp.size() - 4) == ".ttf")
+		if (temp.substr(temp.size() - 4) == ".png" || temp.substr(temp.size() - 4) == ".ttf" || temp.substr(temp.size() - 4) == ".tif")
 			return szFileName;
 		else
 			return "Not valid";

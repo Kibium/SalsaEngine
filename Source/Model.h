@@ -51,14 +51,11 @@ public:
 	~Model();
 
 	void ProcessName();
-	void Draw();
 
 private:
 	void Load(const char*);
-	//void LoadTexture(vector<Texture>& v, TextureType type);
 	void processNode(aiNode*, const aiScene*);
-	Mesh* processMesh(aiMesh*, const aiScene*);
-	//vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
+	Mesh* processMesh(aiMesh*, const aiScene*, const std::string&name);
 	string GetModelDirectory(const char*);
 	string GetFilename(const char*);
 
