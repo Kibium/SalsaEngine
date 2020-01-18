@@ -39,7 +39,6 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ComponentCamera* GameCamera = nullptr;
 	ImGuizmo::OPERATION guizmoOP = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE guizmoMode = ImGuizmo::WORLD;
 	bool drawTree = true;

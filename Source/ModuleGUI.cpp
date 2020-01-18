@@ -881,16 +881,6 @@ void ModuleGUI::ShowDefWindow() {
 
 		}
 
-		if (ImGui::CollapsingHeader(ICON_FA_CAMERA_RETRO" Game Camera", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::DragFloat3("Front C", (float*)&App->renderer->GameCamera->frustum.front, 0.1);
-			ImGui::DragFloat3("Up C", (float*)&App->renderer->GameCamera->frustum.up, 0.1);
-			ImGui::DragFloat3("Position C", (float*)&App->renderer->GameCamera->frustum.pos, 0.1);
-
-			ImGui::Separator();
-
-
-		}
 	}
 	ImGui::End();
 }

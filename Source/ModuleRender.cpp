@@ -53,13 +53,6 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
-	GameCamera = new ComponentCamera();
-	GameCamera->Init();
-	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
-	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
-	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
-	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
-	GameCamera->CalculateMatrixes();
 
 	return true;
 }
@@ -139,7 +132,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 	}
 
-	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
 	App->debugdraw->Draw(App->scene->gameCamera->camera, gameFBO, width, height);
@@ -236,7 +228,6 @@ bool ModuleRender::CleanUp()
 	glDeleteTextures(1, &frameTex);
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
-	delete GameCamera;
 	//Destroy window
 
 	return true;
