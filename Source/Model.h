@@ -12,7 +12,6 @@
 #include "Geometry/AABB.h"
 #include "ModuleTexture.h"
 #include <string>
-using namespace std;
 
 class myStream : public Assimp::LogStream {
 public:
@@ -26,41 +25,27 @@ public:
 class Model {
 
 public:
-	std::string fileName, name;
-	bool isActive = true;
-	const char *filePath = nullptr;
-	vector<Mesh*> meshes;
-	string directory, model_name;
-	vector<int> textureWidth;
-	vector<int> textureHeight;
-	aiVector3D modelPosition;
-	aiVector3D modelScale;
-	aiVector3D modelRotation;
-	bool model = false;
-	AABB modelBox;
-	AABB boundingBox;
-	int npolys = 0;
-	int nvertex = 0;
-	int nmeshes = 0;
-	bool load_once = false;
-	Material mat; 
-
-public:
 	Model();
 	Model(const char *filePath);
 	~Model();
 
-	void ProcessName();
-	void Draw();
+public:
+	const char *filePath = nullptr;
 
 private:
 	void Load(const char*);
-	//void LoadTexture(vector<Texture>& v, TextureType type);
-	void processNode(aiNode*, const aiScene*);
-	Mesh* processMesh(aiMesh*, const aiScene*);
-	//vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, string);
-	string GetModelDirectory(const char*);
-	string GetFilename(const char*);
+	void ProcessNode(aiNode*, const aiScene*);
+	Mesh* ProcessMesh(aiMesh*, const aiScene*, const std::string&);
+	std::string GetModelDirectory(const char*);
+	std::string GetFileName(const char *);
+
+private:
+	std::string fileName;
+	std::string directory;
+	int totalMeshes = 0;
+	Material mat;
+	math::AABB boundingBox;
+	math::AABB modelBox;
 
 };
 

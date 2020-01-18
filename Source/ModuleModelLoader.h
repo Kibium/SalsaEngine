@@ -24,10 +24,7 @@ using namespace std;
 class ModuleModelLoader : public Module {
 public:
 	std::vector<Model*> models;
-
-
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-
 	string directory, model_name;
 	
 	ModuleModelLoader();
@@ -39,8 +36,6 @@ public:
 	void AddModel(const char* filePath);
 	Model* GetModel(const char* filePath);
 
-
-	void Draw();
 	bool Init();
 	bool CleanUp();
 
