@@ -97,6 +97,11 @@ GameObject* ModuleScene::CreateGameObject() {
 	return gameObject;
 }
 
+GameObject* ModuleScene::CreateEmptyGameObject() {
+	GameObject* gameObject = new GameObject();
+	return gameObject;
+}
+
 GameObject* ModuleScene::CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile) {
 	GameObject* gameObject = new GameObject(UID, ParentUID, name, Active, Static, modelFile);
 	gameObject->parent = root;
@@ -113,6 +118,16 @@ void ModuleScene::DeleteGameObject(GameObject *gameObject) {
 	}
 }
 
+void ModuleScene::DeleteGameObjectFlag(GameObject *gameObject) {
+	for (int i = 0; i < root->children.size(); ++i) {
+		if (gameObject == root->children[i]) {
+			//root->children.erase(root->children.begin() + i);
+			gameObject->deleteFlag = true;
+			break;
+		}
+	}
+}
+
 void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
 }
@@ -122,51 +137,52 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 
 		for (int i = 0; i < objects.size(); ++i) {
 
-			// Tree node flags processing
-			ImGuiTreeNodeFlags objectFlags = ImGuiTreeNodeFlags_SpanFullWidth;
-			objectFlags |= (objects[i]->children.empty()) ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_DefaultOpen;
+			if (!objects[i]->deleteFlag) {
+				// Tree node flags processing
+				ImGuiTreeNodeFlags objectFlags = ImGuiTreeNodeFlags_SpanFullWidth;
+				objectFlags |= (objects[i]->children.empty()) ? ImGuiTreeNodeFlags_Leaf : ImGuiTreeNodeFlags_DefaultOpen;
 
-			if (selected == objects[i])
-				objectFlags |= ImGuiTreeNodeFlags_Selected;
+				if (selected == objects[i])
+					objectFlags |= ImGuiTreeNodeFlags_Selected;
 
-			// Process each gameobject
-			std::string objectName = (objects[i]->isActive) ? objects[i]->name : objects[i]->name + " (Inactive) ";
-			if (ImGui::TreeNodeEx(objectName.c_str(), objectFlags)) {
+				// Process each gameobject
+				std::string objectName = (objects[i]->isActive) ? objects[i]->name : objects[i]->name + " (Inactive) ";
+				if (ImGui::TreeNodeEx(objectName.c_str(), objectFlags)) {
 
-				if (ImGui::IsItemClicked())
-					selected = objects[i];
+					if (ImGui::IsItemClicked())
+						selected = objects[i];
 
-				// Popup options
-				DrawPopup(objects[i]);
+					// Popup options
+					DrawPopup(objects[i]);
 
-				// Change hierarchy structure depending on dragged object
-				if (ImGui::BeginDragDropTarget()) {
-					if (ImGui::AcceptDragDropPayload("GameObject")) {
-						if (dragged->name < objects[i]->name && objects[i]->parent == root)
-							--i;
+					// Change hierarchy structure depending on dragged object
+					if (ImGui::BeginDragDropTarget()) {
+						if (ImGui::AcceptDragDropPayload("GameObject")) {
+							if (dragged->name < objects[i]->name && objects[i]->parent == root)
+								--i;
 
-						dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
-						dragged->parent = objects[i];
-						objects[i]->children.push_back(dragged);
-						dragged->components[0]->position += dragged->parent->components[0]->position;
-						//SortGameObjects(objects[i]->children);
-						dragged = nullptr;
+							dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
+							dragged->parent = objects[i];
+							objects[i]->children.push_back(dragged);
+							dragged->components[0]->position += dragged->parent->components[0]->position;
+							//SortGameObjects(objects[i]->children);
+							dragged = nullptr;
+						}
+						ImGui::EndDragDropTarget();
 					}
-					ImGui::EndDragDropTarget();
-				}
 
-				// Save dragged object
-				if (ImGui::BeginDragDropSource()) {
-					dragged = objects[i];
-					ImGui::SetDragDropPayload("GameObject", NULL, NULL);
-					ImGui::Text("Move to...");
-					ImGui::EndDragDropSource();
-				}
+					// Save dragged object
+					if (ImGui::BeginDragDropSource()) {
+						dragged = objects[i];
+						ImGui::SetDragDropPayload("GameObject", NULL, NULL);
+						ImGui::Text("Move to...");
+						ImGui::EndDragDropSource();
+					}
 
-				// Process each gameobject's childs
-				if (objects.size() > 0) //Toni super fix, it crashed when you'd delete the last one
+					// Process each gameobject's childs
 					DrawGameObjects(objects[i]->children);
-				ImGui::TreePop();
+					ImGui::TreePop();
+				}
 			}
 		}
 	}
@@ -197,51 +213,31 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 		selected = gameObject;
 	}
 	if (ImGui::BeginPopup("GameObject Popup")) {
-		ImGui::Separator();
-		ImGui::TextDisabled("Copy");
-		ImGui::TextDisabled("Paste");
-		ImGui::Separator();
-		ImGui::TextDisabled("Rename");
-		if (ImGui::MenuItem("Duplicate")) {
-			GameObject* duplicate = CreateGameObject();
-			duplicate->name = gameObject->name;
-			duplicate->parent = gameObject->parent;
-			duplicate->components = gameObject->components;
-			duplicate->children = gameObject->children;
-			if (duplicate->parent == root) {
-				root->children.push_back(duplicate);
-				//SortGameObjects(root->children);
-			}
-			else {
-				duplicate->parent->children.push_back(duplicate);
-				//SortGameObjects(duplicate->parent->children);
-			}
-			selected = duplicate;
-		}
-		if (ImGui::MenuItem("Delete")) {
-			gameObject->parent == root ? DeleteGameObject(gameObject) : gameObject->parent->DeleteChild(gameObject);
-			//delete gameObject;
-			selected = nullptr;
-		}
-		ImGui::Separator();
 		if (ImGui::MenuItem("Create Empty")) {
 			GameObject* newObject = CreateGameObject();
-			selected = nullptr;
-			if (selected == nullptr) {
-				root->children.push_back(newObject);
-			}
-			else {
-				newObject->parent = gameObject;
-				gameObject->children.push_back(newObject);
-			}
-			selected = newObject;
 		}
-		if (ImGui::BeginMenu("3D Object")) {
-			ImGui::TextDisabled("Cube");
-			ImGui::TextDisabled("Sphere");
-			ImGui::TextDisabled("Cylinder");
-			ImGui::TextDisabled("Torus");
-			ImGui::EndMenu();
+		//if (ImGui::MenuItem("Duplicate")) {
+		//	GameObject* duplicate = CreateEmptyGameObject();
+		//	duplicate->name = gameObject->name;
+		//	duplicate->parent = gameObject->parent;
+		//	duplicate->transform = gameObject->transform;
+		//	duplicate->model = gameObject->model;
+		//	duplicate->mesh = gameObject->mesh;
+		//	duplicate->material = gameObject->material;
+		//	duplicate->children = gameObject->children;
+		//	if (gameObject->parent == root) {
+		//		root->children.push_back(duplicate);
+		//		//SortGameObjects(root->children);
+		//	}
+		//	else {
+		//		gameObject->parent->children.push_back(duplicate);
+		//		//SortGameObjects(duplicate->parent->children);
+		//	}
+		//	selected = duplicate;
+		//}
+		if (ImGui::MenuItem("Delete")) {
+			gameObject->parent == root ? DeleteGameObjectFlag(gameObject) : gameObject->parent->DeleteChildFlag(gameObject);
+			selected = nullptr;
 		}
 		ImGui::EndPopup();
 	}

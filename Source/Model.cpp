@@ -12,95 +12,76 @@
 #include <assimp/mesh.h>
 #include <algorithm>
 #include "GameObject.h"
+using namespace std;
 using namespace Assimp;
 
 Model::Model() {
 }
 
-Model::Model(const char *filePath) : filePath(filePath), fileName(filePath) {
-	//LOG("FILEPATH: %s\n", filePath);
-	ProcessName();
+Model::Model(const char *filePath) : filePath(filePath) {
+	fileName = GetFileName(filePath);
 	Load(filePath);
 }
 
 Model::~Model() {
 }
 
-void Model::ProcessName() {
-	// Process name
-	fileName = filePath;
-
-	for (std::string::iterator it = fileName.end() - 1; it != fileName.begin(); --it) {
-		if ((*it) != '\\')
-			name += (*it);
-		else
-			break;
-	}
-	std::reverse(name.begin(), name.end());
-	name.pop_back();
-	name.pop_back();
-	name.pop_back();
-	name.pop_back();
-}
-
 void Model::Load(const char* path) {
 	DefaultLogger::create("", Logger::VERBOSE);
 	const unsigned int severity = /*Logger::Debugging | Logger::Info |*/ Logger::Err /*| Logger::Warn*/;
 	DefaultLogger::get()->attachStream(new myStream(), severity);
+
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
+
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		LOG("ERROR::ASSIMP:: %s \n", importer.GetErrorString());
 		return;
 	}
+
 	modelBox.SetNegativeInfinity();
 	boundingBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
-	// process ASSIMP's root node recursively
-	processNode(scene->mRootNode, scene);
 
-	model = true;
+	// process ASSIMP's root node recursively
+	ProcessNode(scene->mRootNode, scene);
+
 	DefaultLogger::kill();
 }
 
-
-void Model::processNode(aiNode *node, const aiScene *scene) {
+void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 	// process each mesh located at the current node
-	int counter = 0;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
 		// Create a Game Object for each mesh
-		Mesh* newMesh = processMesh(mesh, scene, node->mName.C_Str());
+		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str());
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
 		auto go = App->scene->CreateGameObject();
 		go->modelPath = fileName;
 		go->model = newMesh;
-		//go->name = App->model->GetFilename(filePath) + " " + std::to_string(nmeshes);
-		go->name = node->mName.C_Str();
+		go->name = totalMeshes > 0 ? node->mName.C_Str() + std::string(" ") + std::to_string(totalMeshes) : node->mName.C_Str();
 		go->DeleteComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::MESH);
 		go->CreateComponent(Type::MATERIAL);
-		//nmeshes += 1;
+		totalMeshes++;
 	}
-
-	node->mTransformation.Decompose(modelScale, modelRotation, modelPosition);
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		processNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene);
 	}
 
 	App->scene->camera->Focus();
 }
 
-Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, const std::string& name) {
+Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& name) {
 	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
@@ -137,8 +118,7 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 	// normal: texture_normalN
 
 	Mesh* meshM = new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
-	std::string meshName = GetModelDirectory(filePath) + name;
-	LOG("MESH NAME: %s\n", meshName.c_str());
+	std::string meshName = directory + name;
 
 	meshM->LoadTexture(textures, DIFFUSE, std::string(meshName));
 	meshM->LoadTexture(textures, SPECULAR, std::string(meshName));
@@ -149,15 +129,13 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 
 string Model::GetModelDirectory(const char *path) {
 	std::string dir = std::string(path);
-
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string modelDir = dir.substr(0, currentDir + 1);
-
 	return modelDir;
 }
-string Model::GetFilename(const char *path) {
-	std::string dir = std::string(path);
 
+string Model::GetFileName(const char *path) {
+	std::string dir = std::string(path);
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string filename;
 	filename = dir.substr(currentDir + 1);

@@ -33,6 +33,7 @@ public:
 	void CreateComponent(Type type);
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
+	void GameObject::DeleteChildFlag(GameObject *child);
 	void DeleteComponent(Type type);
 
 	GameObject* GetChild(unsigned childIndex) const;
@@ -60,7 +61,10 @@ public:
 	float distanceFromCamera = 0;
 	Mesh* model = nullptr;
 	std::string modelPath;
+	bool deleteFlag = false;
 
+private:
+	void SetChildrenActive(std::vector<GameObject*>& objects, bool active);
 };
 
 #endif // __GAMEOBJECT_H__
