@@ -174,6 +174,11 @@ void ModuleGUI::ShowConsole() {
 }
 void ModuleGUI::ProjectView() {
 	//ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(0,App->window->screen_surface->h * OFFSET_CONSOLE_UP),ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_CONSOLEW, App->window->screen_surface->h * OFFSET_CONSOLEH),
+		ImGuiCond_Once
+	);
 	explorerPos = ImGui::GetWindowPos();
 	explorerHeight = ImGui::GetWindowHeight();
 	explorerWidth = ImGui::GetWindowWidth();
@@ -312,7 +317,11 @@ void ModuleGUI::MainMenu() {
 
 }
 void ModuleGUI::MainWindow() {
-	ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_SCENE_POSX, App->window->screen_surface->h * (OFFSET_NAVBAR+ OFFSET_SCENE_POSY)), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_SCENEW, App->window->screen_surface->h * OFFSET_SCENEH),
+		ImGuiCond_Once
+	);
 
 	if (ImGui::Begin(ICON_FA_SOLAR_PANEL "", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
@@ -330,7 +339,28 @@ void ModuleGUI::MainWindow() {
 }
 
 void ModuleGUI::ShowTimeButtons() {
-	if (ImGui::Begin("Time Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_BUTTON_POSX, App->window->screen_surface->h * OFFSET_NAVBAR), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_BUTTONW, App->window->screen_surface->h * OFFSET_BUTTONH),
+		ImGuiCond_Once
+	);
+	if (ImGui::Begin("Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
+
+		if (ImGui::Button(ICON_FA_RULER_COMBINED, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::TRANSLATE;
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_SYNC, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::ROTATE;
+		}ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_BALANCE_SCALE, ImVec2(28, 24)))
+		{
+			App->renderer->guizmoOP = ImGuizmo::SCALE;
+		}
+
 
 		ImVec2 time_window_size = ImGui::GetWindowSize();
 
@@ -872,6 +902,11 @@ void ModuleGUI::ShowDefWindow() {
 
 void ModuleGUI::showExplorer() {
 		// open Dialog Simple
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * (OFFSET_CONSOLE_UP +0.05)), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * (OFFSET_CONSOLEW), App->window->screen_surface->h * (OFFSET_CONSOLEH - 0.055)),
+		ImGuiCond_Once
+	);
 	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "", "", ".");
 	
 	if (ImGui::BeginTabItem(ICON_FA_ARCHIVE " Project")) {
