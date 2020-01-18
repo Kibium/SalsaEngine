@@ -8,6 +8,10 @@
 #include "ModuleScene.h"
 #include "Application.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 JsonConfig::JsonConfig() {
 	document.SetObject();
@@ -28,19 +32,20 @@ void JsonConfig::SaveJson(const char *fileName) {
 	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 	document.Accept(writer);
 	//LOG(strbuf.GetString());
-	LOG("Saved scene data!\n");
 
 	// save json to file
 	FILE* file = nullptr;
 	fopen_s(&file, fileName, "wt");
 
-	if (!file) 
+	if (!file)
 		LOG("Error saving scene. Can not create %s file.", fileName);
 
 	char *jsonFile = _strdup(strbuf.GetString());
 
 	fwrite(jsonFile, sizeof(char), strlen(jsonFile), file);
 	fclose(file);
+
+	LOG("Saved scene data!\n");
 }
 
 void JsonConfig::SaveGameObject(const GameObject& obj) {
@@ -48,55 +53,67 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	// object properties
 	rapidjson::Value object(rapidjson::kObjectType);
 	object.AddMember("UID", obj.UUID, *allocator);
-	object.AddMember("ParentUID", obj.parent->UUID, *allocator);
+	object.AddMember("Index", obj.modelIndex, *allocator);
 	object.AddMember("Name", rapidjson::Value(obj.name.c_str(), *allocator), *allocator);
 	object.AddMember("Active", obj.isActive, *allocator);
 	object.AddMember("Static", obj.isStatic, *allocator);
 	if (obj.model != nullptr) {
-		LOG("MODEL FILE PATH: %s\n", obj.modelPath.c_str());
+		//LOG("MODEL FILE PATH: %s\n", obj.modelPath.c_str());
 		object.AddMember("Model", rapidjson::Value(obj.modelPath.c_str(), *allocator), *allocator);
 	}
 	else {
 		object.AddMember("Model", "None", *allocator);
 	}
+	if (obj.transform != nullptr) {
+		object.AddMember("TransX", obj.transform->position.x, *allocator);
+		object.AddMember("TransY", obj.transform->position.x, *allocator);
+		object.AddMember("TransZ", obj.transform->position.x, *allocator);
+		object.AddMember("RotX", obj.transform->rotationFloat.x, *allocator);
+		object.AddMember("RotY", obj.transform->rotationFloat.x, *allocator);
+		object.AddMember("RotZ", obj.transform->rotationFloat.x, *allocator);
+		object.AddMember("ScaleX", obj.transform->scale.x, *allocator);
+		object.AddMember("ScaleY", obj.transform->scale.x, *allocator);
+		object.AddMember("ScaleZ", obj.transform->scale.x, *allocator);
+	}
 
 	// object's components properties
 	rapidjson::Value components(rapidjson::kArrayType);
+	rapidjson::Value camera(rapidjson::kObjectType);
 	rapidjson::Value transform(rapidjson::kObjectType);
 	rapidjson::Value mesh(rapidjson::kObjectType);
 	rapidjson::Value material(rapidjson::kObjectType);
 
-	if (obj.components.size() > 0) {
-		transform.AddMember("UID", obj.components[0]->UUID, *allocator);
-		transform.AddMember("ParentUID", obj.components[0]->myGo->UUID, *allocator);
-		transform.AddMember("Type", (int)obj.components[0]->type, *allocator);
-		transform.AddMember("Active", obj.components[0]->active, *allocator);
+	if (obj.transform != nullptr) {
+		transform.AddMember("UID", obj.transform->UUID, *allocator);
+		transform.AddMember("ParentUID", obj.transform->myGo->UUID, *allocator);
+		transform.AddMember("Type", (int)obj.transform->type, *allocator);
+		transform.AddMember("Active", obj.transform->active, *allocator);
 		rapidjson::Value trans(rapidjson::kArrayType);
-		trans.PushBack(obj.components[0]->position.x, *allocator).PushBack(obj.components[0]->position.y, *allocator).PushBack(obj.components[0]->position.z, *allocator);
+		trans.PushBack(obj.transform->position.x, *allocator).PushBack(obj.transform->position.y, *allocator).PushBack(obj.transform->position.z, *allocator);
 		transform.AddMember("Translation", trans, *allocator);
 		rapidjson::Value rot(rapidjson::kArrayType);
-		rot.PushBack(obj.components[0]->rotation.x, *allocator).PushBack(obj.components[0]->rotation.y, *allocator).PushBack(obj.components[0]->rotation.z, *allocator);
+		rot.PushBack(obj.transform->rotationFloat.x, *allocator).PushBack(obj.transform->rotationFloat.y, *allocator).PushBack(obj.transform->rotationFloat.z, *allocator);
 		transform.AddMember("Rotation", rot, *allocator);
 		rapidjson::Value scale(rapidjson::kArrayType);
-		scale.PushBack(obj.components[0]->scale.x, *allocator).PushBack(obj.components[0]->scale.y, *allocator).PushBack(obj.components[0]->scale.z, *allocator);
+		scale.PushBack(obj.transform->scale.x, *allocator).PushBack(obj.transform->scale.y, *allocator).PushBack(obj.transform->scale.z, *allocator);
 		transform.AddMember("Scale", scale, *allocator);
 		components.PushBack(transform, *allocator);
+	}
 
-		if (obj.components.size() > 1) {
-			mesh.AddMember("UID", obj.components[1]->UUID, *allocator);
-			mesh.AddMember("ParentUID", obj.components[1]->myGo->UUID, *allocator);
-			mesh.AddMember("Type", (int)obj.components[1]->type, *allocator);
-			mesh.AddMember("Active", obj.components[1]->active, *allocator);
-			components.PushBack(mesh, *allocator);
+	if (obj.mesh != nullptr) {
+		mesh.AddMember("UID", obj.mesh->UUID, *allocator);
+		mesh.AddMember("ParentUID", obj.mesh->myGo->UUID, *allocator);
+		mesh.AddMember("Type", (int)obj.mesh->type, *allocator);
+		mesh.AddMember("Active", obj.mesh->active, *allocator);
+		components.PushBack(mesh, *allocator);
+	}
 
-			if (obj.components.size() > 2) {
-				material.AddMember("UID", obj.components[2]->UUID, *allocator);
-				material.AddMember("ParentUID", obj.components[2]->myGo->UUID, *allocator);
-				material.AddMember("Type", (int)obj.components[2]->type, *allocator);
-				material.AddMember("Active", obj.components[2]->active, *allocator);
-				components.PushBack(material, *allocator);
-			}
-		}
+	if (obj.material != nullptr) {
+		material.AddMember("UID", obj.material->UUID, *allocator);
+		material.AddMember("ParentUID", obj.material->myGo->UUID, *allocator);
+		material.AddMember("Type", (int)obj.material->type, *allocator);
+		material.AddMember("Active", obj.material->active, *allocator);
+		components.PushBack(material, *allocator);
 	}
 
 	object.AddMember("Components", components, *allocator);
@@ -141,8 +158,8 @@ void JsonConfig::LoadJson(const char *fileName) {
 			if (std::string(itr->name.GetString()) == std::string("UID")) {
 				gameObject->UUID = itr->value.GetFloat();
 			}
-			else if (std::string(itr->name.GetString()) == std::string("ParentUID")) {
-				gameObject->parentUUID = itr->value.GetFloat();
+			else if (std::string(itr->name.GetString()) == std::string("Index")) {
+				gameObject->modelIndex = itr->value.GetFloat();
 			}
 			if (std::string(itr->name.GetString()) == std::string("Name")) {
 				gameObject->name = itr->value.GetString();
@@ -155,12 +172,51 @@ void JsonConfig::LoadJson(const char *fileName) {
 			}
 			else if (std::string(itr->name.GetString()) == std::string("Model")) {
 				gameObject->modelPath = itr->value.GetString();
-				App->model->AddModel(gameObject->modelPath.c_str());
+				if (gameObject->modelPath != "None") {
+					Model* modelContainer = new Model(gameObject->modelPath.c_str(), false);
+					gameObject->modelContainer = modelContainer;
+					gameObject->model = modelContainer->meshes[gameObject->modelIndex];
+				}
+			}
+			else if (std::string(itr->name.GetString()) == std::string("TransX")) {
+				gameObject->transform->position.x = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("TransY")) {
+				gameObject->transform->position.y = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("TransZ")) {
+				gameObject->transform->position.z = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("RotX")) {
+				gameObject->transform->rotationFloat.x = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("RotY")) {
+				gameObject->transform->rotationFloat.y = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("RotZ")) {
+				gameObject->transform->rotationFloat.z = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("ScaleX")) {
+				gameObject->transform->scale.x = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("ScaleY")) {
+				gameObject->transform->scale.y = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("ScaleZ")) {
+				gameObject->transform->scale.z = itr->value.GetFloat();
+				gameObject->transform->UpdateMatrix();
+				math::float3 tempTrans = gameObject->transform->position;
+				math::float3 tempRot = gameObject->transform->rotationFloat;
+				math::float3 tempScale = gameObject->transform->scale;
+				//gameObject->DeleteComponent(Type::TRANSFORM);
+				gameObject->transform = new ComponentTransform(tempTrans, tempRot, tempScale);
+				gameObject->CreateComponent(Type::MESH);
+				gameObject->CreateComponent(Type::MATERIAL);
 			}
 
 			std::string memberType = kTypeNames[itr->value.GetType()];
 			const char *member = memberType.c_str();
-			
+
 			if (memberType == "Null") {
 				LOG("Null");
 
@@ -175,6 +231,10 @@ void JsonConfig::LoadJson(const char *fileName) {
 			}
 			else if (memberType == "Array") {
 				LOG("Array");
+				//for (rapidjson::Value::ConstValueIterator a = itr.Begin(); a != itr.End(); ++itr) {
+				//	printf("%d ", itr->GetInt());
+
+				//}
 
 			}
 			else if (memberType == "String") {
@@ -191,7 +251,7 @@ void JsonConfig::LoadJson(const char *fileName) {
 
 		LOG("\n");
 	}
-	
+
 	LOG("Game Objects Count: %d\n", i);
 
 	delete json;

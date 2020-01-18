@@ -128,6 +128,10 @@ void ModuleScene::DeleteGameObjectFlag(GameObject *gameObject) {
 	}
 }
 
+void ModuleScene::DeleteAll() {
+	root->children.clear();
+}
+
 void ModuleScene::SortGameObjects(std::vector<GameObject*>& objects) {
 	std::sort(objects.begin(), objects.end(), [](const auto& lhs, const auto& rhs) { return lhs->name < rhs->name; });
 }
@@ -164,7 +168,7 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 							dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
 							dragged->parent = objects[i];
 							objects[i]->children.push_back(dragged);
-							dragged->components[0]->position += dragged->parent->components[0]->position;
+							//dragged->components[0]->position += dragged->parent->components[0]->position;
 							//SortGameObjects(objects[i]->children);
 							dragged = nullptr;
 						}
