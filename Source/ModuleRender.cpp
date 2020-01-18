@@ -269,6 +269,8 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 
 void ModuleRender::MousePicking(float2 mouse) {
 
+	if (ImGuizmo::IsOver())
+		return;
 	std::map<float, GameObject*> hits;
 	LineSegment ray = CreatingRay(mouse);
 	GetAABBHits(ray, hits);
@@ -281,15 +283,13 @@ void ModuleRender::MousePicking(float2 mouse) {
 				LineSegment localRay(ray);
 				localRay.Transform(go->transform->worldMatrix.Inverted());
 				Triangle triangle;
-				//for (int j = 0; j < go->model->meshes.size(); j++) {
 					for (int i = 0; i < go->model->indices.size()-2; i++) {
 						triangle.a = go->model->vertices[go->model->indices[i]].Position;
 						triangle.b = go->model->vertices[go->model->indices[i+1]].Position;
 						triangle.c = go->model->vertices[go->model->indices[i+2]].Position;
 						
 						float distance;
-						bool hit = triangle.Intersects(localRay, &distance);//TODO PAINT HIT
-						LOG("HIT GAME OBJECT: %s \n", hit ? "true" : "false");
+						bool hit = triangle.Intersects(localRay, &distance);
 						if (hit) {
 							if (distance < minDistance) {
 								aux = go;
@@ -297,7 +297,6 @@ void ModuleRender::MousePicking(float2 mouse) {
 							}
 						}
 					}
-				//}
 			}
 		}
 		App->scene->selected = aux;
@@ -310,19 +309,27 @@ LineSegment ModuleRender::CreatingRay(float2 mouse) {
 	ImVec2 pos = App->gui->cursorScene;
 	float sceneHeight = App->gui->GetSceneHeight();
 	float sceneWidth = App->gui->GetSceneWidth();
-	//float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
-	//float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
-	float2 normalizedPos = float2((mouse.x - (pos.x + (sceneWidth / 2))) / (sceneWidth / 2), ((pos.y + (sceneHeight / 2)) - mouse.y) / (sceneWidth / 2));
-	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
-	
+	float2 center = float2(pos.x + (sceneWidth / 2.0f), pos.y + (sceneHeight / 2.0f));
+	float2 normalized = float2((mouse.x - center.x) / (sceneWidth / 2), (center.y - mouse.y) / (sceneHeight / 2));
+	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalized.x, normalized.y);
+
 	return picking;
 
 }
  void ModuleRender::GetAABBHits(LineSegment ray, std::map<float, GameObject*>& gos) {
+
+	 std::vector<GameObject*> goInCamera;
 	 for (auto gameObject : App->scene->root->children) {
 		 if (gameObject->model != nullptr) {
+			 if (App->scene->camera->ContainsAABOX(gameObject->model->modelBox)) {
+				 goInCamera.push_back(gameObject);
+				}
+		 }
+	 }
+
+	 for (auto gameObject : goInCamera) {
+		 if (gameObject->model != nullptr) {
 			 bool hit = ray.Intersects(gameObject->model->modelBox);
-			 LOG("HIT AABB: %s \n", hit ? "true" : "false");
 			 if (hit) {
 				 float distance = App->scene->camera->frustum.pos.Distance(gameObject->model->modelBox);
 				 gos[distance] = gameObject;
