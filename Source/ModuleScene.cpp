@@ -30,7 +30,7 @@ bool ModuleScene::Init() {
 
 	root = new GameObject();
 	root->name = "RootNode";
-
+	root->isRoot = true;
 	gameCamera = new GameObject();
 	gameCamera->name = "MainCamera";
 	gameCamera->DeleteComponent(Type::TRANSFORM);
@@ -149,6 +149,7 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 						dragged->parent = objects[i];
 						objects[i]->children.push_back(dragged);
 						dragged->components[0]->position += dragged->parent->components[0]->position;
+						//dragged->transform->SetBothMatrix(objects[i]->transform->worldMatrix, objects[i]->transform->worldMatrix);
 						//SortGameObjects(objects[i]->children);
 						dragged = nullptr;
 					}

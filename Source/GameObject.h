@@ -47,6 +47,7 @@ public:
 	uint32_t parentUUID;
 	bool isActive = true;
 	bool isStatic = false;
+	bool isRoot = false;
 	std::string name = "GameObject";
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
