@@ -8,6 +8,27 @@
 #include <time.h>
 #include <tchar.h>
 
+#define OFFSET_HIERARCHYW 0.155f
+#define OFFSET_HIERARCHYH 0.685f
+#define OFFSET_NAVBAR 0.0227
+
+#define OFFSET_CONSOLEW 0.73f
+#define OFFSET_CONSOLEH 0.3f
+#define OFFSET_CONSOLE_UP 0.7f
+
+#define OFFSET_SCENE_POSX 0.155f
+#define OFFSET_SCENE_POSY 0.034f
+#define OFFSET_SCENEW 0.5757f
+#define OFFSET_SCENEH 0.648f
+
+#define OFFSET_INSPECTORW 0.27f
+#define OFFSET_INSPECTORH 0.977f
+#define OFFSET_INSPECTOR_POSX 0.73f
+
+#define OFFSET_BUTTON_POSX 0.155f
+#define OFFSET_BUTTONW 0.5757f
+#define OFFSET_BUTTONH 0.037f
+
 
 class ModuleGUI :public Module
 {

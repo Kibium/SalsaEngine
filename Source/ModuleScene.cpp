@@ -11,6 +11,7 @@
 #include "ComponentCamera.h"
 #include "AABBTree.h"
 #include "ComponentTransform.h"
+#include "ModuleWindow.h"
 #include "JsonConfig.h"
 
 ModuleScene::ModuleScene() {
@@ -174,6 +175,10 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 }
 
 void ModuleScene::DrawHierarchy(bool *showHierarchy) {
+
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * OFFSET_NAVBAR), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_HIERARCHYW, App->window->screen_surface->h * OFFSET_HIERARCHYH),ImGuiCond_Once);
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
 	if (showHierarchy && ImGui::Begin(ICON_FA_CUBES" Hierarchy", showHierarchy)) {
 		if (root->children.size() > 0 && (ImGui::TreeNodeEx(root->name.c_str(),flags))) {
@@ -185,6 +190,12 @@ void ModuleScene::DrawHierarchy(bool *showHierarchy) {
 }
 
 void ModuleScene::DrawInspector(bool *show) {
+
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_INSPECTOR_POSX, App->window->screen_surface->h * OFFSET_NAVBAR), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(
+		ImVec2(App->window->screen_surface->w * OFFSET_INSPECTORW, App->window->screen_surface->h * OFFSET_INSPECTORH),
+		ImGuiCond_Once
+	);
 	if (show && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", show)) {
 		if (root->children.size() > 0 && selected != nullptr) {
 			selected->DrawComponents();
