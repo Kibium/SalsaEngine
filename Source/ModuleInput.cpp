@@ -200,12 +200,8 @@ update_status ModuleInput::Update()
 					App->renderer->MousePicking(mouse);
 
 				}
-				
-				
-
 
 			}
-
 
 			break;
 
