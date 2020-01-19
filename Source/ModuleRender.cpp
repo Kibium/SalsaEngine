@@ -53,13 +53,6 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 	glGenFramebuffers(1, &FBO);
-	GameCamera = new ComponentCamera();
-	GameCamera->Init();
-	GameCamera->frustum.pos = math::float3(-29.f, 12.60f, -34.78f);
-	GameCamera->frustum.up = math::float3(0.192f, 0.960f, 0.205f);
-	GameCamera->frustum.front = math::float3(0.655f, -0.281f, 0.701f);
-	//GameCamera->model = math::float4x4::FromTRS(GameCamera->frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
-	GameCamera->CalculateMatrixes();
 
 	return true;
 }
@@ -131,7 +124,6 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
 			DrawAABB(gameObject);
-			App->scene->DrawTree();
 			if (App->scene->gameCamera->camera->ContainsAABOX(gameObject->model->modelBox)) {
 				glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 				gameObject->model->Draw();
@@ -139,9 +131,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 		}
 
 	}
-	DrawGrid();
 
-	//PINTAR AQUI DRAWDEBUG
 	glUseProgram(0);
 	App->skybox->Draw();
 	App->debugdraw->Draw(App->scene->gameCamera->camera, gameFBO, width, height);
@@ -197,7 +187,8 @@ void ModuleRender::DrawScene(const float width, const float height) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 		if (gameObject->model != nullptr && gameObject->isActive && !gameObject->deleteFlag) {
 			gameObject->model->Draw();
-			DrawAABB(gameObject);
+			if(drawBB)
+				DrawAABB(gameObject);
 
 			// Draw each child if the obj has
 			if (gameObject->children.size() > 0) {
@@ -208,12 +199,12 @@ void ModuleRender::DrawScene(const float width, const float height) {
 					}
 				}
 			}
-
-			App->scene->DrawTree();
-		}
-			
+		}		
 			
 	}
+	if(drawTree)
+		App->scene->DrawTree();
+
 	glUseProgram(0);
 	App->skybox->Draw();
 	DrawGrid();
@@ -238,7 +229,6 @@ bool ModuleRender::CleanUp()
 	glDeleteTextures(1, &frameTex);
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
-	delete GameCamera;
 	//Destroy window
 
 	return true;
@@ -271,6 +261,8 @@ void ModuleRender::SetWireframe(const bool wireframe) {
 
 void ModuleRender::MousePicking(float2 mouse) {
 
+	if (ImGuizmo::IsOver())
+		return;
 	std::map<float, GameObject*> hits;
 	LineSegment ray = CreatingRay(mouse);
 	GetAABBHits(ray, hits);
@@ -283,7 +275,6 @@ void ModuleRender::MousePicking(float2 mouse) {
 				LineSegment localRay(ray);
 				localRay.Transform(go->transform->worldMatrix.Inverted());
 				Triangle triangle;
-				//for (int j = 0; j < go->model->meshes.size(); j++) {
 					for (int i = 0; i < go->model->indices.size()-2; i++) {
 						triangle.a = go->model->vertices[go->model->indices[i]].Position;
 						triangle.b = go->model->vertices[go->model->indices[i+1]].Position;
@@ -291,7 +282,6 @@ void ModuleRender::MousePicking(float2 mouse) {
 						
 						float distance;
 						bool hit = triangle.Intersects(localRay, &distance);
-						LOG("HIT GAME OBJECT: %s \n", hit ? "true" : "false");
 						if (hit) {
 							if (distance < minDistance) {
 								aux = go;
@@ -299,7 +289,6 @@ void ModuleRender::MousePicking(float2 mouse) {
 							}
 						}
 					}
-				//}
 			}
 		}
 		App->scene->selected = aux;
@@ -309,22 +298,30 @@ void ModuleRender::MousePicking(float2 mouse) {
 
 LineSegment ModuleRender::CreatingRay(float2 mouse) {
 	
-	ImVec2 pos = App->gui->GetScenePos();
+	ImVec2 pos = App->gui->cursorScene;
 	float sceneHeight = App->gui->GetSceneHeight();
 	float sceneWidth = App->gui->GetSceneWidth();
-	float normalized_x = -1 + 2 * ((mouse.x - pos.x) / (sceneWidth)); //-(1.0f - (float(mouse.x) * 2.0f) / sceneWidth);
-	float normalized_y = -1 + 2 * ((mouse.y - pos.y) / (sceneHeight)); //1.0f - (float(mouse.y) * 2.0f) / sceneHeight;
-	float2 normalizedPos = float2((mouse.x - (pos.x + (sceneWidth / 2))) / (sceneWidth / 2), ((pos.y + (sceneHeight / 2)) - mouse.y) / (sceneWidth / 2));
-	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
-	
+	float2 center = float2(pos.x + (sceneWidth / 2.0f), pos.y + (sceneHeight / 2.0f));
+	float2 normalized = float2((mouse.x - center.x) / (sceneWidth / 2), (center.y - mouse.y) / (sceneHeight / 2));
+	LineSegment picking = App->scene->camera->frustum.UnProjectLineSegment(normalized.x, normalized.y);
+
 	return picking;
 
 }
  void ModuleRender::GetAABBHits(LineSegment ray, std::map<float, GameObject*>& gos) {
+
+	 std::vector<GameObject*> goInCamera;
 	 for (auto gameObject : App->scene->root->children) {
 		 if (gameObject->model != nullptr) {
+			 if (App->scene->camera->ContainsAABOX(gameObject->model->modelBox)) {
+				 goInCamera.push_back(gameObject);
+				}
+		 }
+	 }
+
+	 for (auto gameObject : goInCamera) {
+		 if (gameObject->model != nullptr) {
 			 bool hit = ray.Intersects(gameObject->model->modelBox);
-			 LOG("HIT AABB: %s \n", hit ? "true" : "false");
 			 if (hit) {
 				 float distance = App->scene->camera->frustum.pos.Distance(gameObject->model->modelBox);
 				 gos[distance] = gameObject;
@@ -352,7 +349,7 @@ void ModuleRender::DrawGuizmo() {
 		ImGuizmo::Manipulate(newView.ptr(), newProj.ptr(), guizmoOP, guizmoMode, newModel.ptr());
 
 		if (ImGuizmo::IsUsing()) {
-			App->scene->selected->transform->SetNewMatrix(newModel.Transposed());
+			App->scene->selected->transform->SetNewMatrixLocal(newModel.Transposed());
 		}
 	}
 

@@ -19,7 +19,7 @@ using namespace Assimp;
 Model::Model() {
 }
 
-Model::Model(const char *filePath) : filePath(filePath) {
+Model::Model(const char *filePath, bool addToGameObjects) : filePath(filePath), addToGameObjects(addToGameObjects) {
 	fileName = GetFileName(filePath);
 	Load(filePath);
 }
@@ -65,17 +65,23 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 
 		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str());
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
+
 		auto go = App->scene->CreateGameObject();
-		go->modelPath = fileName;
+		go->modelPath = filePath;
 		go->model = newMesh;
-		go->name = totalMeshes > 0 ? node->mName.C_Str() + std::string(" ") + std::to_string(totalMeshes) : node->mName.C_Str();
+		go->modelContainer = this;
+		go->name = node->mName.C_Str();
 		go->DeleteComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::MESH);
 		go->CreateComponent(Type::MATERIAL);
+		go->modelIndex = totalMeshes;
+		meshes.push_back(newMesh);
 		totalMeshes++;
 
 
+		if (!addToGameObjects)
+			App->scene->DeleteGameObject(go);
 	}
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes

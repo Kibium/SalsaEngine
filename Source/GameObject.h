@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "ModuleModelLoader.h"
 #include <string>
 #include <vector>
@@ -48,6 +49,7 @@ public:
 	uint32_t parentUUID;
 	bool isActive = true;
 	bool isStatic = false;
+	bool isRoot = false;
 	std::string name = "GameObject";
 	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
@@ -57,10 +59,12 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentCamera* camera = nullptr;
 	bool isCamera = false;
-	//std::vector<Mesh> meshes;
+
 	float distanceFromCamera = 0;
+	Model* modelContainer = nullptr;
 	Mesh* model = nullptr;
 	std::string modelPath;
+	int modelIndex = 0;
 	bool deleteFlag = false;
 
 private:

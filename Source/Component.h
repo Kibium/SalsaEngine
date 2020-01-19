@@ -26,9 +26,6 @@ public:
 	GameObject* myGo = nullptr;
 	bool canBeDeleted = true;
 
-	math::float3 position;
-	math::float3 rotation;
-	math::float3 scale;
 };
 
 #endif // __COMPONENT_H__
