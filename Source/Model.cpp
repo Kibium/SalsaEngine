@@ -60,7 +60,9 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
+
 		// Create a Game Object for each mesh
+
 		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str());
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
 		auto go = App->scene->CreateGameObject();
@@ -72,6 +74,8 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 		go->CreateComponent(Type::MESH);
 		go->CreateComponent(Type::MATERIAL);
 		totalMeshes++;
+
+
 	}
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
@@ -139,8 +143,8 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 	MeshImporter importer;
 	string s;
 	importer.Import(meshName.c_str(), data, s);
-
 	
+	LOG("%d\n", vertices.size());
 
 	return meshM;
 }

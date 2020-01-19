@@ -322,6 +322,9 @@
     <ClCompile Include="Source\MeshImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
+    <ClCompile Include="ModelImporter.cpp">
+      <Filter>Importer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libraries\Assimp\include\assimp\aabb.h">
@@ -1081,6 +1084,9 @@
       <Filter>Importer</Filter>
     </ClInclude>
     <ClInclude Include="Source\MeshImporter.h">
+      <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
   </ItemGroup>

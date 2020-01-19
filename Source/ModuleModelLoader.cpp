@@ -140,7 +140,6 @@ void ModuleModelLoader::GenerateVAO(Figure& mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-
 void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
 {
@@ -359,10 +358,14 @@ ModuleModelLoader::~ModuleModelLoader() {
 void ModuleModelLoader::AddModel(const char *filePath) {
 	Model *model = new Model(filePath);
 	string path = "../Library/" + model->GetFileName(filePath);
+
 	//import
+	
 	MeshData md;
 	MeshImporter i;
-	//i.Load(model->GetFileName(filePath).c_str(), md);
+	i.Load(model->GetFileName(filePath).c_str(), md);
+
+	//LOG("There were %d indices\n", md.indices.size());
 	models.push_back(model);
 }
 

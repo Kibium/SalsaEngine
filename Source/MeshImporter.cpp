@@ -10,13 +10,15 @@ using namespace std;
 
 bool MeshImporter::Import(const char * file, const MeshData & mesh, string & output_file)
 {
+
+	LOG("We're saving %d positions\n", mesh.positions.size());
+
 	unsigned int ranges[2] = { mesh.nIndices, mesh.nVertices };
 
 	unsigned int size = sizeof(ranges)					//ranges
 		+ sizeof(unsigned int) * mesh.nIndices		//indices
 		+ sizeof(float) * mesh.nVertices * 3			//vertex positions
 		+ sizeof(float) * mesh.nVertices * 2;		//vertex texture coord
-
 
 	char* data = new char[size]; // Allocate
 	char* cursor = data;
@@ -47,9 +49,6 @@ bool MeshImporter::Import(const char * file, const void * buffer, unsigned int s
 	if (!App->fs->IsDirectory("../Library/Meshes")) 
 		App->fs->MakeDirectory("../Library/Meshes");
 		
-
-	
-
 	string filename = file; filename += ".mesh";
 	output_file = file;
 
@@ -58,8 +57,9 @@ bool MeshImporter::Import(const char * file, const void * buffer, unsigned int s
 
 bool MeshImporter::Load(const char * exported_file, MeshData &mesh)
 {
-	char* buffer = nullptr;
-	string mesh_file = exported_file; mesh_file += ".mesh";
+	string mesh_file = exported_file; 
+	mesh_file += ".mesh";
+	char* buffer = App->fs->Load("../Library/Meshes/", mesh_file.c_str());
 
 	if (!App->fs->Load("../Library/Meshes/", mesh_file.c_str()))
 		return false;

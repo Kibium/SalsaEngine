@@ -12,6 +12,8 @@
 #include "Geometry/AABB.h"
 #include "ModuleTexture.h"
 #include <string>
+#include "MeshImporter.h"
+
 
 class myStream : public Assimp::LogStream {
 public:
@@ -46,7 +48,7 @@ private:
 	Material mat;
 	math::AABB boundingBox;
 	math::AABB modelBox;
-
+	MeshImporter i;
 };
 
 #endif // __MODEL_H__
