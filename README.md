@@ -1,4 +1,4 @@
-# Salsa Engine
+ # Salsa Engine
 
 Salsa Engine is a C++ 3D Engine project developed for the Master's degree Advanced Programming for AAA Video Games.
 
@@ -6,7 +6,7 @@ Salsa Engine is a C++ 3D Engine project developed for the Master's degree Advanc
 
 ## Installation
 
-Download the last Release from [here](http://www.github.com/JorxSS/SalsaEngine) and run the .exe file you will find inside the .zip.
+Download the last Release from [here](https://github.com/Kibium/SalsaEngine) and run the .exe file you will find inside the .zip.
 
 
 ## Controls
@@ -16,6 +16,7 @@ Download the last Release from [here](http://www.github.com/JorxSS/SalsaEngine) 
 * Double-click on title bar to collapse window.
 * Click and drag on lower corner to resize window\n(double-click to auto fit window to its contents).
 * Click and drag on title bar to move window.
+* Click in the icons in the above the scene to Rotate, Scale, and Transform.
 
 ### Camera Controls
 To be available to move around the Scene, the window must be selected.
@@ -26,12 +27,20 @@ To be available to move around the Scene, the window must be selected.
 * Hold down Shift to move faster.
 * Mouse Wheel to zoom Scene contents.
 * Alt+Right Click Mouse to orbit around the object in the Scene.
+* The RTY keys to Rotate, Transform and Scale the objects.
 
-### Load Documents
+### What you can do
 Drag and Drop files inside the Engine.
 
-For Model objects, only the ASSIMP supported formats can be loaded.");
+For Model objects, only the ASSIMP supported formats can be loaded.
 For Textures, only the DevIL supported formats can be loaded.
+
+Create, save and load scenes.
+Create Game Objects with models.
+Explore the scene you created.
+See the Bounding boxes produced by your Game Objects.
+See an AABB Tree created with the AABB from your GO, to accelerate maths processing.
+
 
 ## Built With
 
@@ -44,12 +53,17 @@ For Textures, only the DevIL supported formats can be loaded.
 * [ASSIMP](https://github.com/assimp/assimp) - Model Loader
 * [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders) - Import to be able to use icons
 * [FontAwesome](https://fontawesome.com/) - Icons font
+* [Debug Draw](https://github.com/glampert/debug-draw/blob/master/debug_draw.hpp) - Debug drawer
+* [AABB Tree](https://www.azurefromthetrenches.com/introductory-guide-to-aabb-tree-collision-detection/) - AABB Tree to accelerate frustums.
+* [Rapid Json](https://github.com/Tencent/rapidjson/) - Save and Load the Scenes
+* [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo) - Guizmo Drawer interface
+* [PhysFS](http://icculus.org/physfs/) - File System
 
 ## Authors
-[Jordi Sauras Salas](http://www.github.com/JorxSS).
+[Jordi Sauras Salas](http://www.github.com/JorxSS).  [Joan Guinard Mateo](https://github.com/JoanStinson).  [Toni Ferrari Juan](https://github.com/Kibium).
 
 ## Contributing
-Pull requests are not allowed for academic purposes but forks are welcome. For any idea of improve changes, please open an issue first to discuss the idea.
+For any idea of improve changes, please open an issue first to discuss the idea.
 
 
 ## License
