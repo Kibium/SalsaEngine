@@ -180,8 +180,10 @@ void JsonConfig::LoadJson(const char *fileName) {
 			else if (std::string(itr->name.GetString()) == std::string("Model")) {
 				gameObject->modelPath = itr->value.GetString();
 				if (gameObject->modelPath != "None") {
+
 					std::vector<string> s;
 					Model* modelContainer = new Model(gameObject->modelPath.c_str(), s, false);
+
 					gameObject->modelContainer = modelContainer;
 					gameObject->model = modelContainer->meshes[gameObject->modelIndex];
 				}

@@ -59,12 +59,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>./Libraries;./Libraries/SDL/include;./Libraries/glew-2.1.0/include/GL;./Libraries/DevIL/include/IL;./Libraries/Assimp/include;./Libraries/Imgui;./Libraries/MathGeoLib/include;./Source;./Libraries/IconFontsCppHeaders;</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -330,6 +332,7 @@
     <ClInclude Include="Source\ModuleTexture.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
     <ClInclude Include="Source\Skybox.h" />
+    <ClInclude Include="Source\TexImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Libraries\ImGuizmo\ImCurveEdit.cpp" />
@@ -440,6 +443,7 @@
     <ClCompile Include="Source\ModuleTexture.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
     <ClCompile Include="Source\Skybox.cpp" />
+    <ClCompile Include="Source\TexImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\SceneData.json" />

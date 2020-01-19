@@ -52,8 +52,12 @@ bool ModuleFileSystem::Init()
 	if (!is_directory("../Library/Meshes"))
 		create_directory("../Library/Meshes");
 
+	if (!is_directory("../Library/Textures"))
+		create_directory("../Library/Textures");
+
 	// workaround VS string directory mess
 	AddPath("../Library/Meshes");
+	AddPath("../Library/Textures");
 
 	// Dump list of paths
 	LOG("FileSystem Operations base is [%s] plus:", PHYSFS_getBaseDir());
@@ -63,11 +67,13 @@ bool ModuleFileSystem::Init()
 		LOG("Work paths: [%s]: \n", *i);
 	}
 
-	
+
 
 	// enable us to write in the game's dir area
-	if (PHYSFS_setWriteDir("../Library/Meshes") == 0)
+	if (PHYSFS_setWriteDir("../Library/Textures") == 0)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
+
+
 
 	LOG("GETWRITEDIR: [%s]", PHYSFS_getWriteDir());
 	LOG("\n");
@@ -115,12 +121,10 @@ bool ModuleFileSystem::Save(const char * path, const char * file, const void * b
 
 	bool overwrite = PHYSFS_exists(file) != 0;
 
-	string s = std::string(file) + ".mesh";
-
-	LOG(s.c_str());
+	LOG(file);
 	LOG("\n");
 
-	PHYSFS_file* fs_file = PHYSFS_openWrite(s.c_str());
+	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
 
 	if (fs_file != nullptr)
 	{

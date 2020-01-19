@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "MathGeoLib.h"
+#include "Mesh.h"
 
 class ComponentMaterial : public Component {
 public:
@@ -13,7 +14,7 @@ public:
 	update_status Update() override;
 	void UpdateMaterial(float4 &color);
 	void UpdateMaterial(float k);
-	void UpdateMaterial(unsigned int& materialID);
+	unsigned int UpdateMaterial();
 	void OnEditor() override;
 };
 
