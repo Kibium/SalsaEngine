@@ -356,17 +356,17 @@ ModuleModelLoader::~ModuleModelLoader() {
 }
 
 void ModuleModelLoader::AddModel(const char *filePath) {
-	Model *model = new Model(filePath);
+	std::vector<string> files;
+	Model *model = new Model(filePath, files);
 	string path = "../Library/" + model->GetFileName(filePath);
 
 	//import
 	MeshImporter imp;
-	for (int i = model->meshes.size()-1; i > 0; --i) {
-		MeshData md;	
-		string s;
-		s = model->GetFileName(filePath) + std::to_string(i);
-		imp.Load(s.c_str(), md);
+	for (auto i : files) {
+		MeshData md;
+		imp.Load(i.c_str(), md);
 	}
+
 	
 
 	models.push_back(model);

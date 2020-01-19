@@ -19,15 +19,15 @@ using namespace Assimp;
 Model::Model() {
 }
 
-Model::Model(const char *filePath, bool addToGameObjects) : filePath(filePath), addToGameObjects(addToGameObjects) {
+Model::Model(const char *filePath, std::vector<string> &files, bool addToGameObjects) : filePath(filePath), addToGameObjects(addToGameObjects) {
 	fileName = GetFileName(filePath);
-	Load(filePath);
+	Load(filePath,files);
 }
 
 Model::~Model() {
 }
 
-void Model::Load(const char* path) {
+void Model::Load(const char* path, std::vector<string> &files) {
 	DefaultLogger::create("", Logger::VERBOSE);
 	const unsigned int severity = /*Logger::Debugging | Logger::Info |*/ Logger::Err /*| Logger::Warn*/;
 	DefaultLogger::get()->attachStream(new myStream(), severity);
@@ -48,12 +48,12 @@ void Model::Load(const char* path) {
 	directory = GetModelDirectory(path);
 
 	// process ASSIMP's root node recursively
-	ProcessNode(scene->mRootNode, scene);
+	ProcessNode(scene->mRootNode, scene, files);
 
 	DefaultLogger::kill();
 }
 
-void Model::ProcessNode(aiNode *node, const aiScene *scene) {
+void Model::ProcessNode(aiNode *node, const aiScene *scene, std::vector<string> &files) {
 	// process each mesh located at the current node
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		// the node object only contains indices to index the actual objects in the scene. 
@@ -63,7 +63,7 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 
 		// Create a Game Object for each mesh
 
-		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str());
+		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str(), files);
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
 
 		auto go = App->scene->CreateGameObject();
@@ -78,23 +78,19 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 		go->modelIndex = totalMeshes;
 		meshes.push_back(newMesh);
 		
-
-
-
-
 		if (!addToGameObjects)
 			App->scene->DeleteGameObject(go);
 	}
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		ProcessNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene, files);
 	}
 
 	App->scene->camera->Focus();
 }
 
-Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& name) {
+Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& name, std::vector<string> &files) {
 	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
@@ -153,7 +149,7 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 
 	string meshname = meshName + std::to_string(totalMeshes);
 	importer.Import(meshname.c_str(), data, s);
-	
+	files.push_back(s);
 	totalMeshes++;
 	LOG("%d\n", vertices.size());
 

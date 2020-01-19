@@ -28,18 +28,23 @@ class Model {
 
 public:
 	Model();
-	Model::Model(const char *filePath, bool addToGameObjects = true);
+	Model::Model(const char * filePath, std::vector<string>& files, bool addToGameObjects = true);
+	//Model::Model(const char *filePath, bool addToGameObjects = true);
 	~Model();
+
+	
 
 public:
 	const char *filePath = nullptr;
 	std::string GetFileName(const char *);
 	std::vector<Mesh*> meshes;
+	Mesh* ProcessMesh(MeshData * data);
 
 private:
-	void Load(const char*);
-	void ProcessNode(aiNode*, const aiScene*);
-	Mesh* ProcessMesh(aiMesh*, const aiScene*, const std::string&);
+	//void Load(const char*);
+	void Load(const char * path, std::vector<string>& files);
+	void ProcessNode(aiNode*, const aiScene*, std::vector<string> &files);
+	Mesh* ProcessMesh(aiMesh*, const aiScene*, const std::string&, std::vector<string> &files);
 	std::string GetModelDirectory(const char*);
 	
 
