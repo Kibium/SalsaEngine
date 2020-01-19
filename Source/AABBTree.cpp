@@ -327,10 +327,6 @@ void AABBTree::DrawTree()
 	{
 		AABBNode node = aabbTree.top();
 		aabbTree.pop();
-		if (node.parentNodeIndex != AABB_NULL_NODE)
-		{
-			AABBNode parent = _nodes[node.parentNodeIndex];
-		}
 		if (node.leftNodeIndex != AABB_NULL_NODE)
 			aabbTree.push(_nodes[node.leftNodeIndex]);
 		else if (node.rightNodeIndex != AABB_NULL_NODE)

@@ -4,6 +4,8 @@
 #include "ModuleCamera.h"
 #include "ModuleShader.h"
 #include "ModuleModelLoader.h"
+#include "MathGeoLib.h"
+#include "Geometry/AABB.h"
 #include <glew.h>
 
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb)
@@ -18,6 +20,27 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, in
 		triangles.push_back(t);
 	}
 	//LOG("Tris: %d\n", triangles.size());
+	setupMesh();
+
+}
+Mesh::Mesh(vector<float3> vertices, vector<unsigned int> indices, vector<float2> texture_coords, int numVertex) {
+	vector<Vertex> auxVertex;
+	//vector<float3> newVertex;
+	//modelBox.Enclose(newVertex, numVertex);
+	//boundingBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+
+	for (unsigned int i = 0; i < vertices.size(); ++i) {
+		Vertex vertex;
+		vertex.Position = vertices[i];
+		vertex.TexCoords = texture_coords[i];
+		auxVertex.push_back(vertex);
+	}
+	this->vertices = auxVertex;
+	this->indices = indices;
+
+
+
+
 	setupMesh();
 
 }

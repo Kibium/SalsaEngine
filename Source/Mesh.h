@@ -69,10 +69,12 @@ public:
 	Material meshMaterial;
 	unsigned int VAO;
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, Material m, int polygons, int totalVertices, AABB bb, AABB mb);
+	Mesh(vector<float3> vertices, vector<unsigned int> indices, vector<float2> texture_coords, int num);
 	void Draw();
 	vector<Vertex> GetVertices();
 	void LoadTexture(vector<Texture>& v, TextureType type, const std::string& directory);
 	bool item_exists(const char* path);
+	string name;
 
 private:
 	unsigned int VBO, EBO;
