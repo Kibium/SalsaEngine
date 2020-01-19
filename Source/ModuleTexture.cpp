@@ -8,6 +8,7 @@
 #include <ilu.h>
 #include <ilut.h>
 #include <string>
+#include "TexImporter.h"
 
 
 bool ModuleTexture::Init() {
@@ -51,6 +52,18 @@ GLuint ModuleTexture::Load(const char *filename) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 	int width = ilGetInteger(IL_IMAGE_WIDTH);
 	int height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+	//string s;
+	//TexImporter ti;
+	//ILuint size;
+	//ILubyte *data;
+	//ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
+	//size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
+	//if (size > 0) {
+	//	data = new ILubyte[size]; // allocate data buffer
+	//	if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
+	//		ti.Import(filename, data, size, s);
+	//}
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

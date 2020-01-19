@@ -20,12 +20,12 @@ update_status ComponentMaterial::Update() {
 	return UPDATE_CONTINUE;
 }
 
-void ComponentMaterial::UpdateMaterial(unsigned int& materialID) {
-
+unsigned int ComponentMaterial::UpdateMaterial() {
+	unsigned int id;
 	const char* dir = App->gui->GetInputFile();
 	if (dir != "Not valid")
-		materialID = App->texture->Load(dir);
-
+		id = App->texture->Load(dir);
+	return id;
 }
 
 void ComponentMaterial::UpdateMaterial(float4 &color) {
@@ -45,19 +45,19 @@ void ComponentMaterial::OnEditor() {
 			ImGui::Text("   Diffuse");	ImGui::SameLine(); ImGui::Text("    Occlusion"); ImGui::SameLine(); ImGui::Text("    Specular");
 			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->mat.diffuse_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-				UpdateMaterial(myGo->model->mat.diffuse_map);
+				myGo->model->mat.diffuse_map = UpdateMaterial();
 
 			} ImGui::SameLine();
 
 			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->mat.occlusion_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-				UpdateMaterial(myGo->model->mat.occlusion_map);
+				myGo->model->mat.occlusion_map = UpdateMaterial();
 
 			} ImGui::SameLine();
 
 			if (ImGui::ImageButton((void*)(intptr_t)myGo->model->mat.specular_map, ImVec2(75, 75), ImVec2(0, 1), ImVec2(1, 0))) {
 
-				UpdateMaterial(myGo->model->mat.specular_map);
+				myGo->model->mat.specular_map = UpdateMaterial();
 			}
 
 			if (ImGui::TreeNodeEx("Diffuse")) {
