@@ -1,11 +1,13 @@
 #include "ModuleShader.h"
+#include "MathGeoLib.h"
+#include "ModuleCamera.h"
 #include <iostream>
 
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include "optick/optick.h"
 
 ModuleShader::ModuleShader()
 {
@@ -16,9 +18,24 @@ ModuleShader::~ModuleShader()
 {
 }
 
+
 bool ModuleShader::Init()
 {
 	LOG("Init Shaders\n");
+	CreateShader(def_program, "./shaders/default.vs", "./shaders/default.fs");
+	CreateShader(phong_program, "./Shaders/Phong.vs", "./Shaders/Phong.fs");
+	CreateShader(grid_program, "./Shaders/lines.vs", "./Shaders/lines.fs");
+	CreateShader(blinn_program, "./Shaders/Blinn.vs", "./Shaders/Blinn.fs");
+	CreateShader(gouraud_program, "./Shaders/Gouraud.vs", "./Shaders/Gouraud.fs");
+	CreateShader(flat_program, "./shaders/flat.vs", "./shaders/flat.fs");
+	CreateShader(lines_program, "./shaders/lines.vs", "./shaders/lines.fs");
+	CreateShader(skybox_program, "./shaders/skybox.vs.txt", "./shaders/skybox.fs.txt");
+
+	return true;
+
+}
+void ModuleShader::CreateShader(GLuint &program, const char* vertexFile, const char* fragmentFile) {
+	LOG("Creating Shader\n");
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
@@ -26,11 +43,12 @@ bool ModuleShader::Init()
 	// ensure ifstream objects can throw exceptions:
 	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
 	try
 	{
 		// open files
-		vShaderFile.open("./Shaders/default.vs");
-		fShaderFile.open("./Shaders/default.fs");
+		vShaderFile.open(vertexFile);
+		fShaderFile.open(fragmentFile);
 		std::stringstream vShaderStream, fShaderStream;
 		// read file's buffer contents into streams
 		vShaderStream << vShaderFile.rdbuf();
@@ -46,6 +64,7 @@ bool ModuleShader::Init()
 	{
 		LOG("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
 	}
+
 	const char* vShaderCode = vertexCode.c_str();
 	const char* fShaderCode = fragmentCode.c_str();
 	// 2. compile shaders
@@ -61,18 +80,16 @@ bool ModuleShader::Init()
 	glCompileShader(fragment);
 	checkCompileErrors(fragment, "FRAGMENT");
 	// shader Program
-	def_program = glCreateProgram();
-	glAttachShader(def_program, vertex);
-	glAttachShader(def_program, fragment);
-	glLinkProgram(def_program);
-	checkCompileErrors(def_program, "PROGRAM");
+	program = glCreateProgram();
+	glAttachShader(program, vertex);
+	glAttachShader(program, fragment);
+	glLinkProgram(program);
+	checkCompileErrors(program, "PROGRAM");
+
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
-	return true;
-
 }
-
 update_status ModuleShader::PreUpdate()
 {
 	return UPDATE_CONTINUE;
@@ -80,6 +97,7 @@ update_status ModuleShader::PreUpdate()
 
 update_status ModuleShader::Update()
 {
+	OPTICK_CATEGORY("UpdateShader", Optick::Category::None);
 	return UPDATE_CONTINUE;
 
 }
@@ -95,28 +113,7 @@ bool ModuleShader::CleanUp()
 	return true;
 }
 
-const char* ModuleShader::readShader(const char* path) {
-
-	char* shader = nullptr;
-	FILE *file = nullptr;
-
-	fopen_s(&file, path, "rb");
-	if (file) {
-		fseek(file, 0, SEEK_END);
-		int size = ftell(file);
-		rewind(file);
-		shader = (char*)malloc(size + 1);
-
-		fread(shader, 1, size, file);
-		shader[size] = 0;
-
-		fclose(file);
-	}
-
-	return shader;
-}
-
-void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
+void ModuleShader::checkCompileErrors(GLuint& shader, std::string type)
 {
 	int success;
 	char infoLog[1024];
@@ -126,7 +123,11 @@ void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			LOG("ERROR::SHADER_COMPILATION_ERROR of type: ",type,"\n", infoLog,"\n -- --------------------------------------------------- -- " );
+
+
+			LOG("ERROR::SHADER_COMPILATION_ERROR of type: %s\n", infoLog);
+
+
 		}
 	}
 	else
@@ -135,7 +136,11 @@ void ModuleShader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: ", "\n",infoLog, "\n -- --------------------------------------------------- -- ");
+
+
+			LOG( "ERROR::PROGRAM_LINKING_ERROR of type: %s\n", infoLog);
+
+
 		}
 	}
 }

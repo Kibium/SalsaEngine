@@ -2,10 +2,20 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleModelLoader.h"
+#include "ModuleShader.h"
+
+#include "ModuleRender.h"
 #include "Geometry/AABB.h"
+#include "Math/float4x4.h"
+#include "Geometry/AABB.h"
+#include "debugdraw.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "Model.h"
 
 #include <glew.h>
 #include "SDL.h"
+#include "optick/optick.h"
 
 ModuleCamera::ModuleCamera() {
 }
@@ -24,12 +34,12 @@ bool ModuleCamera::Init() {
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
+	frustum.farPlaneDistance = 200.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 	model = math::float4x4::FromTRS(frustum.pos, math::float3x3::RotateY(math::pi / 4.0f), math::float3(1.0f, 1.0f, 1.0f));
 	CalculateMatrixes();
-
+	auxView = view;
 	return true;
 }
 
@@ -38,6 +48,10 @@ update_status ModuleCamera::PreUpdate() {
 }
 
 update_status ModuleCamera::Update() {
+
+  OPTICK_CATEGORY("UpdateCamera", Optick::Category::Camera);
+
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -165,7 +179,7 @@ void ModuleCamera::Orbit(const float xpos, float ypos)
 {
 
 	if (orbit) {
-		float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+		float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 		
 		if (xpos != 0.0f)
 		{
@@ -191,14 +205,14 @@ void ModuleCamera::Orbit(const float xpos, float ypos)
 		LookAt(center);
 		CalculateMatrixes();
 	}
-
+	
 	
 }
 
 void ModuleCamera::Focus()
 {
-	float3 size = App->model->modelBox.maxPoint - App->model->modelBox.minPoint;
-	float3 center = (App->model->modelBox.maxPoint + App->model->modelBox.minPoint) / 2;
+	float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
+	float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
 	float3 direction = (center - frustum.pos).Normalized();
 	float3x3 rotationMatrix = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
@@ -210,3 +224,45 @@ void ModuleCamera::Focus()
 	frustum.pos.y =  (size.Length() / 4);
 	CalculateMatrixes();
 }
+
+void ModuleCamera::DrawFrustum()
+{
+	math::float4x4 inverseMatrix = proj * view;
+	math::float4x4 inverted = inverseMatrix.Inverted();
+	dd::frustum(inverted,float3(0,1,1));
+	
+}
+
+/*in_out_frustum ModuleCamera::ContainsAABOX(const AABB& refBox) {
+
+	float3 vCorner[8];
+	int iTotalIn = 0;
+	refBox.GetCornerPoints(vCorner); // get the corners of the box into the vCorner array
+// test all 8 corners against the 6 sides
+// if all points are behind 1 specific plane, we are out
+// if we are in with all points, then we are fully in
+	Plane m_planes[6];
+	frustum.GetPlanes(m_planes);
+	for (int p = 0; p < 6; ++p) {
+		int iInCount = 8;
+		int iPtIn = 1;
+		for (int i = 0; i < 8; ++i) {
+			// test this point against the planes
+			if (m_planes[p].IsOnPositiveSide(vCorner[i])) {
+				iPtIn = 0;
+				--iInCount;
+			}
+		}
+		// were all the points outside of plane p?
+		if(iInCount == 0)
+			return(ABB_OUT);
+		// check if they were all on the right side of the plane
+		iTotalIn += iPtIn;
+	}
+	// so if iTotalIn is 6, then all are inside the view
+	if (iTotalIn == 6)
+		return(ABB_IN);
+	// we must be partly in then otherwise
+	return(INTERSECT);
+
+}*/
