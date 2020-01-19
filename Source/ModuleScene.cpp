@@ -31,8 +31,9 @@ bool ModuleScene::Init() {
 	camera = new ComponentCamera();
 
 	root = new GameObject();
-	root->name = "RootNode";
+	root->name = "Scene";
 	root->isRoot = true;
+
 	gameCamera = new GameObject();
 	gameCamera->name = "MainCamera";
 	gameCamera->DeleteComponent(Type::TRANSFORM);
@@ -49,6 +50,7 @@ bool ModuleScene::Init() {
 			ret = (*it)->Init();
 	}
 
+	//App->scene->LoadScene("../Game/SceneData.json");
 	return ret;
 }
 
@@ -221,10 +223,10 @@ void ModuleScene::DrawInspector(bool *show) {
 		ImGuiCond_Once
 	);
 	if (show && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", show)) {
-		if (ImGui::DragFloat3("Light Pos", &App->model->ModuleModelLoader::light.pos[0], 3)) {
-			glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->ModuleModelLoader::light.pos.x, App->model->ModuleModelLoader::light.pos.y, App->model->ModuleModelLoader::light.pos.z);
+		//if (ImGui::DragFloat3("Light Pos", &App->model->ModuleModelLoader::light.pos[0], 3)) {
+		//	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->ModuleModelLoader::light.pos.x, App->model->ModuleModelLoader::light.pos.y, App->model->ModuleModelLoader::light.pos.z);
 
-		}
+		//}
 		if (root->children.size() > 0 && selected != nullptr) {
 			selected->DrawComponents();
 		}

@@ -267,6 +267,15 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+string GetFileNameWithExtension(const char *path) {
+	std::string dir = std::string(path);
+	std::size_t currentDir = dir.find_last_of("/\\");
+	std::string filename;
+	filename = dir.substr(currentDir + 1);
+	//filename = filename.substr(0, filename.size() - 4);
+	return filename;
+}
+
 void ModuleInput::DroppedFile(const char* file) const
 {
 	//If the house is BakerHouse.fbx, returns BakerHouse
@@ -287,8 +296,8 @@ void ModuleInput::DroppedFile(const char* file) const
 
 		// Process file and create gameobjects
 		App->scene->selected = nullptr;
-		App->model->AddModel(file);
-
+		std::string s = GetFileNameWithExtension(file);
+		App->model->AddModel(s.c_str());
 	}
 	else if (devilMap.find(extension) != devilMap.end()) {
 		LOG("TEXTURE FILE FORMAT '%s' ACCEPTED\n ", extension);

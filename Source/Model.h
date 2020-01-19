@@ -38,6 +38,7 @@ public:
 	int index = 0;
 	const char *filePath = nullptr;
 	std::string GetFileName(const char *);
+	string Model::GetFileNameWithExtension(const char *path);
 	std::vector<Mesh*> meshes;
 	Mesh* ProcessMesh(MeshData * data);
 

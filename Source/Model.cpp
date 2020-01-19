@@ -20,8 +20,9 @@ Model::Model() {
 }
 
 Model::Model(const char *filePath, std::vector<string> &files, bool addToGameObjects) : filePath(filePath), addToGameObjects(addToGameObjects) {
+	std::string relativePath = "Models/" + std::string(filePath);
 	fileName = GetFileName(filePath);
-	Load(filePath,files);
+	Load(relativePath.c_str(),files);
 }
 
 Model::~Model() {
@@ -45,7 +46,7 @@ void Model::Load(const char* path, std::vector<string> &files) {
 
 	modelBox.SetNegativeInfinity();
 	boundingBox.SetNegativeInfinity();
-	directory = GetModelDirectory(path);
+	directory = "Models/";
 
 	// process ASSIMP's root node recursively
 	ProcessNode(scene->mRootNode, scene, files);
@@ -62,12 +63,11 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene, std::vector<string> 
 
 
 		// Create a Game Object for each mesh
-
 		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str(), files);
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
 
 		auto go = App->scene->CreateGameObject();
-		go->modelPath = filePath;
+		go->modelPath = GetFileNameWithExtension(filePath);
 		go->model = newMesh;
 		go->modelContainer = this;
 		go->name = node->mName.C_Str();
@@ -171,3 +171,13 @@ string Model::GetFileName(const char *path) {
 	filename = filename.substr(0, filename.size() - 4);
 	return filename;
 }
+
+string Model::GetFileNameWithExtension(const char *path) {
+	std::string dir = std::string(path);
+	std::size_t currentDir = dir.find_last_of("/\\");
+	std::string filename;
+	filename = dir.substr(currentDir + 1);
+	//filename = filename.substr(0, filename.size() - 4);
+	return filename;
+}
+
