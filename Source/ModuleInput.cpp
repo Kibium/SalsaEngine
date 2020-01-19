@@ -185,9 +185,9 @@ update_status ModuleInput::Update()
 
 			if (sdlEvent.motion.state & SDL_BUTTON_RMASK && App->gui->isScene)
 				if (App->scene->camera->GetOrbit())
-					App->scene->camera->Orbit(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+					App->scene->camera->Orbit(-sdlEvent.motion.xrel, sdlEvent.motion.yrel);
 				else
-					App->scene->camera->Rotate(sdlEvent.motion.xrel, -sdlEvent.motion.yrel);
+					App->scene->camera->Rotate(-sdlEvent.motion.xrel, sdlEvent.motion.yrel);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
@@ -198,50 +198,6 @@ update_status ModuleInput::Update()
 					//If the mouse is inside the scene tab, do all the stuff to cast a ray
 					float2 mouse = float2(sdlEvent.button.x, sdlEvent.button.y);
 					App->renderer->MousePicking(mouse);
-
-
-
-					/*if (mouseX >= App->gui->GetScenePos().x && mouseX <= App->gui->GetScenePos().x + App->gui->GetSceneWidth() &&
-						mouseY >= App->gui->GetScenePos().y && mouseY <= App->gui->GetScenePos().y + App->gui->GetSceneWidth()) {
-						
-						//Clip the mouse, so the beginning of the scene tab is the position (0, 0)
-
-						float x = (2 * (mouseX - App->gui->GetScenePos().x)) / App->gui->GetSceneWidth() - 1;
-						float y = 1 - (2 * (mouseY - App->gui->GetScenePos().y)) / App->gui->GetSceneHeight();
-						float z = 1;
-
-						float3 ray_nds = float3(x, y, z);
-
-						//We use 'mousepos' to give mouse position to the ray collidiion checker (ComponentCamera.cpp)
-						mousepos = float2(x, y);
-						
-						ray_clip = float4(ray_nds.x, ray_nds.y, -1, 1);
-
-						ray_eye = App->scene->camera->proj.Inverted() * ray_clip;
-
-						ray_eye = float4(ray_eye.x, ray_eye.y, -1, 1);
-
-						temp = App->scene->camera->view.Inverted() * ray_eye;
-
-						ray_world = temp.xyz();
-
-						//ray_world = ray_world.Normalized();
-
-						//LOG("Ray: %0.1f, 0.1f, 0.1f", ray_world.x, ray_world.y, ray_world.z)
-						
-
-						//If there are models in the scene and the ray collided with an AABB
-						if (App->scene->root->children.size() >= 1 && App->scene->camera->PickingAABBHit()) {
-
-							//Detect Triangle collisions
-							App->scene->camera->PickingTriangleHit();
-						}
-
-						//No collissions detected
-						else {
-							App->scene->selected = nullptr;
-						}
-					}*/
 
 				}
 				
