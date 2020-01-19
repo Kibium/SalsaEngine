@@ -18,6 +18,8 @@
 #include "ComponentTransform.h"
 #include "Mesh.h"
 #include "ModuleMSTimer.h"
+#include "IconFontsCppHeaders/IconsFontAwesome5.h"
+
 
 
 ComponentCamera::ComponentCamera()
@@ -33,9 +35,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & cam)
 {
 }
 
-void ComponentCamera::OnEditor()
-{
-}
 bool ComponentCamera::Init() {
 	LOG("Init Camera\n");
 	int width, height;
@@ -171,7 +170,12 @@ bool ComponentCamera::PickingTriangleHit() {
 bool ComponentCamera::CleanUp() {
 	return true;
 }
-
+void ComponentCamera::SetNearPlane(float plane) {
+	App->scene->gameCamera->camera->frustum.nearPlaneDistance = plane;
+}
+void ComponentCamera::SetFarPlane(float plane) {
+	App->scene->gameCamera->camera->frustum.farPlaneDistance = plane;
+}
 void ComponentCamera::SetFOV(float verticalFOV) {
 	frustum.verticalFov = verticalFOV;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
@@ -287,32 +291,39 @@ void ComponentCamera::Rotate(const float xpos, const float ypos)
 void ComponentCamera::Orbit(const float xpos, float ypos)
 {
 	if (App->scene->selected != nullptr) {
+
 		if (orbit) {
-			float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
+			if (App->scene->selected->isCamera) {
+				//TODO 
 
-			if (xpos != 0.0f)
-			{
-				float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
-				frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
 			}
-			if (lastY + ypos < MINIMUM_PITCH) {
-				ypos = 0.0f;
-				lastY = -89;
-			}
+			else {
+				float3 center = (App->scene->selected->model->modelBox.maxPoint + App->scene->selected->model->modelBox.minPoint) / 2;
 
-			if (lastY + ypos > MAXIMUM_PITCH) {
-				ypos = 0.0f;
-				lastY = 89;
-			}
-			if (ypos != 0.0f)
-			{
-				lastY += ypos;
-				float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
-				frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
-			}
+				if (xpos != 0.0f)
+				{
+					float3x3 orbitMatrix = float3x3::RotateY(xpos * rotationSpeed);
+					frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+				}
+				if (lastY + ypos < MINIMUM_PITCH) {
+					ypos = 0.0f;
+					lastY = -89;
+				}
 
-			LookAt(center);
-			CalculateMatrixes();
+				if (lastY + ypos > MAXIMUM_PITCH) {
+					ypos = 0.0f;
+					lastY = 89;
+				}
+				if (ypos != 0.0f)
+				{
+					lastY += ypos;
+					float3x3 orbitMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), ypos * rotationSpeed);
+					frustum.pos = orbitMatrix.Transform(frustum.pos - center) + center;
+				}
+
+				LookAt(center);
+				CalculateMatrixes();
+			}
 		}
 	}
 
@@ -325,6 +336,13 @@ void ComponentCamera::Focus()
 	if (App->scene->selected != nullptr) {
 		if (App->scene->selected->isCamera) {
 			//TODO focus when camera selected
+			frustum.front = App->scene->selected->camera->frustum.front;
+			frustum.up = App->scene->selected->camera->frustum.up;
+
+			frustum.farPlaneDistance = App->scene->selected->camera->frustum.farPlaneDistance;
+			frustum.pos = App->scene->selected->camera->frustum.pos;
+			frustum.pos.y = App->scene->selected->camera->frustum.pos.y;
+			CalculateMatrixes();
 		}
 		else {
 			float3 size = App->scene->selected->model->modelBox.maxPoint - App->scene->selected->model->modelBox.minPoint;
@@ -384,4 +402,43 @@ in_out_frustum ComponentCamera::ContainsAABOX(const AABB& refBox) {
 	// we must be partly in then otherwise
 	return(INTERSECT);
 
+}
+void ComponentCamera::OnEditor() {
+	if (ImGui::CollapsingHeader(ICON_FA_CAMERA" Camera", &canBeDeleted, ImGuiTreeNodeFlags_DefaultOpen)) {
+		Component::OnEditor();
+		if (ImGui::Checkbox("Active##ComponentCamera", &active)) {
+			active ? Enable() : Disable();
+		}
+		if (ImGui::SliderFloat("Near Plane", &App->scene->gameCamera->camera->frustum.nearPlaneDistance, 1, App->scene->gameCamera->camera->frustum.farPlaneDistance))
+			App->scene->gameCamera->camera->SetNearPlane(App->scene->gameCamera->camera->frustum.nearPlaneDistance);
+
+		if (ImGui::SliderFloat("Far Plane", &App->scene->gameCamera->camera->frustum.farPlaneDistance, 1, App->scene->gameCamera->camera->frustum.nearPlaneDistance+50000))
+			App->scene->gameCamera->camera->SetFarPlane(App->scene->gameCamera->camera->frustum.farPlaneDistance);
+
+		if (ImGui::SliderFloat("FOV", &App->scene->gameCamera->camera->frustum.horizontalFov, 0, 2 * 3.14f))
+			App->scene->gameCamera->camera->SetFOV(App->scene->gameCamera->camera->frustum.horizontalFov);
+
+		if (ImGui::SliderFloat("Aspect Ratio", &App->scene->gameCamera->camera->aspectRatio, 0, 10))
+		{
+			App->scene->gameCamera->camera->SetAspectRatio(App->scene->gameCamera->camera->aspectRatio);
+		}
+		if (ImGui::SliderFloat("Camera Speed", &App->scene->gameCamera->camera->cameraSpeed, 0, 1))
+			App->scene->gameCamera->camera->SetSpeed(App->scene->gameCamera->camera->cameraSpeed);
+
+		if (ImGui::SliderFloat("Rotation Speed", &App->scene->gameCamera->camera->rotationSpeed, 0, 1))
+			App->scene->gameCamera->camera->SetRotationSpeed(App->scene->gameCamera->camera->rotationSpeed);
+
+		static int clicked = 0;
+		if (ImGui::Button("Reset Camera"))
+			clicked++;
+		if (clicked & 1)
+		{
+			App->scene->gameCamera->camera->SetRotationSpeed(ROTATION_SPEED);
+			App->scene->gameCamera->camera->SetSpeed(CAMERA_SPEED);
+			clicked = 0;
+		}
+			
+
+	}
+	ImGui::Separator();
 }

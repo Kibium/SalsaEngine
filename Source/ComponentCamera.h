@@ -33,6 +33,10 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	void SetNearPlane(float plane);
+
+	void SetFarPlane(float plane);
+
 	void SetFOV(float);
 	void SetSpeeding(bool);
 	void SetSpeed(float);
