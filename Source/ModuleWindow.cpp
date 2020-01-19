@@ -64,8 +64,8 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 
-		SDL_Surface* s = IMG_Load("../Source/Util/sauce.png");
-		SDL_SetWindowIcon(window, s);
+		//SDL_Surface* s = IMG_Load("../Source/Util/sauce.png");
+		//SDL_SetWindowIcon(window, s);
 
 	}
 

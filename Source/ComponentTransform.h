@@ -7,9 +7,8 @@
 
 class ComponentTransform : public Component {
 public:
-	ComponentTransform(const float3, const float3, const float3);
 	ComponentTransform();
-	ComponentTransform::ComponentTransform(const float3 position, const float3 rotation, const float3 scale);
+	ComponentTransform(const float3 position, const float3 rotation, const float3 scale);
 	~ComponentTransform();
 
 	update_status Update() override;
