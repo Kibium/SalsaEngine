@@ -303,7 +303,6 @@
     <ClInclude Include="Libraries\rapidjson\writer.h" />
     <ClInclude Include="Libraries\Util\debug_draw.hpp" />
     <ClInclude Include="Libraries\Util\par_shapes.h" />
-    <ClInclude Include="ModelImporter.h" />
     <ClInclude Include="Source\AABBTree.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component.h" />
@@ -318,6 +317,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshImporter.h" />
     <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\ModelImporter.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
     <ClInclude Include="Source\ModuleDebugDraw.h" />
@@ -413,7 +413,6 @@
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_windows.c" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_platform_winrt.cpp" />
     <ClCompile Include="Libraries\PhysFS\include\physfs_unicode.c" />
-    <ClCompile Include="ModelImporter.cpp" />
     <ClCompile Include="Source\AABBTree.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
@@ -430,6 +429,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshImporter.cpp" />
     <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\ModelImporter.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleFileSystem.cpp" />

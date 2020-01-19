@@ -75,9 +75,9 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene, std::vector<string> 
 		go->CreateComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::MESH);
 		go->CreateComponent(Type::MATERIAL);
-		go->modelIndex = totalMeshes;
+		go->modelIndex = index;
 		meshes.push_back(newMesh);
-		
+		index++;
 		if (!addToGameObjects)
 			App->scene->DeleteGameObject(go);
 	}
@@ -133,7 +133,7 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 	// normal: texture_normalN
 
 	Mesh* meshM = new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
-	std::string meshName = name;
+	std::string meshName = directory + name;
 
 	meshM->LoadTexture(textures, DIFFUSE, std::string(meshName));
 	meshM->LoadTexture(textures, SPECULAR, std::string(meshName));
