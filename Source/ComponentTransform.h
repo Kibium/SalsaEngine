@@ -9,6 +9,7 @@ class ComponentTransform : public Component {
 public:
 	ComponentTransform();
 	ComponentTransform(const float3 position, const float3 rotation, const float3 scale);
+	void SetTransform(const float3 position, const float3 rotation, const float3 scale);
 	~ComponentTransform();
 
 	update_status Update() override;

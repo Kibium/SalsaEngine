@@ -22,7 +22,7 @@ update_status ComponentMaterial::Update() {
 
 void ComponentMaterial::UpdateMaterial(unsigned int& materialID) {
 
-	char* dir = App->gui->GetInputFile();
+	const char* dir = App->gui->GetInputFile();
 	if (dir != "Not valid")
 		materialID = App->texture->Load(dir);
 

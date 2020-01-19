@@ -32,6 +32,16 @@ ComponentTransform::ComponentTransform(const float3 position, const float3 rotat
 	}
 }
 
+void ComponentTransform::SetTransform(const float3 position, const float3 rotation, const float3 scale) {
+	if (myGo != nullptr) {
+		this->position = position;
+		this->rotationFloat = rotation;
+		RotToQuat();
+		this->scale = scale;
+		UpdateMatrix();
+	}
+}
+
 ComponentTransform::~ComponentTransform() {
 }
 

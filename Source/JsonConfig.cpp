@@ -53,6 +53,7 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	// object properties
 	rapidjson::Value object(rapidjson::kObjectType);
 	object.AddMember("UID", obj.UUID, *allocator);
+	object.AddMember("ParentUID", obj.parentUUID, *allocator);
 	object.AddMember("Index", obj.modelIndex, *allocator);
 	object.AddMember("Name", rapidjson::Value(obj.name.c_str(), *allocator), *allocator);
 	object.AddMember("Active", obj.isActive, *allocator);
@@ -66,14 +67,14 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	}
 	if (obj.transform != nullptr) {
 		object.AddMember("TransX", obj.transform->position.x, *allocator);
-		object.AddMember("TransY", obj.transform->position.x, *allocator);
-		object.AddMember("TransZ", obj.transform->position.x, *allocator);
+		object.AddMember("TransY", obj.transform->position.y, *allocator);
+		object.AddMember("TransZ", obj.transform->position.z, *allocator);
 		object.AddMember("RotX", obj.transform->rotationFloat.x, *allocator);
-		object.AddMember("RotY", obj.transform->rotationFloat.x, *allocator);
-		object.AddMember("RotZ", obj.transform->rotationFloat.x, *allocator);
+		object.AddMember("RotY", obj.transform->rotationFloat.y, *allocator);
+		object.AddMember("RotZ", obj.transform->rotationFloat.z, *allocator);
 		object.AddMember("ScaleX", obj.transform->scale.x, *allocator);
-		object.AddMember("ScaleY", obj.transform->scale.x, *allocator);
-		object.AddMember("ScaleZ", obj.transform->scale.x, *allocator);
+		object.AddMember("ScaleY", obj.transform->scale.y, *allocator);
+		object.AddMember("ScaleZ", obj.transform->scale.z, *allocator);
 	}
 
 	// object's components properties
@@ -151,12 +152,18 @@ void JsonConfig::LoadJson(const char *fileName) {
 	for (i = 0; i < a.Size(); ++i) {
 		LOG("Game Object %d:\n", i);
 		GameObject *gameObject = App->scene->CreateGameObject();
+		math::float3 tempTrans;
+		math::float3 tempRot;
+		math::float3 tempScale;
 
 		for (rapidjson::Value::ConstMemberIterator itr = a[i].MemberBegin(); itr != a[i].MemberEnd(); ++itr) {
 			LOG("%s : ", itr->name.GetString());
 
 			if (std::string(itr->name.GetString()) == std::string("UID")) {
 				gameObject->UUID = itr->value.GetFloat();
+			}
+			else if (std::string(itr->name.GetString()) == std::string("ParentUID")) {
+				gameObject->parentUUID = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("Index")) {
 				gameObject->modelIndex = itr->value.GetFloat();
@@ -179,39 +186,41 @@ void JsonConfig::LoadJson(const char *fileName) {
 				}
 			}
 			else if (std::string(itr->name.GetString()) == std::string("TransX")) {
-				gameObject->transform->position.x = itr->value.GetFloat();
+				tempTrans.x = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("TransY")) {
-				gameObject->transform->position.y = itr->value.GetFloat();
+				tempTrans.y = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("TransZ")) {
-				gameObject->transform->position.z = itr->value.GetFloat();
+				tempTrans.z = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("RotX")) {
-				gameObject->transform->rotationFloat.x = itr->value.GetFloat();
+				tempRot.x = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("RotY")) {
-				gameObject->transform->rotationFloat.y = itr->value.GetFloat();
+				tempRot.y = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("RotZ")) {
-				gameObject->transform->rotationFloat.z = itr->value.GetFloat();
+				tempRot.z = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("ScaleX")) {
-				gameObject->transform->scale.x = itr->value.GetFloat();
+				tempScale.x = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("ScaleY")) {
-				gameObject->transform->scale.y = itr->value.GetFloat();
+				tempScale.y = itr->value.GetFloat();
 			}
 			else if (std::string(itr->name.GetString()) == std::string("ScaleZ")) {
-				gameObject->transform->scale.z = itr->value.GetFloat();
-				gameObject->transform->UpdateMatrix();
-				math::float3 tempTrans = gameObject->transform->position;
-				math::float3 tempRot = gameObject->transform->rotationFloat;
-				math::float3 tempScale = gameObject->transform->scale;
-				//gameObject->DeleteComponent(Type::TRANSFORM);
-				gameObject->transform = new ComponentTransform(tempTrans, tempRot, tempScale);
-				gameObject->CreateComponent(Type::MESH);
-				gameObject->CreateComponent(Type::MATERIAL);
+				tempScale.z = itr->value.GetFloat();
+				gameObject->transform->myGo = gameObject;
+				gameObject->transform->SetTransform(tempTrans, tempRot, tempScale);
+				if (gameObject->modelPath != "None"){
+					gameObject->CreateComponent(Type::MESH);
+					gameObject->CreateComponent(Type::MATERIAL);
+				}
+				if (gameObject->name == "MainCamera") {
+					gameObject->CreateComponent(Type::CAMERA);
+				}
+
 			}
 
 			std::string memberType = kTypeNames[itr->value.GetType()];
