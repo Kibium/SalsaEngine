@@ -59,7 +59,6 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentCamera* camera = nullptr;
 	bool isCamera = false;
-
 	float distanceFromCamera = 0;
 	Model* modelContainer = nullptr;
 	Mesh* model = nullptr;

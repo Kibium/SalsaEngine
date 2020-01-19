@@ -61,7 +61,7 @@ public:
 	bool isScene = false;
 	bool isInspector = false;
 	void HelpMarker(const char* desc);
-	char* GetInputFile();
+	const char* GetInputFile();
 	float GetSceneWidth();
 	float GetSceneHeight();
 	ImVec2 explorerPos;

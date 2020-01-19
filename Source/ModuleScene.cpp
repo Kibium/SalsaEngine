@@ -13,6 +13,7 @@
 #include "ComponentTransform.h"
 #include "ModuleWindow.h"
 #include "JsonConfig.h"
+#include "ModuleShader.h"
 
 ModuleScene::ModuleScene() {
 }
@@ -39,6 +40,7 @@ bool ModuleScene::Init() {
 	gameCamera->CreateComponent(Type::CAMERA);
 	gameCamera->parent = root;
 	root->children.push_back(gameCamera);
+	gameObjects.push_back(gameCamera);
 
 	abbTree = new AABBTree(5);
 
@@ -95,11 +97,13 @@ GameObject* ModuleScene::CreateGameObject() {
 	GameObject* gameObject = new GameObject();
 	gameObject->parent = root;
 	root->children.push_back(gameObject);
+	gameObjects.push_back(gameObject);
 	return gameObject;
 }
 
 GameObject* ModuleScene::CreateEmptyGameObject() {
 	GameObject* gameObject = new GameObject();
+	gameObjects.push_back(gameObject);
 	return gameObject;
 }
 
@@ -163,7 +167,7 @@ void ModuleScene::DrawGameObjects(const std::vector<GameObject*>& objects) {
 					// Change hierarchy structure depending on dragged object
 					if (ImGui::BeginDragDropTarget()) {
 						if (ImGui::AcceptDragDropPayload("GameObject")) {
-							if (dragged->name < objects[i]->name && objects[i]->parent == root)
+							if (dragged->name <= objects[i]->name && objects[i]->parent == root)
 								--i;
 
 							dragged->parent == root ? DeleteGameObject(dragged) : dragged->parent->DeleteChild(dragged);
@@ -217,6 +221,10 @@ void ModuleScene::DrawInspector(bool *show) {
 		ImGuiCond_Once
 	);
 	if (show && ImGui::Begin(ICON_FA_INFO_CIRCLE" Inspector", show)) {
+		if (ImGui::DragFloat3("Light Pos", &App->model->ModuleModelLoader::light.pos[0], 3)) {
+			glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->ModuleModelLoader::light.pos.x, App->model->ModuleModelLoader::light.pos.y, App->model->ModuleModelLoader::light.pos.z);
+
+		}
 		if (root->children.size() > 0 && selected != nullptr) {
 			selected->DrawComponents();
 		}
@@ -262,7 +270,7 @@ void ModuleScene::DrawPopup(GameObject *gameObject) {
 
 void ModuleScene::SaveScene() {
 	JsonConfig config;
-	for (auto &obj : root->children)
+	for (auto &obj : gameObjects)
 		config.SaveGameObject(*obj);
 	config.SaveJson("SceneData.json");
 }

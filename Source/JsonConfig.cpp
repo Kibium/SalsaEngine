@@ -31,7 +31,7 @@ void JsonConfig::SaveJson(const char *fileName) {
 	strbuf.Clear();
 	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 	document.Accept(writer);
-	LOG(strbuf.GetString());
+	//LOG(strbuf.GetString());
 
 	// save json to file
 	FILE* file = nullptr;
@@ -53,6 +53,7 @@ void JsonConfig::SaveGameObject(const GameObject& obj) {
 	// object properties
 	rapidjson::Value object(rapidjson::kObjectType);
 	object.AddMember("UID", obj.UUID, *allocator);
+	object.AddMember("ParentUID", obj.parentUUID, *allocator);
 	object.AddMember("Index", obj.modelIndex, *allocator);
 	object.AddMember("Name", rapidjson::Value(obj.name.c_str(), *allocator), *allocator);
 	object.AddMember("Active", obj.isActive, *allocator);
@@ -161,6 +162,9 @@ void JsonConfig::LoadJson(const char *fileName) {
 			if (std::string(itr->name.GetString()) == std::string("UID")) {
 				gameObject->UUID = itr->value.GetFloat();
 			}
+			else if (std::string(itr->name.GetString()) == std::string("ParentUID")) {
+				gameObject->parentUUID = itr->value.GetFloat();
+			}
 			else if (std::string(itr->name.GetString()) == std::string("Index")) {
 				gameObject->modelIndex = itr->value.GetFloat();
 			}
@@ -209,8 +213,14 @@ void JsonConfig::LoadJson(const char *fileName) {
 				tempScale.z = itr->value.GetFloat();
 				gameObject->transform->myGo = gameObject;
 				gameObject->transform->SetTransform(tempTrans, tempRot, tempScale);
-				gameObject->CreateComponent(Type::MESH);
-				gameObject->CreateComponent(Type::MATERIAL);
+				if (gameObject->modelPath != "None"){
+					gameObject->CreateComponent(Type::MESH);
+					gameObject->CreateComponent(Type::MATERIAL);
+				}
+				if (gameObject->name == "MainCamera") {
+					gameObject->CreateComponent(Type::CAMERA);
+				}
+
 			}
 
 			std::string memberType = kTypeNames[itr->value.GetType()];

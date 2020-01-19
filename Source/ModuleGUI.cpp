@@ -30,11 +30,9 @@ ModuleGUI::~ModuleGUI() {
 }
 
 
-void ModuleGUI::HelpMarker(const char* desc)
-{
+void ModuleGUI::HelpMarker(const char* desc) {
 	ImGui::TextDisabled("(?)");
-	if (ImGui::IsItemHovered())
-	{
+	if (ImGui::IsItemHovered()) {
 		ImGui::BeginTooltip();
 		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
 		ImGui::TextUnformatted(desc);
@@ -174,7 +172,7 @@ void ModuleGUI::ShowConsole() {
 }
 void ModuleGUI::ProjectView() {
 
-	ImGui::SetNextWindowPos(ImVec2(0,App->window->screen_surface->h * OFFSET_CONSOLE_UP),ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * OFFSET_CONSOLE_UP), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(
 		ImVec2(App->window->screen_surface->w * OFFSET_CONSOLEW, App->window->screen_surface->h * OFFSET_CONSOLEH),
 		ImGuiCond_Once
@@ -182,8 +180,7 @@ void ModuleGUI::ProjectView() {
 	explorerPos = ImGui::GetWindowPos();
 	explorerHeight = ImGui::GetWindowHeight();
 	explorerWidth = ImGui::GetWindowWidth();
-	if (ImGui::Begin(ICON_FA_ALIGN_JUSTIFY "", NULL, ImGuiWindowFlags_NoScrollbar))
-	{
+	if (ImGui::Begin(ICON_FA_ALIGN_JUSTIFY "", NULL, ImGuiWindowFlags_NoScrollbar)) {
 		ImGui::BeginTabBar("ProjectTabs");
 
 		ShowConsole();
@@ -226,8 +223,7 @@ void ModuleGUI::MainMenu() {
 			if (ImGui::MenuItem("Create Empty")) {
 			}
 
-			if (ImGui::MenuItem("Create Sphere"))
-			{
+			if (ImGui::MenuItem("Create Sphere")) {
 				App->model->CreateSphere("sphere0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
@@ -235,8 +231,7 @@ void ModuleGUI::MainMenu() {
 				App->model->materials.back().k_diffuse = 0.5f;
 				App->model->materials.back().k_ambient = 1.0f;
 			}
-			if (ImGui::MenuItem("Create Torus"))
-			{
+			if (ImGui::MenuItem("Create Torus")) {
 				App->model->CreateTorus("torus0", math::float3(10.f, 0.0f, 0.0f), math::Quat::identity, 0.5f, 0.67f, 10, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
@@ -244,8 +239,7 @@ void ModuleGUI::MainMenu() {
 				App->model->materials.back().k_diffuse = 0.5f;
 				App->model->materials.back().k_ambient = 1.0f;
 			}
-			if (ImGui::MenuItem("Create Cube"))
-			{
+			if (ImGui::MenuItem("Create Cube")) {
 				App->model->CreateCube("cube0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
@@ -253,8 +247,7 @@ void ModuleGUI::MainMenu() {
 				App->model->materials.back().k_diffuse = 0.5f;
 				App->model->materials.back().k_ambient = 1.0f;
 			}
-			if (ImGui::MenuItem("Create Cylinder"))
-			{
+			if (ImGui::MenuItem("Create Cylinder")) {
 				App->model->CreateCylinder("cylinder0", math::float3(10.0f, 0.0f, 0.0f), math::Quat::identity, 2.0f, 0.5f, 30, 30, App->model->color);
 				App->model->materials.back().k_specular = 0.9f;
 				App->model->materials.back().shininess = 64.0f;
@@ -317,14 +310,13 @@ void ModuleGUI::MainMenu() {
 
 }
 void ModuleGUI::MainWindow() {
-	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_SCENE_POSX, App->window->screen_surface->h * (OFFSET_NAVBAR+ OFFSET_SCENE_POSY)), ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(App->window->screen_surface->w *OFFSET_SCENE_POSX, App->window->screen_surface->h * (OFFSET_NAVBAR + OFFSET_SCENE_POSY)), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(
 		ImVec2(App->window->screen_surface->w * OFFSET_SCENEW, App->window->screen_surface->h * OFFSET_SCENEH),
 		ImGuiCond_Once
 	);
 
-	if (ImGui::Begin(ICON_FA_SOLAR_PANEL "", NULL, ImGuiWindowFlags_NoScrollbar))
-	{
+	if (ImGui::Begin(ICON_FA_SOLAR_PANEL "", NULL, ImGuiWindowFlags_NoScrollbar)) {
 		ImGui::BeginTabBar("MainTabs");
 
 		if (showScene)
@@ -346,18 +338,15 @@ void ModuleGUI::ShowTimeButtons() {
 	);
 	if (ImGui::Begin("Buttons", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar)) {
 
-		if (ImGui::Button(ICON_FA_RULER_COMBINED, ImVec2(28, 24)))
-		{
+		if (ImGui::Button(ICON_FA_RULER_COMBINED, ImVec2(28, 24))) {
 			App->renderer->guizmoOP = ImGuizmo::TRANSLATE;
 		}ImGui::SameLine();
 
-		if (ImGui::Button(ICON_FA_SYNC, ImVec2(28, 24)))
-		{
+		if (ImGui::Button(ICON_FA_SYNC, ImVec2(28, 24))) {
 			App->renderer->guizmoOP = ImGuizmo::ROTATE;
 		}ImGui::SameLine();
 
-		if (ImGui::Button(ICON_FA_BALANCE_SCALE, ImVec2(28, 24)))
-		{
+		if (ImGui::Button(ICON_FA_BALANCE_SCALE, ImVec2(28, 24))) {
 			App->renderer->guizmoOP = ImGuizmo::SCALE;
 		}
 
@@ -367,18 +356,15 @@ void ModuleGUI::ShowTimeButtons() {
 		ImVec2 play_button_pos((time_window_size.x - 24)*0.5f - 26, (time_window_size.y - 24)*0.5f);
 		ImGui::SetCursorPos(play_button_pos);
 
-		if (ImGui::Button(ICON_FA_PLAY, ImVec2(24, 24)))
-		{
+		if (ImGui::Button(ICON_FA_PLAY, ImVec2(24, 24))) {
 			//TODO
 		}ImGui::SameLine();
 
-		if (ImGui::Button(ICON_FA_STOP, ImVec2(24, 24)))
-		{
+		if (ImGui::Button(ICON_FA_STOP, ImVec2(24, 24))) {
 			//TODO
 		}ImGui::SameLine();
 
-		if (ImGui::Button(ICON_FA_STEP_FORWARD, ImVec2(24, 24)))
-		{
+		if (ImGui::Button(ICON_FA_STEP_FORWARD, ImVec2(24, 24))) {
 			//TODO
 		}
 
@@ -392,8 +378,7 @@ void ModuleGUI::ShowTimeButtons() {
 
 
 void ModuleGUI::Game() {
-	if (ImGui::BeginTabItem(ICON_FA_GAMEPAD " Game"))
-	{
+	if (ImGui::BeginTabItem(ICON_FA_GAMEPAD " Game")) {
 		//isScene= ImGui::IsWindowFocused();
 		sceneWidthGame = ImGui::GetWindowWidth();
 		sceneHeightGame = ImGui::GetWindowHeight();
@@ -408,15 +393,14 @@ void ModuleGUI::Game() {
 		);
 		ImGui::EndTabItem();
 	}
-	
+
 }
 
 float ModuleGUI::GetSceneWidth() { return sceneWidth; }
 float ModuleGUI::GetSceneHeight() { return sceneHeight; }
 
 void ModuleGUI::Scene() {
-	if (ImGui::BeginTabItem(ICON_FA_DICE_D20 " Scene"))
-	{
+	if (ImGui::BeginTabItem(ICON_FA_DICE_D20 " Scene")) {
 		isScene = ImGui::IsWindowFocused();
 
 		//ImVec2 vMin = ImGui::GetWindowWidth();
@@ -448,8 +432,29 @@ ImVec2 ModuleGUI::GetScenePos() {
 	return scenePos;
 }
 
-char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item
+const char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every item
 {
+
+	//OPENFILENAME ofn;
+	//char fileName[MAX_PATH] = "";
+	//ZeroMemory(&ofn, sizeof(ofn));
+	//ofn.lStructSize = sizeof(ofn);
+	//ofn.hwndOwner = NULL;
+	//ofn.lpstrFilter = _T("All Files (*.*)\0*.*\0\0");
+	//ofn.lpstrFile = fileName;
+	//ofn.nMaxFile = MAX_PATH;
+	//ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	//ofn.lpstrDefExt = _T("png");
+	//ofn.lpstrFile[0] = '\0';
+	//ofn.nMaxFile = sizeof(fileName);
+	////ofn.lpstrInitialDir = "Missions\\";
+
+	//string fileNameStr;
+	//if (GetOpenFileName(&ofn))
+	//	fileNameStr = fileName;
+
+	//return fileNameStr.c_str();
+
 	OPENFILENAME ofn = { 0 };
 	ofn.lStructSize = sizeof(ofn);
 	ofn.hwndOwner = 0;
@@ -461,11 +466,14 @@ char* ModuleGUI::GetInputFile()//TODO Check if a texture is passed, not every it
 
 	if (GetOpenFileName(&ofn))
 	{
-		//MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
+		MessageBox(NULL, szFileName, _T("It works!"), MB_OK);
 		string temp = szFileName;
 
 		//TODO: ADD HERE ACCEPETD FILETYPES
-		if (temp.substr(temp.size() - 4) == ".png" || temp.substr(temp.size() - 4) == ".ttf" || temp.substr(temp.size() - 4) == ".tif")
+		temp = temp.substr(temp.size() - 4);
+		LOG("Temp: %s\nszFileName: %s\n", temp.c_str(), szFileName);
+
+		if (temp == ".png" || temp == ".ttf" || temp == ".tif" || temp == ".dds") 
 			return szFileName;
 		else
 			return "Not valid";
@@ -562,8 +570,7 @@ void ModuleGUI::GameObjecInfo() {
 }
 
 void ModuleGUI::oldinspector() {
-	if (ImGui::Begin(ICON_FA_GAMEPAD " Old inspector"))
-	{
+	if (ImGui::Begin(ICON_FA_GAMEPAD " Old inspector")) {
 		if (ImGui::CollapsingHeader(ICON_FA_FILE_VIDEO " Shader")) {
 			if (ImGui::Selectable("Flat Shading")) {
 
@@ -588,7 +595,7 @@ void ModuleGUI::oldinspector() {
 
 		}
 
-		
+
 		if (ImGui::CollapsingHeader(ICON_FA_CLOCK " Timers")) {
 
 			if (ImGui::CollapsingHeader("Time")) {
@@ -689,7 +696,7 @@ void ModuleGUI::ShowAbout() {
 
 }
 
-	
+
 
 void ModuleGUI::ShowDefWindow() {
 
@@ -843,8 +850,7 @@ void ModuleGUI::ShowDefWindow() {
 			}
 		}
 
-		if (ImGui::CollapsingHeader(ICON_FA_LIGHTBULB" Light"))
-		{
+		if (ImGui::CollapsingHeader(ICON_FA_LIGHTBULB" Light")) {
 			/*ImGui::DragFloat3("Position", &App->model->light.pos[0], 3);
 			if(ImGui::SliderFloat("Color R", &App->model->light.color.x, 0, 1)) {
 				for (int i = 0; i < App->model->materials.size(); ++i)
@@ -886,27 +892,25 @@ void ModuleGUI::ShowDefWindow() {
 }
 
 void ModuleGUI::showExplorer() {
-		// open Dialog Simple
-	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * (OFFSET_CONSOLE_UP +0.05)), ImGuiCond_Once);
+	// open Dialog Simple
+	ImGui::SetNextWindowPos(ImVec2(0, App->window->screen_surface->h * (OFFSET_CONSOLE_UP + 0.05)), ImGuiCond_Once);
 	ImGui::SetNextWindowSize(
 		ImVec2(App->window->screen_surface->w * (OFFSET_CONSOLEW), App->window->screen_surface->h * (OFFSET_CONSOLEH - 0.055)),
 		ImGuiCond_Once
 	);
 	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "", "", ".");
-	
+
 	if (ImGui::BeginTabItem(ICON_FA_ARCHIVE " Project")) {
 
 
 		// display
-		if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey"))
-		{
+		if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey")) {
 			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
+			if (ImGuiFileDialog::Instance()->IsOk == true) {
 				std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
 				std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 				// action
-	
+
 			}
 			// close
 			ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
