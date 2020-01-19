@@ -29,7 +29,6 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 	void DrawGrid();
 	void DrawAABB(GameObject * go);
-	void SetAxis();
 	void SetWireframe(const bool wireframe);
 	void MousePicking(float2 mouse);
 	LineSegment CreatingRay(float2 mouse);
@@ -40,9 +39,10 @@ public:
 	void* context = nullptr;
 	GLuint frameTex;
 	GLuint sceneTex;
-	ComponentCamera* GameCamera = nullptr;
 	ImGuizmo::OPERATION guizmoOP = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE guizmoMode = ImGuizmo::WORLD;
+	bool drawTree = true;
+	bool drawBB = true;
 
 private:
 	GLuint FBO;

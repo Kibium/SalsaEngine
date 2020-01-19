@@ -26,12 +26,14 @@ class Model {
 
 public:
 	Model();
-	Model(const char *filePath);
+	Model::Model(const char *filePath, bool addToGameObjects = true);
 	~Model();
 
 public:
 	const char *filePath = nullptr;
 	std::string GetFileName(const char *);
+	std::vector<Mesh*> meshes;
+
 private:
 	void Load(const char*);
 	void ProcessNode(aiNode*, const aiScene*);
@@ -46,7 +48,7 @@ private:
 	Material mat;
 	math::AABB boundingBox;
 	math::AABB modelBox;
-
+	bool addToGameObjects = true;
 };
 
 #endif // __MODEL_H__

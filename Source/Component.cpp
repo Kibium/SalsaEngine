@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "pcg/pcg_basic.h"
 
-Component::Component() : position(math::float3::zero), rotation(math::float3::zero), scale(math::float3::one) {
+Component::Component() {
 	UUID = pcg32_random();
 }
 

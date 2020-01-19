@@ -24,6 +24,7 @@ public:
 	GameObject* CreateGameObject(uint32_t UID, uint32_t ParentUID, const std::string &name, bool Active, bool Static, const char *modelFile = nullptr);
 	void DeleteGameObject(GameObject *gameObject);
 	void DeleteGameObjectFlag(GameObject *gameObject);
+	void DeleteAll();
 	void SortGameObjects(std::vector<GameObject*> &objects);
 
 	void DrawGameObjects(const std::vector<GameObject*>& objects);
