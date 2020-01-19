@@ -123,7 +123,7 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
-			DrawAABB(gameObject);
+			//DrawAABB(gameObject);
 			if (App->scene->gameCamera->camera->ContainsAABOX(gameObject->model->modelBox)) {
 				glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 				gameObject->model->Draw();

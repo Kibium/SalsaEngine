@@ -325,7 +325,7 @@ bool ModuleModelLoader::Init() {
 
 
 	//Light stuff
-	light.pos = math::float3(0.0f, 0.0f, 0.0f);
+	light.pos = math::float3(-12.0f, -250.0f, 0.0f);
 
 	App->model->CreateSphere("sphere1", light.pos, math::Quat::identity, 0.5f, 30, 30, float4(204, 204, 0, 1));
 	App->model->materials.back().k_specular = 0.9f;
