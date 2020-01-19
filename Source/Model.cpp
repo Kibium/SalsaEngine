@@ -12,134 +12,106 @@
 #include <assimp/mesh.h>
 #include <algorithm>
 #include "GameObject.h"
+#include "MeshImporter.h"
+using namespace std;
 using namespace Assimp;
 
 Model::Model() {
 }
 
-Model::Model(const char *filePath) : filePath(filePath), fileName(filePath) {
-	LOG("FILEPATH: %s\n", filePath);
-	ProcessName();
+Model::Model(const char *filePath, bool addToGameObjects) : filePath(filePath), addToGameObjects(addToGameObjects) {
+	fileName = GetFileName(filePath);
 	Load(filePath);
 }
 
 Model::~Model() {
 }
 
-void Model::ProcessName() {
-	// Process name
-	fileName = filePath;
-
-	for (std::string::iterator it = fileName.end() - 1; it != fileName.begin(); --it) {
-		if ((*it) != '\\')
-			name += (*it);
-		else
-			break;
-	}
-	std::reverse(name.begin(), name.end());
-	name.pop_back();
-	name.pop_back();
-	name.pop_back();
-	name.pop_back();
-}
-
-void Model::Draw() {
-	if (isActive) {
-		for (int i = 0; i < meshes.size(); ++i)
-			meshes[i]->Draw();
-	}
-
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.ambient"), 0.2f, 0.2f, 0.2f);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.position"), App->model->light.pos.x, App->model->light.pos.y, App->model->light.pos.z);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.diffuse"), 1, 1, 1);
-	glUniform3f(glGetUniformLocation(App->shader->def_program, "light.specular"), 0.8f, 0.8f, 0.8f);
-
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.diff_color"), mat.diffuse_color.x, mat.diffuse_color.y, mat.diffuse_color.z, mat.diffuse_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.spec_color"), mat.specular_color.x, mat.specular_color.y, mat.specular_color.z, mat.specular_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.occ_color"), mat.occlusion_color.x, mat.occlusion_color.y, mat.occlusion_color.z, mat.occlusion_color.w);
-	glUniform4f(glGetUniformLocation(App->shader->def_program, "material.emi_color"), mat.emissive_color.x, mat.emissive_color.y, mat.emissive_color.z, mat.emissive_color.w);
-
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.shininess"), mat.shininess);
-
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_spec"), mat.k_specular);
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_diff"), mat.k_diffuse);
-	glUniform1f(glGetUniformLocation(App->shader->def_program, "material.k_occ"), mat.k_ambient);
-}
-
 void Model::Load(const char* path) {
 	DefaultLogger::create("", Logger::VERBOSE);
 	const unsigned int severity = /*Logger::Debugging | Logger::Info |*/ Logger::Err /*| Logger::Warn*/;
 	DefaultLogger::get()->attachStream(new myStream(), severity);
+
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcessPreset_TargetRealtime_MaxQuality);
+
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		LOG("ERROR::ASSIMP:: %s \n", importer.GetErrorString());
 		return;
 	}
+
 	modelBox.SetNegativeInfinity();
 	boundingBox.SetNegativeInfinity();
 	directory = GetModelDirectory(path);
-	// process ASSIMP's root node recursively
-	processNode(scene->mRootNode, scene);
 
-	model = true;
+	// process ASSIMP's root node recursively
+	ProcessNode(scene->mRootNode, scene);
+
 	DefaultLogger::kill();
 }
 
-
-void Model::processNode(aiNode *node, const aiScene *scene) {
+void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 	// process each mesh located at the current node
-	int counter = 0;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		// the node object only contains indices to index the actual objects in the scene. 
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
+
 		// Create a Game Object for each mesh
-		Mesh* newMesh = processMesh(mesh, scene);
+
+		Mesh* newMesh = ProcessMesh(mesh, scene, node->mName.C_Str());
 		node->mTransformation.Decompose(newMesh->modelScale, newMesh->modelRotation, newMesh->modelPosition);
+
 		auto go = App->scene->CreateGameObject();
-		go->modelPath = fileName;
+		go->modelPath = filePath;
 		go->model = newMesh;
-		go->name = App->model->GetFilename(filePath) + " " + std::to_string(nmeshes);
+		go->modelContainer = this;
+		go->name = node->mName.C_Str();
 		go->DeleteComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::TRANSFORM);
 		go->CreateComponent(Type::MESH);
 		go->CreateComponent(Type::MATERIAL);
-		//newMesh->myGo = go;
-		nmeshes += 1;
-	}
+		go->modelIndex = totalMeshes;
+		meshes.push_back(newMesh);
+		
 
-	node->mTransformation.Decompose(modelScale, modelRotation, modelPosition);
+
+
+
+		if (!addToGameObjects)
+			App->scene->DeleteGameObject(go);
+	}
 
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		processNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene);
 	}
-	
+
 	App->scene->camera->Focus();
 }
 
-Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& name) {
 	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	MeshData data;
+	
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
 		Vertex vertex;
 		vertex.Position = float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-
-
+		
 		vertex.TexCoords = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
-
-		//LOG("Texture %d coord x %f coord y %f \n", i, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		vertices.push_back(vertex);
-	}
 
+		data.positions.push_back(vertex.Position);
+		data.texture_coords.push_back(vertex.TexCoords);
+	}
 
 	modelBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 	boundingBox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
@@ -164,93 +136,39 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 	// specular: texture_specularN
 	// normal: texture_normalN
 
-	/* 1. diffuse maps
-	vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	// 2. specular maps
-	vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	// 3. normal maps
-	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	// 4. height maps
-	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	// return a mesh object created from the extracted mesh data*/
-
 	Mesh* meshM = new Mesh(vertices, indices, mat, polygons, verticesNum, boundingBox, modelBox);
+	std::string meshName = name;
 
-	if (!load_once) {
-		meshM->LoadTexture(textures, DIFFUSE, std::string(filePath), GetFilename(filePath));
-		meshM->LoadTexture(textures, SPECULAR,  std::string(filePath), GetFilename(filePath));
-		meshM->LoadTexture(textures, OCCLUSION, std::string(filePath), GetFilename(filePath));
-		load_once = true;
-	}
+	meshM->LoadTexture(textures, DIFFUSE, std::string(meshName));
+	meshM->LoadTexture(textures, SPECULAR, std::string(meshName));
+	meshM->LoadTexture(textures, OCCLUSION, std::string(meshName));
+
+	data.indices = indices;
+	
+	data.nIndices = indices.size();
+	data.nVertices = vertices.size();
+
+	MeshImporter importer;
+	string s;
+
+	string meshname = meshName + std::to_string(totalMeshes);
+	importer.Import(meshname.c_str(), data, s);
+	
+	totalMeshes++;
+	LOG("%d\n", vertices.size());
 
 	return meshM;
 }
 
-//vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName) {
-//	vector<Texture> textures;
-//	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-//		aiString str;
-//		mat->GetTexture(type, i, &str);
-//		// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-//		bool skip = false;
-//		for (unsigned int j = 0; j < textures_loaded.size(); j++) {
-//			if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0) {
-//				textures.push_back(textures_loaded[j]);
-//				skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-//				break;
-//			}
-//		}
-//		if (!skip) {   // if texture hasn't been loaded already, load it
-//			Texture texture;
-//			std::string newPath = directory.c_str() + string(str.C_Str());
-//			const char* pathing = newPath.c_str();
-//			texture.id = App->texture->Load((char*)pathing);
-//			if (!App->texture->loaded) {
-//				LOG("Loading Texture from model's directory\n");
-//				std::string filename = directory.c_str() + GetFilename(str.C_Str());
-//				const char* file = filename.c_str();
-//				texture.id = App->texture->Load((char*)file);
-//				texture.path = file;
-//				if (!App->texture->loaded) {
-//					LOG("Loading Texture from Textures directory\n");
-//					string fromFolder = "Models/Textures/" + GetFilename(str.C_Str());
-//					const char* folder = fromFolder.c_str();
-//					texture.id = App->texture->Load((char*)folder);
-//					texture.path = folder;
-//				}
-//			}
-//			else {
-//				texture.path = str.C_Str();
-//			}
-//			if (App->texture->loaded) {
-//				LOG("DEVIL:: Texture Loaded Succesfully\n");
-//			}
-//			else {
-//				LOG("DEVIL::ERROR  Loading texture. File not found \n");
-//			}
-//			texture.type = typeName;
-//			textures.push_back(texture);
-//			textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesary load duplicate textures.
-//		}
-//	}//
-//	return textures;
-//}
-
 string Model::GetModelDirectory(const char *path) {
 	std::string dir = std::string(path);
-
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string modelDir = dir.substr(0, currentDir + 1);
-
 	return modelDir;
 }
-string Model::GetFilename(const char *path) {
-	std::string dir = std::string(path);
 
+string Model::GetFileName(const char *path) {
+	std::string dir = std::string(path);
 	std::size_t currentDir = dir.find_last_of("/\\");
 	std::string filename;
 	filename = dir.substr(currentDir + 1);

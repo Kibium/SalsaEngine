@@ -6,13 +6,15 @@
 //textrues are no longer supported
 #include "ModuleTexture.h"
 #include "ModuleRender.h"
+#include "ModuleFileSystem.h"
+#include "MeshImporter.h"
 
 #include "ModuleCamera.h"
 #include "assimp/DefaultLogger.hpp"
 #include <assimp/cimport.h>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
-
+#include "MeshImporter.h"
 #define PAR_SHAPES_IMPLEMENTATION
 #include "Util/par_shapes.h"
 using namespace Assimp;
@@ -137,7 +139,6 @@ void ModuleModelLoader::GenerateVAO(Figure& mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-
 
 void ModuleModelLoader::RenderMesh(const Figure& mesh, const Material& material,
 	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
@@ -356,6 +357,18 @@ ModuleModelLoader::~ModuleModelLoader() {
 
 void ModuleModelLoader::AddModel(const char *filePath) {
 	Model *model = new Model(filePath);
+	string path = "../Library/" + model->GetFileName(filePath);
+
+	//import
+	MeshImporter imp;
+	for (int i = model->meshes.size()-1; i > 0; --i) {
+		MeshData md;	
+		string s;
+		s = model->GetFileName(filePath) + std::to_string(i);
+		imp.Load(s.c_str(), md);
+	}
+	
+
 	models.push_back(model);
 }
 
@@ -560,15 +573,6 @@ string ModuleModelLoader::GetModelDirectory(const char *path)
 	return path;
 
 }
-
-void ModuleModelLoader::Draw() {
-	if (models.size() > 0) {
-		for (int i = 0; i < models.size(); ++i)
-			models[i]->Draw();
-	}
-}
-
-  
 
 string ModuleModelLoader::GetFilename(const char *path)
 {

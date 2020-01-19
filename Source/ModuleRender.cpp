@@ -185,7 +185,7 @@ void ModuleRender::DrawScene(const float width, const float height) {
 	App->scene->gameCamera->camera->DrawFrustum();
 	for (auto gameObject : App->scene->root->children) {
 		glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
-		if (gameObject->model != nullptr) {
+		if (gameObject->model != nullptr && gameObject->isActive && !gameObject->deleteFlag) {
 			gameObject->model->Draw();
 			if(drawBB)
 				DrawAABB(gameObject);
@@ -193,9 +193,10 @@ void ModuleRender::DrawScene(const float width, const float height) {
 			// Draw each child if the obj has
 			if (gameObject->children.size() > 0) {
 				for (auto& obj : gameObject->children) {
-					obj->model->Draw();
-					if (drawBB)
+					if (obj->model != nullptr) {
+						obj->model->Draw();
 						DrawAABB(obj);
+					}
 				}
 			}
 		}		

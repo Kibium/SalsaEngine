@@ -11,6 +11,16 @@
 #include "Application.h"
 #include "Geometry/AABB.h"
 
+ComponentTransform::ComponentTransform() {
+	type = Type::TRANSFORM;
+	if (myGo != nullptr) {
+		position = float3(myGo->model->modelPosition.x, myGo->model->modelPosition.y, myGo->model->modelPosition.z);
+		rotationFloat = float3(myGo->model->modelRotation.x, myGo->model->modelRotation.y, myGo->model->modelRotation.z);
+		RotToQuat();
+		scale = float3(myGo->model->modelScale.x, myGo->model->modelScale.y, myGo->model->modelScale.z);
+	}
+}
+
 ComponentTransform::ComponentTransform(const float3 position, const float3 rotation, const float3 scale) {
 	type = Type::TRANSFORM;
 	if (myGo != nullptr) {
@@ -19,16 +29,6 @@ ComponentTransform::ComponentTransform(const float3 position, const float3 rotat
 		RotToQuat();
 		this->scale = scale;
 		UpdateMatrix();
-	}
-}
-
-ComponentTransform::ComponentTransform() {
-	type = Type::TRANSFORM;
-	if (myGo != nullptr) {
-		position = float3(myGo->model->modelPosition.x, myGo->model->modelPosition.y, myGo->model->modelPosition.z);
-		rotationFloat = float3(myGo->model->modelRotation.x, myGo->model->modelRotation.y, myGo->model->modelRotation.z);
-		RotToQuat();
-		scale = float3(myGo->model->modelScale.x, myGo->model->modelScale.y, myGo->model->modelScale.z);
 	}
 }
 

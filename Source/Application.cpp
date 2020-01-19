@@ -13,6 +13,7 @@
 #include "Skybox.h"
 #include <windows.h>
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 using namespace std;
 
 Application::Application()
@@ -31,6 +32,7 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugdraw = new ModuleDebugDraw());
 	modules.push_back(gui = new ModuleGUI());
+	modules.push_back(fs = new ModuleFileSystem());
 }
 
 Application::~Application()

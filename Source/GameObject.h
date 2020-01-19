@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "ModuleModelLoader.h"
 #include <string>
 #include <vector>
@@ -33,6 +34,7 @@ public:
 	void CreateComponent(Type type);
 	void DrawComponents();
 	void DeleteChild(GameObject *child);
+	void GameObject::DeleteChildFlag(GameObject *child);
 	void DeleteComponent(Type type);
 
 	GameObject* GetChild(unsigned childIndex) const;
@@ -57,11 +59,16 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentCamera* camera = nullptr;
 	bool isCamera = false;
-	//std::vector<Mesh> meshes;
+
 	float distanceFromCamera = 0;
+	Model* modelContainer = nullptr;
 	Mesh* model = nullptr;
 	std::string modelPath;
+	int modelIndex = 0;
+	bool deleteFlag = false;
 
+private:
+	void SetChildrenActive(std::vector<GameObject*>& objects, bool active);
 };
 
 #endif // __GAMEOBJECT_H__

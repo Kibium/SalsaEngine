@@ -281,9 +281,9 @@ void ModuleInput::DroppedFile(const char* file) const
 	char* extension = PathFindExtensionA(file);
 	if (assimpMap.find(extension) != assimpMap.end()) {
 
-		LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
-		LOG(file);
-		LOG("\n");
+		//LOG("MODEL FILE FORMAT '%s' ACCEPTED\n ", extension);
+		//LOG(file);
+		//LOG("\n");
 
 		// Process file and create gameobjects
 		App->scene->selected = nullptr;
