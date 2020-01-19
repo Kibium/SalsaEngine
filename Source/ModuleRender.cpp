@@ -116,16 +116,16 @@ void ModuleRender::DrawGame(unsigned width, unsigned height)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glUseProgram(App->shader->test_program);
+	glUseProgram(App->shader->def_program);
 	
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "view"), 1, GL_TRUE, &App->scene->gameCamera->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "proj"), 1, GL_TRUE, &App->scene->gameCamera->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "view"), 1, GL_TRUE, &App->scene->gameCamera->camera->view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "proj"), 1, GL_TRUE, &App->scene->gameCamera->camera->proj[0][0]);
 
 	for (auto gameObject : App->scene->root->children) {
 		if (gameObject->model != nullptr) {
 			DrawAABB(gameObject);
 			if (App->scene->gameCamera->camera->ContainsAABOX(gameObject->model->modelBox)) {
-				glUniformMatrix4fv(glGetUniformLocation(App->shader->test_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
+				glUniformMatrix4fv(glGetUniformLocation(App->shader->def_program, "model"), 1, GL_TRUE, &gameObject->transform->worldMatrix[0][0]);
 				gameObject->model->Draw();
 			}
 		}

@@ -35,6 +35,7 @@ public:
 	
 
 public:
+	int index = 0;
 	const char *filePath = nullptr;
 	std::string GetFileName(const char *);
 	std::vector<Mesh*> meshes;

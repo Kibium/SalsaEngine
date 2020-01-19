@@ -31,7 +31,7 @@ void JsonConfig::SaveJson(const char *fileName) {
 	strbuf.Clear();
 	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 	document.Accept(writer);
-	//LOG(strbuf.GetString());
+	LOG(strbuf.GetString());
 
 	// save json to file
 	FILE* file = nullptr;
@@ -180,7 +180,8 @@ void JsonConfig::LoadJson(const char *fileName) {
 			else if (std::string(itr->name.GetString()) == std::string("Model")) {
 				gameObject->modelPath = itr->value.GetString();
 				if (gameObject->modelPath != "None") {
-					Model* modelContainer = new Model(gameObject->modelPath.c_str(), false);
+					std::vector<string> s;
+					Model* modelContainer = new Model(gameObject->modelPath.c_str(), s, false);
 					gameObject->modelContainer = modelContainer;
 					gameObject->model = modelContainer->meshes[gameObject->modelIndex];
 				}
