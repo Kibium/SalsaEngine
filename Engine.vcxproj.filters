@@ -166,9 +166,6 @@
     <ClCompile Include="Source\ModuleRender.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleScene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleShader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -327,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="Source\TexImporter.cpp">
       <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleScene.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -783,9 +783,6 @@
     <ClInclude Include="Source\ModuleRender.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ModuleShader.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1094,6 +1091,9 @@
     </ClInclude>
     <ClInclude Include="Source\TexImporter.h">
       <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
