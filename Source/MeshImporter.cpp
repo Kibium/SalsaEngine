@@ -59,12 +59,15 @@ bool MeshImporter::Load(const char * exported_file, MeshData &mesh)
 {
 	string mesh_file = exported_file; 
 	mesh_file += ".mesh";
-	char* buffer = App->fs->Load("../Library/Meshes/", mesh_file.c_str());
+	
+	string s = "../Library/Meshes/" + mesh_file;
 
-	if (!App->fs->Load("../Library/Meshes/", mesh_file.c_str()))
+	if (!App->fs->Exists(s.c_str()))
 		return false;
+
 	else {
 
+		char* buffer = App->fs->Load("../Library/Meshes/", mesh_file.c_str());
 		LOG("Loading model...\n");
 
 		char* cursor = buffer;

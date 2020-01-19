@@ -73,6 +73,7 @@ public:
 	vector<Vertex> GetVertices();
 	void LoadTexture(vector<Texture>& v, TextureType type, const std::string& directory);
 	bool item_exists(const char* path);
+	string name;
 
 private:
 	unsigned int VBO, EBO;

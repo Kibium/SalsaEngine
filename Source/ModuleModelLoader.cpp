@@ -360,12 +360,15 @@ void ModuleModelLoader::AddModel(const char *filePath) {
 	string path = "../Library/" + model->GetFileName(filePath);
 
 	//import
+	MeshImporter imp;
+	for (int i = model->meshes.size()-1; i > 0; --i) {
+		MeshData md;	
+		string s;
+		s = model->GetFileName(filePath) + std::to_string(i);
+		imp.Load(s.c_str(), md);
+	}
 	
-	MeshData md;
-	MeshImporter i;
-	i.Load(model->GetFileName(filePath).c_str(), md);
 
-	//LOG("There were %d indices\n", md.indices.size());
 	models.push_back(model);
 }
 

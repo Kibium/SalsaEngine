@@ -77,7 +77,9 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene) {
 		go->CreateComponent(Type::MATERIAL);
 		go->modelIndex = totalMeshes;
 		meshes.push_back(newMesh);
-		totalMeshes++;
+		
+
+
 
 
 		if (!addToGameObjects)
@@ -148,8 +150,11 @@ Mesh* Model::ProcessMesh(aiMesh *mesh, const aiScene *scene, const std::string& 
 
 	MeshImporter importer;
 	string s;
-	importer.Import(meshName.c_str(), data, s);
+
+	string meshname = meshName + std::to_string(totalMeshes);
+	importer.Import(meshname.c_str(), data, s);
 	
+	totalMeshes++;
 	LOG("%d\n", vertices.size());
 
 	return meshM;
